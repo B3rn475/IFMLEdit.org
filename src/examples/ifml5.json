@@ -1,0 +1,76 @@
+{
+	"elements": [{
+		"id": "mails",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Mails",
+			"default": true,
+			"landmark": false,
+			"xor": false
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 40,
+					"y": 100
+				},
+				"size": {
+					"width": 180,
+					"height": 110
+				}
+			}
+		}
+	},
+	{
+		"id": "maillist",
+		"type": "ifml.ViewComponent",
+		"attributes": {
+			"name": "MailList",
+			"stereotype": "list",
+			"collection": "mail",
+			"fields": ["subject"],
+			"filters": []
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 50,
+					"y": 130
+				},
+				"size": {
+					"width": 150,
+					"height": 60
+				}
+			}
+		}
+	},
+	{
+		"id": "maillist-selected",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "selected"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 190,
+					"y": 170
+				},
+				"name": {
+					"horizontal": "right",
+					"vertical": "bottom"
+				}
+			}
+		}
+	}],
+	"relations": [{
+		"type": "hierarchy",
+		"parent": "mails",
+		"child": "maillist"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "maillist",
+		"child": "maillist-selected"
+	}]
+}

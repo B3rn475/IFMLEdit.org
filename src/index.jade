@@ -1,0 +1,77 @@
+// Copyright (c) 2016, the webratio-web project authors. Please see the
+// AUTHORS file for details. All rights reserved. Use of this source code is
+// governed by a MIT-style license that can be found in the LICENSE file.
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+        link(rel='stylesheet', type='text/css', href='./css/bootstrap.min.css')
+        link(rel='stylesheet', type='text/css', href='./css/joint.min.css')
+        link(rel='stylesheet', type='text/css', href='./css/m-transform.joint.min.css')
+        link(rel='stylesheet', type='text/css' href='./css/editor.min.css')
+        // Favicons
+        link(rel='icon', sizes='16x16 32x32 48x48 64x64', href='favicon.ico')
+        //if IE
+        link(rel='shortcut icon', href='favicon.ico')
+        // Optional: Android & iPhone
+        link(rel='apple-touch-icon-precomposed', href='favicon-152.png')
+        // Optional: IE10 Tile.
+        meta(name='msapplication-TileColor', content='#FFFFFF')
+        meta(name='msapplication-TileImage', content='favicon-144.png')
+        // Optional: ipads, androids, iphones, ...
+        link(rel='apple-touch-icon-precomposed', sizes='228x228', href='favicon-228.png')
+        link(rel='apple-touch-icon-precomposed', sizes='195x195', href='favicon-195.png')
+        link(rel='apple-touch-icon-precomposed', sizes='152x152', href='favicon-152.png')
+        link(rel='apple-touch-icon-precomposed', sizes='144x144', href='favicon-144.png')
+        link(rel='apple-touch-icon-precomposed', sizes='128x128', href='favicon-128.png')
+        link(rel='apple-touch-icon-precomposed', sizes='120x120', href='favicon-120.png')
+        link(rel='apple-touch-icon-precomposed', sizes='96x96', href='favicon-96.png')
+        link(rel='apple-touch-icon-precomposed', sizes='72x72', href='favicon-72.png')
+        link(rel='apple-touch-icon-precomposed', sizes='57x57', href='favicon-57.png')
+        link(rel='apple-touch-icon-precomposed', sizes='32x32', href='favicon-32.png')
+        link(rel='apple-touch-icon-precomposed', href='favicon-57.png')
+    body
+        div
+            .navbar.navbar-inverse.top
+                .container-fluid
+                    .navbar-header
+                        button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#main-menu', aria-expanded='false')
+                            span.sr-only Toggle navigation
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar
+                        a.navbar-brand(href='#')
+                            include favicon.svg
+                    #main-menu.collapse.navbar-collapse
+                        ul.nav.navbar-nav(role='tablist')
+                            li.active(role='presentation')
+                                a(role='tab', data-toggle='tab', aria-controls='ifml', href='#ifml') IFML
+                            li(role='presentation')
+                                a(role='tab', data-toggle='tab', aria-controls='web', href='#about') About
+            .tab-content
+                #ifml.tab-pane.editor.active(role='tabpanel')
+                    .sidebar
+                        ul.list-group
+                            a.list-group-item.model-load(href='#!') Load Model
+                            a.list-group-item.modal-example(href='#!') Load Example
+                            a.list-group-item.model-download(href='#!') Download Model
+                            a.list-group-item.png-download(href='#!') Download as PNG
+                    .board
+                    input(type='file', style='width:0; height: 0')
+                #about.tab-pane(role='tabpanel')
+                    .container
+                        .row
+                            .col-xs-12
+                                h1 About
+        script(type='text/javascript', src='./js/lodash.min.js')
+        script(type='text/javascript', src='./js/jquery.min.js')
+        script(type='text/javascript', src='./js/jquery.mousewheel.min.js')
+        script(type='text/javascript', src='./js/backbone.min.js')
+        script(type='text/javascript', src='./js/knockout.min.js')
+        script(type='text/javascript', src='./js/joint.min.js')
+        script(type='text/javascript', src='./js/FileSaver.min.js')
+        script(type='text/javascript', src='./js/bootstrap.min.js')
+        script(type='text/javascript', src='./js/bootstrap-notify.min.js')
+        script(type='text/javascript', src='./js/m-transform.joint.min.js')
+        script(type='text/javascript', src='./js/index.js')

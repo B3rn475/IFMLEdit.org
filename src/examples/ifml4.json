@@ -1,0 +1,47 @@
+{
+	"elements": [{
+		"id": "mails",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Mails",
+			"default": true,
+			"landmark": true,
+			"xor": false
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 40,
+					"y": 100
+				},
+				"size": {
+					"width": 200,
+					"height": 100
+				}
+			}
+		}
+	},
+	{
+		"id": "contacts",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Contacts",
+			"default": false,
+			"landmark": true,
+			"xor": false
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 310,
+					"y": 100
+				},
+				"size": {
+					"width": 200,
+					"height": 100
+				}
+			}
+		}
+	}],
+	"relations": []
+}

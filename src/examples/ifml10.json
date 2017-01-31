@@ -1,0 +1,229 @@
+{
+	"elements": [{
+		"id": "songs",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Songs",
+			"default": true,
+			"landmark": false,
+			"xor": false
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -120,
+					"y": 40
+				},
+				"size": {
+					"width": 380,
+					"height": 220
+				}
+			}
+		}
+	},
+	{
+		"id": "artistlist",
+		"type": "ifml.ViewComponent",
+		"attributes": {
+			"name": "ArtistList",
+			"stereotype": "list",
+			"collection": "artist",
+			"fields": ["name"],
+			"filters": []
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -110,
+					"y": 70
+				},
+				"size": {
+					"width": 150,
+					"height": 60
+				}
+			}
+		}
+	},
+	{
+		"id": "genrelist",
+		"type": "ifml.ViewComponent",
+		"attributes": {
+			"name": "GenreList",
+			"stereotype": "list",
+			"collection": "genre",
+			"fields": ["name"],
+			"filters": []
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -110,
+					"y": 180
+				},
+				"size": {
+					"width": 150,
+					"height": 60
+				}
+			}
+		}
+	},
+	{
+		"id": "genrelist-selected",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "selected"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 30,
+					"y": 170
+				},
+				"name": {
+					"horizontal": "right",
+					"vertical": "top"
+				}
+			}
+		}
+	},
+	{
+		"id": "artistlist-selected",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "selected"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 30,
+					"y": 120
+				},
+				"name": {
+					"horizontal": "right",
+					"vertical": "bottom"
+				}
+			}
+		}
+	},
+	{
+		"id": "songlist",
+		"type": "ifml.ViewComponent",
+		"attributes": {
+			"name": "SongList",
+			"stereotype": "list",
+			"collection": "song",
+			"fields": ["artist",
+			"genre",
+			"title"],
+			"filters": ["artist",
+			"genre"]
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 90,
+					"y": 70
+				},
+				"size": {
+					"width": 150,
+					"height": 160
+				}
+			}
+		}
+	},
+	{
+		"id": "songlist-selected",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "selected"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 230,
+					"y": 220
+				},
+				"name": {
+					"horizontal": "right",
+					"vertical": "bottom"
+				}
+			}
+		}
+	},
+	{
+		"id": "artistlist-selected-to-songlist",
+		"type": "ifml.NavigationFlow",
+		"attributes": {
+			"bindings": [{
+				"output": "id",
+				"input": "artist"
+			}]
+		},
+		"metadata": {
+			
+		}
+	},
+	{
+		"id": "genrelist-selected-to-songlist",
+		"type": "ifml.NavigationFlow",
+		"attributes": {
+			"bindings": [{
+				"output": "id",
+				"input": "genre"
+			}]
+		},
+		"metadata": {
+			
+		}
+	}],
+	"relations": [{
+		"type": "hierarchy",
+		"parent": "songs",
+		"child": "artistlist"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "songs",
+		"child": "genrelist"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "genrelist",
+		"child": "genrelist-selected"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "artistlist",
+		"child": "artistlist-selected"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "songs",
+		"child": "songlist"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "songlist",
+		"child": "songlist-selected"
+	},
+	{
+		"type": "source",
+		"flow": "artistlist-selected-to-songlist",
+		"source": "artistlist-selected"
+	},
+	{
+		"type": "target",
+		"flow": "artistlist-selected-to-songlist",
+		"target": "songlist"
+	},
+	{
+		"type": "source",
+		"flow": "genrelist-selected-to-songlist",
+		"source": "genrelist-selected"
+	},
+	{
+		"type": "target",
+		"flow": "genrelist-selected-to-songlist",
+		"target": "songlist"
+	}]
+}
