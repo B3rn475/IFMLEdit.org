@@ -1,0 +1,33 @@
+<div class="card z-depth-1">
+    <div class="card-image">
+        <ul class="card-image collection with-header">
+            <li class="collection-header cyan">
+                <h5 class="white-text light"><%=name %></h5>
+            </li>
+        </ul>
+    </div>
+    <div class="card-content">
+        <div data-bind="if: item">
+<% switch (fields.length) {
+       case 0: -%>
+       <span class="title" data-bind="text: item().id" style="white-space: pre-wrap;"></span>
+<%     break;
+       case 1: -%>
+       <span class="title" data-bind="text: item()['<%= fields[0] %>']" style="white-space: pre-wrap;"></span>
+<%       break;
+       default:
+       for (var i = 0; i < fields.length; i += 1) { -%>
+        <strong><%= fields[i]%></strong>
+        <span data-bind="text: item()['<%= fields[i] %>']" style="white-space: pre-wrap;"></span><br>
+<%     }
+   } -%>
+        </div>
+    </div>
+<% if (events.length) { -%>
+    <div class="card-action">
+<%     for (var i = 0; i < events.length; i += 1) { -%>
+        <a class="waves-effect waves-light btn cyan" data-bind="click: trigger.bind($data, '<%= events[i].id %>')"><%= events[i].name %></a>
+<%     } -%>
+    </div>
+<% } -%>
+</div>

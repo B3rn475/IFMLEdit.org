@@ -1,0 +1,44 @@
+/*jslint node: true, nomen: true */
+"use strict";
+
+exports.createEvent = function () { // add "options" parameter if needed
+<% if (bindings) { -%>
+    return function (context, data) {
+<% } else { -%>
+    return function (context) {
+<% } -%>
+        if (!context.vms['<%= targetTop %>']) {
+            context.top.active('<%= targetTop %>');
+<% if (targetTop !== target) {
+       if (targetActives.length) { -%>
+            context.vms['<%= targetTop %>'].init({mask: '<%= targetActives[0].xor %>'});
+<%     } else { -%>
+            context.vms['<%= targetTop %>'].init({mask: '<%= target %>'});
+<%     }
+   } -%>
+        }
+<% for (var i = 0; i < targetActives.length; i += 1) { -%>
+        if (!context.vms['<%= targetActives[i].child %>']) {
+            context.vms['<%= targetActives[i].xor %>'].active('<%= targetActives[i].child %>');
+<%     if (targetActives[i].child !== target) {
+           if (targetActives.length > (i + 1)) { -%>
+            context.vms['<%= targetActives[i].child %>'].init({mask: '<%= targetActives[i + 1].xor %>'});
+<%         } else { -%>
+            context.vms['<%= targetActives[i].child %>'].init({mask: '<%= target %>'});
+<%         }
+       } -%>
+        }
+<% } -%>
+<% if (bindings) { -%>
+        data = data || {};
+        var packet = {
+<%     for (var i = 0; i < bindings.length; i += 1) { -%>
+            <%= i !== 0 ? ',' : '' %>'<%= bindings[i].input %>' : data['<%= bindings[i].output %>']
+<%     } -%>
+        };
+        context.vms['<%= target %>'].init({input: packet});
+<% } else { -%>
+        context.vms['<%= target %>'].init();
+<% } -%>
+    };
+};

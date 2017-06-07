@@ -1,0 +1,100 @@
+/*jslint node: true */
+"use strict";
+
+var Promise = require('bluebird');
+
+exports.createInitializer = function (options) {
+    function ViewModel(context, req) {
+        if (!(this instanceof ViewModel)) { return new ViewModel(context, req); }
+        this.context = context;
+        this.fields = {};
+<% if (incomings.length) { %>
+        if (req.query[this.id]) {
+            this.status = 'ready';
+        } else {
+            this.status = 'clear';
+        }
+<% } else { -%>
+        this.status = 'ready';
+<% } -%>
+<% for (var i = 0; i < fields.length; ++i) { -%>
+        this.fields['<%= fields[i] %>'] = req.query[this.id + '$f$<%= fields[i] %>'] || '';
+<% } -%>
+    };
+
+    ViewModel.prototype.id = '<%= id %>';
+
+    ViewModel.prototype.compute = function () {
+        if (this.computing) { return this.computing; }
+        var self = this;
+        function compute() {
+            self.status = 'computed';
+            self.computed = true;
+            return Promise.resolve();
+        }
+<% if (incomings.length || events.length) { -%>
+        if (this.status === 'clear') {
+            return this.computing = Promise.all([
+<%    for (var i = 0; i < incomings.length; ++i)  { -%>
+                <%= i !== 0 ? ',' : '' %>this.context.elements['<%= incomings[i].source %>'].compute()
+<%        var bindings = incomings[i].bindings;
+          if (bindings.length) { -%>
+                .then(function () {
+                    var result = self.context.elements['<%= incomings[i].source %>'].toObject();
+<%            for (var k = 0; k < bindings.length; ++k) {
+                 if (incomings[i].type === 'details') { -%>
+                    self.fields['<%= bindings[k].input %>'] = self.fields['<%= bindings[k].input %>'] || (result.item && result.item['<%= bindings[k].output %>']);
+<%               }
+                 if (incomings[i].type === 'list') { -%>
+                    self.fields['<%= bindings[k].input %>'] = self.fields['<%= bindings[k].input %>'] || (result.selected && result.selected['<%= bindings[k].output %>']);
+<%               }
+                 if (incomings[i].type === 'form') { -%>
+                    self.fields['<%= bindings[k].input %>'] = self.fields['<%= bindings[k].input %>'] || (result.fields && result.fields['<%= bindings[k].output %>']);
+<%               }
+              } -%>
+                })
+<%        }
+      }
+      for (var i = 0; i < events.length; ++i)  { -%>
+              <%= (i !== 0 || incomings.length) ? ',' : '' %>this.context.elements['<%= events[i].id %>'].compute()
+<%    } -%>
+            ])
+            .then(compute);
+        } else {
+<%     if (events.length) { -%>
+        return this.computing = Promise.all([
+<%         for (var i = 0; i < events.length; ++i)  { -%>
+          <%= (i !== 0) ? ',' : '' %>this.context.elements['<%= events[i].id %>'].compute()
+<%         } -%>
+        ])
+        .then(compute);
+<%     } else { -%>
+        return this.computing = compute();
+<%     } -%>
+        }
+<% } else { -%>
+        return this.computing = compute();
+<% } -%>
+    };
+
+    ViewModel.prototype.toObject = function () {
+        if (!this.computed) { return; }
+        return {fields: this.fields};
+    };
+
+    ViewModel.prototype.toQuery = function (event) {
+        var self = this,
+            query = {};
+        if (!event.broken[this.id]) {
+            Object.keys(this.fields).forEach(function (field) {
+                if (self.fields[field]) {
+                    query[self.id + '$f$' + field] = self.fields[field];
+                }
+            });
+            query[this.id] = '';
+        }
+        return query;
+    };
+
+    return ViewModel;
+};

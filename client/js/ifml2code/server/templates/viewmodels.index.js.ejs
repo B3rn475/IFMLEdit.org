@@ -1,0 +1,12 @@
+/*jslint node: true */
+"use strict";
+
+var express = require('express');
+
+exports.createInitializers = function (options) {
+    return {
+<% for(var i = 0; i < vms.length; ++i) { -%>
+        <%= i !== 0 ? ',' : '' %>'<%= vms[i].id %>': require('./<%= vms[i].id %>').createInitializer(options)
+<% } -%>
+    };
+};

@@ -1,0 +1,95 @@
+/*jslint node: true */
+"use strict";
+
+var Promise = require('bluebird'),
+    url = require('url'),
+    merge = require('merge');
+
+exports.createInitializer = function (options) {
+    function ViewModel(context, req) {
+        if (!(this instanceof ViewModel)) { return new ViewModel(context, req); }
+        this.context = context;
+    }
+
+    ViewModel.prototype.id = '<%= id %>';
+    ViewModel.prototype.targetChain = {
+<% for (var i = 0 ; i < targetActives.length; i++) { -%>
+       <%= i !== 0 ? ',' : '' %>'<%= targetActives[i].xor %>': '<%= targetActives[i].child %>'
+<% } -%>
+    };
+
+    ViewModel.prototype.broken = {
+<% for (var i = 0 ; i < broken.length; i++){ -%>
+       <%= i !== 0 ? ',' : '' %>'<%= broken[i] %>': true
+<% } -%>
+    };
+
+    ViewModel.prototype.compute = function () {
+        this.computed = true;
+        return Promise.resolve();
+    };
+
+    ViewModel.prototype.toObject = function () {
+        if (!this.computed) { return; }
+        var self = this,
+            pathname = './<%= path %>',
+            source = this.context.elements['<%= component %>'].toObject(),
+            items = source.items.map(function (item) {
+                return {
+                    query: {
+<% if(isSameTopLevel && broken.indexOf(component) === -1) { -%>
+                        '<%= component %>' : item.id
+<% } else { -%>
+                        '<%= component %>': undefined
+<% } -%>
+                    },
+<% if (outcoming) { -%>
+                    targetInputs: {
+<%     for (var i = 0 ; i < outcoming.bindings.length; i++){
+           if (outcoming.type === 'details') { -%>
+                        <%= i !== 0 ? ',' : '' %>'<%= outcoming.target %>': item['<%= outcoming.bindings[i].output %>']
+<%         }
+           if (outcoming.type === 'list') { -%>
+                        <%= i !== 0 ? ',' : '' %>'<%= outcoming.target %>$f$<%= outcoming.bindings[i].input %>': item['<%= outcoming.bindings[i].output %>']
+<%         }
+           if (outcoming.type === 'form') { -%>
+                        <%= i !== 0 ? ',' : '' %>'<%= outcoming.target %>$f$<%= outcoming.bindings[i].input %>': item['<%= outcoming.bindings[i].output %>']
+<%         }
+           if (outcoming.type === 'action') { -%>
+                        <%= i !== 0 ? ',' : '' %>'<%= outcoming.target %>$f$<%= outcoming.bindings[i].input %>': item['<%= outcoming.bindings[i].output %>']
+<%         }
+        } -%>
+                    }
+<% } -%>
+                };
+            }),
+<% if (isSameTopLevel) { -%>
+            basequery = merge(this.context.elements['<%= currentTopLevel %>'].toQuery(self), this.targetChain);
+<% } else { -%>
+            basequery = this.targetChain;
+<% } -%>
+        return items.map(function (item) {
+            var query = merge(basequery, item.query);
+<% if (targetsAction) { -%>
+            return {
+<%     if (outcoming) { -%>
+                hiddens: item.targetInputs,
+<%     } else { -%>
+                hiddens: {},
+<%     } -%>
+                action: url.format({pathname: pathname, query: query})
+            };
+<% } else { -%>
+            return {
+<%     if (outcoming) { -%>
+                href: url.format({pathname: pathname, query: merge(query, item.targetInputs)})
+<%     } else { -%>
+                href: url.format({pathname: pathname, query: query})
+<%     } -%>
+            };
+<% } -%>
+        });
+    };
+
+    return ViewModel;
+};

@@ -1,0 +1,63 @@
+#<%= id %>.container
+    h3 <%= name %>
+    table.table.table-hover.table-condensed
+        thead
+            tr
+                th #
+<% for (var i = 0; i < fields.length; ++i) { -%>
+                th <%= fields[i] %>
+<% } -%>
+<% if (events.length) { -%>
+                th actions
+<% } -%>
+        tbody
+            - var sid = vm['<%= id %>'].selected ? vm['<%= id %>'].selected.id : '';
+            each item, itemindex in vm['<%= id %>'].items
+                tr(class=item.id === sid ? 'info' : '')
+<% if (selected.targetsAction) { -%>
+                    - var action = vm['<%= selected.id %>'][itemindex].action
+                    - var hiddens = vm['<%= selected.id %>'][itemindex].hiddens
+<% } else { -%>
+                    - var href = vm['<%= selected.id %>'][itemindex].href
+<% } -%>
+                    th(scope='row')
+<% if (selected.targetsAction) { -%>
+                        form(action=action, method="POST")
+                            each value, name in hiddens
+                                input(type='hidden', name=name, value=value)
+                            button.btn-link= item.id
+<% } else { -%>
+                        a(href=href)= item.id
+<% }
+   for (var i = 0; i < fields.length; ++i) { -%>
+                    td
+
+<%     if (selected.targetsAction) { -%>
+                        form(action=action, method="POST")
+                            each value, name in hiddens
+                                input(type='hidden', name=name, value=value)
+                            button.btn-link= item['<%= fields[i] %>']
+<%     } else { -%>
+                        a(href=href)= item['<%= fields[i] %>']
+<%     }
+   }
+   if (events.length) { -%>
+                    td
+                        .dropdown
+                            button.btn.btn-default.dropdown-toggle(data-toggle='dropdown')
+                                span Actions
+                                span.caret
+                            ul.dropdown-menu
+<%    for (var i = 0; i < events.length; ++i) {
+          if (events[i].targetsAction) { -%>
+                                li
+                                    form(action=vm['<%= events[i].id %>'][itemindex].action, method="POST")
+                                        each value, name in vm['<%= events[i].id %>'][itemindex].hiddens
+                                            input(type='hidden', name=name, value=value)
+                                        button.col-xs-2.btn.btn-default <%= events[i].name %>
+<%        } else { -%>
+                                li
+                                    a(href=vm['<%= events[i].id %>'][itemindex].href) <%= events[i].name %>
+<%        }
+       }
+   } -%>

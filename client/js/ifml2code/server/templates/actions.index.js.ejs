@@ -1,0 +1,12 @@
+/*jslint node: true */
+"use strict";
+
+var express = require('express');
+
+exports.createActions = function (options) {
+    return {
+<% for(var i = 0; i < actions.length; ++i) { -%>
+        <%= i !== 0 ? ',' : '' %>'<%= actions[i].id %>': require('./<%= actions[i].id %>').createAction(options)
+<% } -%>
+    };
+};

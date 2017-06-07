@@ -1,0 +1,28 @@
+/*jslint node: true, nomen: true */
+"use strict";
+
+exports.createEvent = function () { // add "options" parameter if needed
+<% if (bindings) { -%>
+    return function (context, data) {
+        data = data || {};
+        var packet = {
+<%     for (var i = 0; i < bindings.length; i += 1) { -%>
+            <%= i !== 0 ? ',' : '' %>'<%= bindings[i].input %>' : data['<%= bindings[i].output %>']
+<%     } -%>
+        };
+        var promise = context.actions['<%= target %>']({filters: packet});
+<% } else { -%>
+    return function (context) {
+        var promise = context.actions['<%= target %>']();
+<% } -%>
+        context.runningActionsByContainer['<%= containerId %>'].push(promise);
+        promise.then(function (result) {
+            context.runningActionsByContainer['<%= containerId %>'].splice(
+                context.runningActionsByContainer['<%= containerId %>'].indexOf(promise), 1
+            );
+            if (result.event) {
+                context.events[result.event](context, result.data);
+            }
+        });
+    };
+};

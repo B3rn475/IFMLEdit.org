@@ -1,0 +1,7 @@
+<g class="pcn-element">
+    <g class="rotatable">
+        <rect class="pcn-transition-reference-rect" width="10" height="40" x="15" fill="black"/>
+        <rect class="pcn-transition-magnet-rect" width="10" height="40" x="15" fill="black" stroke="red" stroke-width="1" style='cursor: cell'/>
+    </g>
+    <text class="name" fill="black" font-family="monospace" font-size="11" style="pointer-events: none"/>
+</g>

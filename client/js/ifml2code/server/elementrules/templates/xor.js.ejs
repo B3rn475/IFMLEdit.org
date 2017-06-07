@@ -1,0 +1,95 @@
+/*jslint node: true */
+"use strict";
+
+var Promise = require('bluebird'),
+    url = require('url'),
+    merge = require('merge');
+
+exports.createInitializer = function (options) {
+    function ViewModel(context, req) {
+        if (!(this instanceof ViewModel)) { return new ViewModel(context, req); }
+        this.context = context;
+<% if (defaultChild) { -%>
+        this.active = req.query[this.id] || '<%= defaultChild %>';
+<% } else { -%>
+        this.active = req.query[this.id];
+<% } -%>
+    }
+
+    ViewModel.prototype.id = '<%= id %>';
+    ViewModel.prototype.landmarks = [
+<% for (var i = 0; i < landmarks.length; ++i) { -%>
+        <%= i !== 0 ? ',' : '' %>{id: '<%= landmarks[i].id %>', broken: {
+<%     for (var k = 0; k < landmarks[i].broken.length; ++k) { -%>
+            <%= k !== 0 ? ',' : '' %>'<%= landmarks[i].broken[k] %>': true
+<%     } -%>
+        }}
+<% } -%>
+    ];
+
+    ViewModel.prototype.compute = function () {
+        if (this.computing) { return this.computing; }
+        if (!this.active) {
+<% if (events.length) { %>
+            return this.computing = Promise.all([
+<%     for (var i = 0; i < events.length; ++i) { -%>
+                <%= (i !== 0 || children.length) ? ',' : '' %>this.context.elements['<%= events[i].id %>'].compute()
+<%     } -%>
+            ]).then(function () {
+                self.computed = true;
+            });
+<% } else { -%>
+            this.computed = true;
+            return this.computing = Promise.resolve();
+<% } -%>
+        }
+        var self = this;
+        return this.computing = this.context.elements[this.active].compute()
+<% if (events.length) { %>
+            .then(function () {
+                return Promise.all([
+<%     for (var i = 0; i < events.length; ++i) { -%>
+                    <%= (i !== 0 || children.length) ? ',' : '' %>this.context.elements['<%= events[i].id %>'].compute()
+<%     } -%>
+                ]);
+            })
+<% } -%>
+            .then(function () {
+                self.computed = true;
+            });
+    };
+
+    ViewModel.prototype.toObject = function () {
+        if (!this.computed) { return; }
+        var self = this,
+            obj = {active: this.active, landmarks: {}};
+        this.landmarks.forEach(function (child) {
+            var targetChain = {'<%= id %>': child.id},
+                query = merge(self.context.elements['<%= currentTopLevel %>'].toQuery({targetChain: targetChain, broken: child.broken}), targetChain);
+            obj.landmarks[child.id] = {
+                query: query,
+                href: url.format({pathname: './<%= path %>', query: query})
+            };
+        });
+        return obj;
+    };
+
+    ViewModel.prototype.toQuery = function (event) {
+        var query = {};
+        if (this.active) {
+            if (event.targetChain[this.id]) {
+                if (this.active === event.targetChain[this.id]) {
+                    query = this.context.elements[this.active].toQuery(event);
+                }
+            } else {
+                if (!event.broken[this.id]) {
+                    query[this.id] = this.active;
+                    query = merge(query, this.context.elements[this.active].toQuery(event));
+                }
+            }
+        }
+        return query;
+    };
+
+    return ViewModel;
+};

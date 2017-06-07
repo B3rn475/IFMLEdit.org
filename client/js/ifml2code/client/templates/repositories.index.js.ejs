@@ -1,0 +1,10 @@
+/*jslint node: true, nomen: true */
+"use strict";
+
+exports.createRepositories = function (options) {
+    var repositories = {}
+<% for(var i = 0; i < collections.length; ++i) { -%>
+    repositories['<%= collections[i] %>'] = require('./<%= collections[i] %>').createRepository(options);
+<% } -%>
+    return repositories;
+};

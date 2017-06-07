@@ -1,0 +1,313 @@
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+        base(href=base_path)
+        script(type='text/javascript').
+            var BASE_PATH = !{JSON.stringify(base_path)};
+        link(rel='stylesheet', type='text/css', href='./css/bootstrap.min.css')
+        link(rel='stylesheet', type='text/css', href='./css/joint.min.css')
+        link(rel='stylesheet', type='text/css', href='./css/almost-joint.min.css')
+        link(rel='stylesheet', type='text/css' href='./css/editor.min.css')
+        // Favicons
+        link(rel='icon', sizes='16x16 32x32 48x48 64x64', href='favicon.ico')
+        //if IE
+        link(rel='shortcut icon', href='favicon.ico')
+        // Optional: Android & iPhone
+        link(rel='apple-touch-icon-precomposed', href='favicon-152.png')
+        // Optional: IE10 Tile.
+        meta(name='msapplication-TileColor', content='#FFFFFF')
+        meta(name='msapplication-TileImage', content='favicon-144.png')
+        // Optional: ipads, androids, iphones, ...
+        link(rel='apple-touch-icon-precomposed', sizes='228x228', href='favicon-228.png')
+        link(rel='apple-touch-icon-precomposed', sizes='195x195', href='favicon-195.png')
+        link(rel='apple-touch-icon-precomposed', sizes='152x152', href='favicon-152.png')
+        link(rel='apple-touch-icon-precomposed', sizes='144x144', href='favicon-144.png')
+        link(rel='apple-touch-icon-precomposed', sizes='128x128', href='favicon-128.png')
+        link(rel='apple-touch-icon-precomposed', sizes='120x120', href='favicon-120.png')
+        link(rel='apple-touch-icon-precomposed', sizes='96x96', href='favicon-96.png')
+        link(rel='apple-touch-icon-precomposed', sizes='72x72', href='favicon-72.png')
+        link(rel='apple-touch-icon-precomposed', sizes='57x57', href='favicon-57.png')
+        link(rel='apple-touch-icon-precomposed', sizes='32x32', href='favicon-32.png')
+        link(rel='apple-touch-icon-precomposed', href='favicon-57.png')
+    body
+        div
+            .navbar.navbar-inverse.top
+                .container-fluid
+                    .navbar-header
+                        button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#main-menu', aria-expanded='false')
+                            span.sr-only Toggle navigation
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar
+                        a.navbar-brand(href='#')
+                            include favicon.svg
+                    #main-menu.collapse.navbar-collapse
+                        ul.nav.navbar-nav(role='tablist')
+                            li.active(role='presentation')
+                                a(role='tab', data-toggle='tab', aria-controls='ifml', href='#ifml') IFML
+                            li(role='presentation')
+                                a(role='tab', data-toggle='tab', aria-controls='pcn', href='#pcn') PCN
+                            li(role='presentation')
+                                a(role='tab', data-toggle='tab', aria-controls='web-server', href='#web-server') Web Server
+                            li(role='presentation')
+                                a(role='tab', data-toggle='tab', aria-controls='web-client', href='#web-client') Web Client
+                            li(role='presentation')
+                                a(role='tab', data-toggle='tab', aria-controls='mobile', href='#mobile') Mobile
+                            li(role='presentation')
+                                a(role='tab', data-toggle='tab', aria-controls='statistics', href='#statistics') Statistics
+            .tab-content
+                #ifml.tab-pane.editor.active(role='tabpanel')
+                    .sidebar
+                        ul.list-group
+                            a.list-group-item.model-load(href='#!') Load Model
+                            a.list-group-item.modal-example(href='#!') Load Example
+                            a.list-group-item.model-download(href='#!') Download Model
+                            a.list-group-item.png-download(href='#!') Download as PNG
+                    .board
+                    input(type='file', style='width:0; height: 0')
+                #pcn.tab-pane.editor(role='tabpanel')
+                    .sidebar
+                        ul.list-group
+                            a.list-group-item.model-generate(href='#!') Generate
+                            a.list-group-item.png-download(href='#!') Download as PNG
+                            label.list-group-item
+                                input#pcn-simulate(type='checkbox')
+                                span Simulate
+                    .board
+                #statistics.tab-pane.editor(role='tabpanel')
+                    .sidebar
+                        ul.list-group
+                            a.list-group-item.model-load(href='#!') Load Statistics
+                        div Element Statistics
+                        ul.list-group.statistics-color
+                        div Source Statistics
+                        ul.list-group.statistics-in
+                        div Target Statistics
+                        ul.list-group.statistics-out
+                    .board.not-interactive
+                    input(type='file', style='width:0; height: 0')
+                #web-server.tab-pane(role='tabpanel')
+                    .container
+                        .row
+                            .col-xs-12
+                                h3
+                                    a.btn.btn-primary.zip-try(href='#!') Try in the Browser
+                                    a.btn.btn-default.edit-db(href='#!')
+                                        span.glyphicon.glyphicon-th-list
+                                .panel.panel-default.panel-primary
+                                    .panel-heading
+                                        form
+                                            .input-group
+                                                a.ifbrowser-back.input-group-addon(href='#!')
+                                                    li.glyphicon.glyphicon-chevron-left
+                                                a.ifbrowser-forward.input-group-addon(href='#!')
+                                                    li.glyphicon.glyphicon-chevron-right
+                                                a.ifbrowser-repeat.input-group-addon(href='#!')
+                                                    li.glyphicon.glyphicon-repeat
+                                                span.ifbrowser-baseaddress.input-group-addon http://.../web/
+                                                input.ifbrowser-address.form-control(type='text')
+                                                a.ifbrowser-go.input-group-addon(href='#!')
+                                                    li.glyphicon.glyphicon-play
+                                    .panel-body.ifbrowser
+                        .row
+                            .col-xs-12
+                                h3 Or...
+                                    a.btn.btn-primary.zip-download(href='#!') Download the Source Files
+                                h3 Once downloaded...
+                                ol
+                                    li
+                                        | Install&nbsp;
+                                        strong Node.js®
+                                        | &nbsp;following the instructions on the&nbsp;
+                                        a(href='https://nodejs.org/en/download/') official website
+                                    li
+                                        | Unpack the
+                                        code webexample.zip
+                                        | file
+                                    li
+                                        | Open a terminal and navigate to the
+                                        code webexample
+                                        | folder:
+                                        pre
+                                            span.text-primary cd&nbsp;
+                                            span.text-success path_to_workspace/webexample
+                                    li
+                                        | Install all the dependencies running the command:
+                                        pre
+                                            span.text-primary npm&nbsp;
+                                            span.text-success install
+                                    li
+                                        | Start the local server:
+                                        pre
+                                            span.text-primary npm&nbsp;
+                                            span.text-success start
+                                        | To stop the local server press&nbsp;
+                                        kbd
+                                            kbd ctrl
+                                            | &nbsp;+&nbsp;
+                                            kbd c
+                                    li
+                                        | Open to the application by navigation to&nbsp;
+                                        a(href='http://localhost:3001') http://localhost:3001
+                                br
+                                br
+                                br
+                #web-client.tab-pane(role='tabpanel')
+                    .container
+                        .row
+                            .col-xs-12
+                                h3
+                                    a.btn.btn-primary.zip-try(href='#!') Try in the Browser
+                                    a.btn.btn-default.edit-db(href='#!')
+                                        span.glyphicon.glyphicon-th-list
+                                .panel.panel-default.panel-primary
+                                    .panel-heading &nbsp;
+                                    .panel-body.ifclient
+                        .row
+                            .col-xs-12
+                                h3 Or...
+                                    a.btn.btn-primary.zip-download(href='#!') Download the Source Files
+                                h3 Once downloaded...
+                                ol
+                                    li
+                                        | Install&nbsp;
+                                        strong Node.js®
+                                        | &nbsp;following the instructions on the&nbsp;
+                                        a(href='https://nodejs.org/en/download/') official website
+                                    li
+                                        | Unpack the
+                                        code clientexample.zip
+                                        | file
+                                    li
+                                        | Open a terminal and navigate to the
+                                        code clientexample
+                                        | folder:
+                                        pre
+                                            span.text-primary cd&nbsp;
+                                            span.text-success path_to_workspace/clientexample
+                                    li
+                                        | Install all the dependencies running the command:
+                                        pre
+                                            span.text-primary npm&nbsp;
+                                            span.text-success install
+                                    li
+                                        | Rebuild sources after a code change:
+                                        pre
+                                            span.text-primary npm&nbsp;
+                                            span.text-success run-script build
+                                    li
+                                        | Open to the application by opening:
+                                        code www/index.html
+                                br
+                                br
+                                br
+                #mobile.tab-pane(role='tabpanel')
+                    .container
+                        .row
+                            .col-xs-12.col-md-5
+                                h3
+                                    a.btn.btn-primary.zip-try(href='#!') Try in the Browser
+                                    a.btn.btn-default.edit-db(href='#!')
+                                        span.glyphicon.glyphicon-th-list
+                                .col-xs-10.col-xs-offset-1.col-sm-8.col-sm-offset-2.col-md-12.col-md-offset-0
+                                    .panel.panel-default.panel-primary.ifmobile
+                                        .panel-heading
+                                            .col-xs-4.col-xs-offset-4.ifmobile-speaker
+                                        .panel-body.bg-primary
+                                            .ifmobile-wrapper
+                                            .btn-group.btn-group-justified(role="group")
+                                                a.btn.btn-default(href='#!')
+                                                    li.glyphicon.glyphicon-chevron-left
+                                                a.btn.btn-default
+                                                    li.glyphicon.glyphicon-home
+                                                a.btn.btn-default
+                                                    li.glyphicon.glyphicon-th-large
+                            .col-xs-12.col-md-7
+                                h3 Or...
+                                    a.btn.btn-primary.zip-download(href='#!') Download the Source Files
+                                h3 Once downloaded...
+                                ol
+                                    li
+                                        | Install&nbsp;
+                                        strong Node.js®
+                                        | &nbsp;following the instructions on the&nbsp;
+                                        a(href='https://nodejs.org/en/download/') official website
+                                    li
+                                        | Install&nbsp;
+                                        strong Cordova®
+                                        pre
+                                            span.text-primary npm&nbsp;
+                                            span.text-success install -g cordova
+                                        | For the platform specific dependencies follow the instructions on the&nbsp;
+                                        a(href='https://cordova.apache.org/docs/en/latest/guide/cli/index.html#install-pre-requisites-for-building') official website
+                                    li
+                                        | Unpack the
+                                        code mobileexample.zip
+                                        | file
+                                    li
+                                        | Open a terminal and navigate to the
+                                        code mobileexample
+                                        | folder:
+                                        pre
+                                            span.text-primary cd&nbsp;
+                                            span.text-success path_to_workspace/mobileexample
+                                    li
+                                        | Install all the dependencies running the command:
+                                        pre
+                                            span.text-primary npm&nbsp;
+                                            span.text-success install
+                                    li
+                                        | Rebuild sources after a code change:
+                                        pre
+                                            span.text-primary npm&nbsp;
+                                            span.text-success run-script build
+                                    li
+                                        | Add the target platforms
+                                        pre
+                                            span.text-primary cordova&nbsp;
+                                            span.text-success platform add android
+                                            br
+                                            span.text-primary cordova&nbsp;
+                                            span.text-success platform add ios
+                                            br
+                                            span.text-primary cordova&nbsp;
+                                            span.text-success platform add ...
+                                    li
+                                        | Build the application
+                                        pre
+                                            span.text-primary cordova&nbsp;
+                                            span.text-success build android
+                                            br
+                                            span.text-primary cordova&nbsp;
+                                            span.text-success build ios
+                                            br
+                                            span.text-primary cordova&nbsp;
+                                            span.text-success build ...
+                                    li
+                                        | Run the application
+                                        pre
+                                            span.text-primary cordova&nbsp;
+                                            span.text-success run android
+                                            br
+                                            span.text-primary cordova&nbsp;
+                                            span.text-success run ios
+                                            br
+                                            span.text-primary cordova&nbsp;
+                                            span.text-success run ...
+                                br
+                                br
+                                br
+        script(type='text/javascript', src='./js/lodash.min.js')
+        script(type='text/javascript', src='./js/jquery.min.js')
+        script(type='text/javascript', src='./js/jquery.mousewheel.min.js')
+        script(type='text/javascript', src='./js/backbone.min.js')
+        script(type='text/javascript', src='./js/knockout.min.js')
+        script(type='text/javascript', src='./js/joint.min.js')
+        script(type='text/javascript', src='./js/FileSaver.min.js')
+        script(type='text/javascript', src='./js/bootstrap.min.js')
+        script(type='text/javascript', src='./js/bootstrap-notify.min.js')
+        script(type='text/javascript', src='./js/almost.min.js')
+        script(type='text/javascript', src='./js/almost-joint.min.js')
+        script(type='text/javascript', src='./js/index.js')

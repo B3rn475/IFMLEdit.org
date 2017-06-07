@@ -1,0 +1,129 @@
+/*jslint node: true */
+"use strict";
+
+var Promise = require('bluebird');
+
+exports.createInitializer = function (options) {
+    var repository = options.repositories['<%= collection %>'];
+
+    function ViewModel(context, req) {
+        if (!(this instanceof ViewModel)) { return new ViewModel(context, req); }
+        this.context = context;
+        this.filters = {};
+<% if (incomings.length) { %>
+        if (req.query[this.id]) {
+            this.selected = req.query[this.id];
+            this.status = 'ready';
+        } else {
+            this.status = 'clear';
+        }
+<% } else { -%>
+        if (req.query[this.id]) {
+            this.selected = req.query[this.id];
+        }
+        this.status = 'ready';
+<% } -%>
+<% for (var i = 0; i < filters.length; ++i) { -%>
+        if (req.query[this.id + '$f$<%= filters[i] %>']) {
+            this.filters['<%= filters[i] %>'] = req.query[this.id + '$f$<%= filters[i] %>'];
+        }
+<% } -%>
+    };
+
+    ViewModel.prototype.id = '<%= id %>';
+    ViewModel.prototype.fields = {
+        id: 1
+<% for (var i = 0; i < fields.length; ++i) { -%>
+        ,'<%= fields[i]%>': 1
+<% } -%>
+    };
+
+    ViewModel.prototype.compute = function () {
+        if (this.computing) { return this.computing; }
+        var self = this;
+        function compute() {
+            return repository.find(self.filters, self.fields)
+                .then(function (items) {
+                    self.items = items;
+                    var id = self.selected;
+                    self.selected = undefined;
+                    if (id) {
+                        items.forEach(function (item) {
+                            if (item.id === id) {
+                                self.selected = item;
+                            }
+                        });
+                    }
+                    if (!self.selected && items.length) {
+                        self.selected = items[0];
+                    }
+                    self.status = 'computed';
+                    self.computed = true;
+                });
+        }
+<% if (incomings.length || events.length) { -%>
+        if (this.status === 'clear') {
+            return this.computing = Promise.all([
+<%    for (var i = 0; i < incomings.length; ++i)  { -%>
+                <%= i !== 0 ? ',' : '' %>this.context.elements['<%= incomings[i].source %>'].compute()
+<%        var bindings = incomings[i].bindings;
+          if (bindings.length) { -%>
+                .then(function () {
+                    var result = self.context.elements['<%= incomings[i].source %>'].toObject();
+<%            for (var k = 0; k < bindings.length; ++k) {
+                 if (incomings[i].type === 'details') { -%>
+                    self.filters['<%= bindings[k].input %>'] = self.filters['<%= bindings[k].input %>'] || (result.item && result.item['<%= bindings[k].output %>']);
+<%               }
+                 if (incomings[i].type === 'list') { -%>
+                    self.filters['<%= bindings[k].input %>'] = self.filters['<%= bindings[k].input %>'] || (result.selected && result.selected['<%= bindings[k].output %>']);
+<%               }
+                 if (incomings[i].type === 'form') { -%>
+                    self.filters['<%= bindings[k].input %>'] = self.filters['<%= bindings[k].input %>'] || (result.fields && result.fields['<%= bindings[k].output %>']);
+<%               }
+              } -%>
+                })
+<%        }
+      }
+      for (var i = 0; i < events.length; ++i)  { -%>
+              <%= (i !== 0 || incomings.length) ? ',' : '' %>this.context.elements['<%= events[i].id %>'].compute()
+<%    } -%>
+            ])
+            .then(compute);
+        } else {
+<%     if (events.length) { -%>
+        return this.computing = Promise.all([
+<%         for (var i = 0; i < events.length; ++i)  { -%>
+          <%= (i !== 0) ? ',' : '' %>this.context.elements['<%= events[i].id %>'].compute()
+<%         } -%>
+        ])
+        .then(compute);
+<%     } else { -%>
+        return this.computing = compute();
+<%     } -%>
+        }
+<% } else { -%>
+        return this.computing = compute();
+<% } -%>
+    };
+
+    ViewModel.prototype.toObject = function () {
+        if (!this.computed) { return; }
+        return {items: this.items, selected: this.selected};
+    };
+
+    ViewModel.prototype.toQuery = function (event) {
+        var self = this,
+            query = {};
+        if (!event.broken[this.id]) {
+            Object.keys(this.filters).forEach(function (filter) {
+                if (self.filters[filter]) {
+                    query[self.id + '$f$' + filter] = self.filters[filter];
+                }
+            });
+            query[this.id] = this.selected ? this.selected.id : '';
+        }
+        return query;
+    };
+
+    return ViewModel;
+};

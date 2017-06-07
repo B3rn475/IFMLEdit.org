@@ -1,0 +1,9 @@
+<g class="pcn-element">
+    <g class="scalable">
+        <rect class="pcn-placechart-reference-rect" width="60" height="60" fill="transparent"/>
+    </g>
+    <rect class="pcn-placechart-background-rect" fill="white" stroke="black" stroke-width="0.5" rx="20" ry="20"/>
+    <rect class="pcn-placechart-magnet-rect" fill="white" stroke="red" stroke-width="0.5" rx="20" ry="20" style='cursor: cell'/>
+    <text class="tokens" fill="black" font-family="monospace" font-size="14"/>
+    <text class="name" fill="black" font-family="monospace" font-size="11" style="pointer-events: none"/>
+</g>

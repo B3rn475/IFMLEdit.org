@@ -1,0 +1,16 @@
+#<%= id %>
+<% for (var i = 0; i < children.length; ++i) { -%>
+    include ./<%= children[i] %>.jade
+<% } -%>
+    .container
+        .row
+<% for (var i = 0; i < events.length; ++i) {
+      if (events[i].targetsAction) { -%>
+            form(action=vm['<%= events[i].id %>'].action, method="POST")
+                each value, name in vm['<%= events[i].id %>'].hiddens
+                    input(type='hidden', name=name, value=value)
+                button.col-xs-2.btn.btn-default <%= events[i].name %>
+<%    } else { -%>
+            a.col-xs-2.btn.btn-default(href=vm['<%= events[i].id %>'].href) <%= events[i].name %>
+<%    }
+   } -%>

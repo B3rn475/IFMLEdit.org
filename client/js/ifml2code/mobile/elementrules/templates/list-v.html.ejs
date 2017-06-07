@@ -1,0 +1,30 @@
+<ul class="collection with-header z-depth-1">
+    <li class="collection-header cyan"><h5 class="white-text light"><%=name %></h5></li>
+    <!-- ko foreach: items -->
+<% if (showSelection) { -%>
+    <li class="collection-item lighten-2" data-bind="click: $parent.select, css: {'active cyan': $parent.selected() === id}">
+<% } else { -%>
+    <li class="collection-item" data-bind="click: $parent.select">
+<% } -%>
+<% switch (fields.length) {
+       case 0: -%>
+       <span class="title" data-bind="text: id" style="white-space: pre-wrap;"></span>
+<%     break;
+       case 1: -%>
+       <span class="title" data-bind="text: $data['<%= fields[0] %>']" style="white-space: pre-wrap;"></span>
+<%       break;
+       default:
+       for (var i = 0; i < fields.length; i += 1) { -%>
+        <strong><%= fields[i]%></strong>
+        <span data-bind="text: $data['<%= fields[i] %>']" style="white-space: pre-wrap;"></span><br>
+<%     }
+   }
+   if (events.length) { -%>
+        <br>
+<%     for (var i = 0; i < events.length; i += 1) { -%>
+        <a class="waves-effect waves-light btn cyan" data-bind="click: $parent.trigger.bind($data, '<%= events[i].id %>'), clickBubble: false"><%= events[i].name %></a>
+<%     } -%>
+<% } -%>
+    </li>
+    <!-- /ko -->
+</ul>

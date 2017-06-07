@@ -1,0 +1,58 @@
+#<%= id %>.container
+    h3 <%= name %>
+    form(id='<%= id %>')
+        - var fields = vm['<%= id %>'].fields
+<% for (var i = 0; i < fields.length; ++i) { -%>
+            .form-group
+                label <%= fields[i] %>
+                input(type='text', name='<%= id %>$f$<%= fields[i] %>', data-name='<%= id %>$f$<%= fields[i] %>', value=fields['<%= fields[i]%>'])
+<% } -%>
+        .row
+<% for (var i = 0; i < events.length; ++i) { -%>
+        button#<%= events[i].id %>.col-xs-2.btn.btn-default(data-action=vm['<%= events[i].id %>'].href, data-method= '<%= events[i].targetsAction ? 'POST' : 'GET' %>') <%= events[i].name %>
+<% } -%>
+    script.
+        (function () {
+            var form = $('#<%= id %> > form'),
+                bindings = {
+<% for (var i = 0; i < events.length; ++i) {
+       var event = events[i]; -%>
+                    <%= i !== 0 ? ',' : '' %>'<%= event.id %>': {
+<%     var bindings = event.bindings;
+       for (var k = 0; k < bindings.length; ++k) {
+           if (event.type === 'details') { -%>
+                        <%= k !== 0 ? ',' : '' %>'<%= id %>$f$<%= bindings[k].output %>': '<%= event.target %>'
+<%         }
+           if (event.type === 'list') { -%>
+                        <%= k !== 0 ? ',' : '' %>'<%= id %>$f$<%= bindings[k].output %>': '<%= event.target %>$f$<%= bindings[k].input %>'
+<%         }
+           if (event.type === 'form') { -%>
+                        <%= k !== 0 ? ',' : '' %>'<%= id %>$f$<%= bindings[k].output %>': '<%= event.target %>$f$<%= bindings[k].input %>'
+<%         }
+           if (event.type === 'action') { -%>
+                        <%= k !== 0 ? ',' : '' %>'<%= id %>$f$<%= bindings[k].output %>': '<%= event.target %>$f$<%= bindings[k].input %>'
+<%         }
+       } -%>
+                    }
+<% } -%>
+                };
+            function toURL(href) {
+                var a = document.createElement('a');
+                a.href = href;
+                return new URL(a.href);
+            }
+            $('#<%= id %> > form > button[data-action]').click(function () {
+                var action = toURL($(this).data('action')),
+                    method = $(this).data('method'),
+                    mapping = bindings[this.id];
+                $('#<%= id %> input').each(function () {
+                    var name = $(this).data('name');
+                    if (action.searchParams.has(name)) {
+                        action.searchParams.set(name, input.value);
+                    }
+                    this.name = mapping[name] || '';
+                });
+                form.attr('action', action.href);
+                form.attr('method', method);
+            });
+        }());

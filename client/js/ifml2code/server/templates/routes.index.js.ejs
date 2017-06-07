@@ -1,0 +1,12 @@
+/*jslint node: true */
+"use strict";
+
+var express = require('express');
+
+exports.createRouter = function (options) {
+    var router = express.Router();
+<% for(var i = 0; i < routes.length; ++i) { -%>
+    router.use('/<%= routes[i].path %>', require('./<%= routes[i].id %>').createRouter(options));
+<% } -%>
+    return router;
+};

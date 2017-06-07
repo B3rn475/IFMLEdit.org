@@ -1,4 +1,6 @@
-# webratio-web
+# IFMLEdit.org
+
+A simple IFML Web Editor
 
 ## Installation
 
@@ -10,4 +12,16 @@ npm install
 __To just regenerate static assets__
 ```bash
 npm run-script build
+```
+
+## Development
+
+__To start server__
+```bash
+npm start
+```
+
+__To stop server__
+```bash
+npm stop
 ```

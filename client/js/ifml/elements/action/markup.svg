@@ -1,0 +1,15 @@
+<g class="ifml-element">
+    <g class="scalable">
+        <rect class="ifml-action-reference-rect" width="1" height="1" fill="transparent"/>
+    </g>
+    <rect class="ifml-action-background ifml-action-background-rect" fill="lightgray" stroke="black" stroke-width="0.5"/>
+    <svg class="ifml-action-background-arrow-left" height="50" width="10" viewBox="0 0 10 50" preserveAspectRatio="none">
+        <polyline class="ifml-action-background" points="10,0 7.5,0 0.5,25 7.5,50 10,50" fill="lightgray" stroke="black" stroke-width="0.5"/>
+    </svg>
+    <g class="ifml-action-background-arrow-right-wrapper">
+        <svg class="ifml-action-background ifml-action-background-arrow-right" height="50" width="10" viewBox="0 0 10 50" preserveAspectRatio="none">
+            <polyline class="ifml-action-background" points="0,0 2.5,0 9.5,25 2.5,50 0,50" fill="lightgray" stroke="black" stroke-width="0.5"/>
+        </svg>
+    </g>
+    <text class="name" fill="black" font-family="monospace" font-size="11" style="pointer-events: none"/>
+</g>

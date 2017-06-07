@@ -1,0 +1,21 @@
+<ul class="side-nav" id="landmarks">
+<% for (var i = 0; i < landmarks.length; i += 1) { -%>
+    <li data-bind="click: landmark.bind($data,'<%= landmarks[i].id %>'), css: {active: active() === '<%= landmarks[i].id %>'}"><a><%= landmarks[i].name %></a></li>
+<% } -%>
+</ul>
+<div class="navbar-fixed">
+    <nav class="cyan darken-1">
+        <div class="nav-wrapper">
+            <a href="#" data-activates="landmarks" class="button-collapse"><i class="material-icons tiny">menu</i></a>
+        </div>
+    </nav>
+</div>
+<div class="container">
+    <div class="row">
+<% for (var i = 0; i < children.length; i += 1) { -%>
+        <span data-bind="if: active() === '<%= children[i] %>'">
+            <c-<%= children[i] %> params="context: context" class="container"></c-<%= children[i] %>>
+        </span>
+<% } -%>
+    </div>
+</div>

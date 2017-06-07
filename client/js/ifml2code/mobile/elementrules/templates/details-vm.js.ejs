@@ -1,0 +1,151 @@
+/*jslint node: true, nomen: true */
+"use strict";
+
+var ko = require('knockout'),
+    Promise = require('bluebird');
+
+function ViewModel(params) {
+    var self = this;
+    self._repository = params.context.repositories['<%= collection %>'];
+    self.context = params.context;
+    self.status = ko.observable('');
+    self.item = ko.observable(undefined);
+
+    self.trigger = function (id) {
+        self.context.events[id](self.context, self.item());
+    };
+}
+
+ViewModel.prototype.id = '<%= id %>';
+
+ViewModel.prototype.fields = {
+    id: 1
+<% for (var i = 0; i < fields.length; i += 1) { -%>
+    ,'<%= fields[i]%>': 1
+<% } -%>
+};
+
+ViewModel.prototype.waitForStatusChange = function () {
+<% if (incomings.length) { -%>
+    return this._propagating ||
+           this._computing ||
+<% } else { -%>
+    return this._computing ||
+<% } -%>
+           this._initializing ||
+           Promise.resolve();
+};
+
+
+ViewModel.prototype._compute = function() {
+<% if (incomings.length) { -%>
+    if (this._propagating) {
+        this._propagating.cancel();
+    }
+<% } -%>
+    if (this._computing) {
+        this._computing.cancel();
+    }
+    var self = this;
+    this._computing = this._repository.findById(this.filters.id, this.fields).then(function (item) {
+        self.output = item;
+        self.item(item);
+        self.status('computed');
+        self._computing = undefined;
+    });
+};
+
+<% if (incomings.length) { -%>
+ViewModel.prototype._allComputed = function() {
+<%     for (var i = 0; i < incomings.length; i += 1) { -%>
+    if (!this.context.vms['<%= incomings[i].source %>'] || this.context.vms['<%= incomings[i].source %>'].status() !== 'computed') {
+        return false;
+    }
+<%     } -%>
+    return true;
+};
+
+ViewModel.prototype._firstNotReady = function () {
+<%     for (var i = 0; i < incomings.length; i += 1) { -%>
+    if (!this.context.vms['<%= incomings[i].source %>']) {
+        return Promise.reject();
+    }
+    if (this.context.vms['<%= incomings[i].source %>'].status() !== 'computed') {
+        return this.context.vms['<%= incomings[i].source %>'].waitForStatusChange();
+        }
+<%     } -%>
+    return Promise.resolve();
+};
+
+ViewModel.prototype._waitForDependencies = function () {
+    if (this._allComputed()) {
+        return Promise.resolve();
+    } else {
+        var self = this;
+        return this._firstNotReady().then(function () {
+            return self._waitForDependencies();
+        });
+    }
+};
+
+ViewModel.prototype._propagate = function () {
+    if (this._propagating) {
+        this._propagating.cancel();
+    }
+    if (this._computing) {
+        this._computing.cancel();
+    }
+    var self = this;
+    this._propagating = this._waitForDependencies().then(function () {
+<%     for (var i = 0; i < incomings.length; i += 1) {
+           var bindings = incomings[i].bindings;
+           for (var k = 0; k < bindings.length; k += 1) { -%>
+        self.filters['<%= bindings[k].input %>'] = self.filters['<%= bindings[k].input %>'] || (
+            self.context.vms['<%= incomings[i].source %>'].output &&
+            self.context.vms['<%= incomings[i].source %>'].output['<%= bindings[k].output %>']);
+<%         }
+       } -%>
+        self.status('ready');
+        self._propagating = undefined;
+        self._compute();
+    });
+};
+<% } -%>
+
+ViewModel.prototype.init = function (options) {
+    options = options || {};
+    this.output = undefined;
+    this.filters = options.input || {};
+<% if (incomings.length) { -%>
+    this.status('clear');
+<% } else { -%>
+    this.status('ready');
+<% } -%>
+    var self = this;
+    this._initializing = new Promise(function (resolve) {
+        setTimeout(function () {
+<% if (incomings.length) { -%>
+            self._propagate();
+<% } else { -%>
+            self._compute();
+<% } -%>
+            resolve();
+            self._initializing = undefined;
+        }, 1);
+    });
+};
+
+exports.register = function () {
+    ko.components.register('c-<%= id %>', {
+        viewModel: {
+            createViewModel: function (params, componentInfo) {
+                var vm = new ViewModel(params);
+                params.context.vms[vm.id] = vm;
+                ko.utils.domNodeDisposal.addDisposeCallback(componentInfo.element, function () { delete params.context.vms[vm.id]; });
+                return vm;
+            }
+        },
+        template: require('./index.html'),
+        synchronous: true
+    });
+};

@@ -1,0 +1,26 @@
+doctype html
+html
+    head
+        base(href=(BASE_PATH || '/'))
+        block title
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+        link(href='./css/bootstrap.min.css', rel='stylesheet')
+        script(src='./js/jquery.min.js')
+    body
+        nav.navbar.navbar-default
+            .container
+                .navbar-header
+                    button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#landmark-menu", aria-expanded="false")
+                        span.sr-only Toggle navigation
+                        span.icon-bar
+                        span.icon-bar
+                        span.icon-bar
+                #landmark-menu.collapse.navbar-collapse
+                    ul.nav.navbar-nav
+<% for (var i = 0; i < landmarks.length; ++i) { -%>
+                        li
+                            a(href='./<%= landmarks[i].href  %>') <%= landmarks[i].name %>
+<% } -%>
+        block content
+        script(src='./js/bootstrap.min.js')

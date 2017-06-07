@@ -1,0 +1,11 @@
+/*jslint node: true, nomen: true */
+"use strict";
+
+var ko = require('knockout');
+
+exports.register = function () {
+    require('./main-application').register();
+<% for(var i = 0; i < controls.length; i += 1) { -%>
+    require('./c-<%= controls[i].id %>').register();
+<% } -%>
+};

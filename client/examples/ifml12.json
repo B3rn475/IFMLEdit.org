@@ -1,0 +1,309 @@
+{
+	"elements": [{
+		"id": "mails",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Mails",
+			"default": true,
+			"landmark": false,
+			"xor": false
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -130,
+					"y": 60
+				},
+				"size": {
+					"width": 430,
+					"height": 310
+				}
+			}
+		}
+	},
+	{
+		"id": "maillist",
+		"type": "ifml.ViewComponent",
+		"attributes": {
+			"name": "MailList",
+			"stereotype": "list",
+			"collection": "mail",
+			"fields": ["subject"],
+			"filters": []
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -120,
+					"y": 120
+				},
+				"size": {
+					"width": 150,
+					"height": 200
+				}
+			}
+		}
+	},
+	{
+		"id": "mail",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Mail",
+			"default": false,
+			"landmark": false,
+			"xor": true
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 60,
+					"y": 90
+				},
+				"size": {
+					"width": 230,
+					"height": 270
+				}
+			}
+		}
+	},
+	{
+		"id": "maillist-selected",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "selected"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 20,
+					"y": 310
+				},
+				"name": {
+					"horizontal": "right",
+					"vertical": "bottom"
+				}
+			}
+		}
+	},
+	{
+		"id": "content",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Content",
+			"default": true,
+			"landmark": true,
+			"xor": false
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 70,
+					"y": 120
+				},
+				"size": {
+					"width": 210,
+					"height": 100
+				}
+			}
+		}
+	},
+	{
+		"id": "attachments",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Attachments",
+			"default": false,
+			"landmark": true,
+			"xor": false
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 70,
+					"y": 230
+				},
+				"size": {
+					"width": 210,
+					"height": 120
+				}
+			}
+		}
+	},
+	{
+		"id": "mailcontent",
+		"type": "ifml.ViewComponent",
+		"attributes": {
+			"name": "MailContent",
+			"stereotype": "details",
+			"collection": "mail",
+			"fields": ["subject",
+			"body"]
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 90,
+					"y": 150
+				},
+				"size": {
+					"width": 170,
+					"height": 60
+				}
+			}
+		}
+	},
+	{
+		"id": "attachlist",
+		"type": "ifml.ViewComponent",
+		"attributes": {
+			"name": "AttachList",
+			"stereotype": "list",
+			"collection": "attachment",
+			"fields": ["name"],
+			"filters": ["mail"]
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 90,
+					"y": 260
+				},
+				"size": {
+					"width": 170,
+					"height": 60
+				}
+			}
+		}
+	},
+	{
+		"id": "attachlist-selected",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "selected"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": 250,
+					"y": 310
+				},
+				"name": {
+					"horizontal": "right",
+					"vertical": "bottom"
+				}
+			}
+		}
+	},
+	{
+		"id": "mailcontent-to-attachlist",
+		"type": "ifml.DataFlow",
+		"attributes": {
+			"bindings": [{
+				"output": "id",
+				"input": "mail"
+			}]
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	},
+	{
+		"id": "maillist-to-mailcontent",
+		"type": "ifml.DataFlow",
+		"attributes": {
+			"bindings": [{
+				"output": "id",
+				"input": "id"
+			}]
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	},
+	{
+		"id": "maillist-selected-to-mail",
+		"type": "ifml.NavigationFlow",
+		"attributes": {
+			"bindings": []
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	}],
+	"relations": [{
+		"type": "hierarchy",
+		"parent": "mails",
+		"child": "mail"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "mails",
+		"child": "maillist"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "maillist",
+		"child": "maillist-selected"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "mail",
+		"child": "content"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "mail",
+		"child": "attachments"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "content",
+		"child": "mailcontent"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "attachments",
+		"child": "attachlist"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "attachlist",
+		"child": "attachlist-selected"
+	},
+	{
+		"type": "source",
+		"flow": "mailcontent-to-attachlist",
+		"source": "maillist"
+	},
+	{
+		"type": "target",
+		"flow": "mailcontent-to-attachlist",
+		"target": "attachlist"
+	},
+	{
+		"type": "source",
+		"flow": "maillist-to-mailcontent",
+		"source": "maillist"
+	},
+	{
+		"type": "target",
+		"flow": "maillist-to-mailcontent",
+		"target": "mailcontent"
+	},
+	{
+		"type": "source",
+		"flow": "maillist-selected-to-mail",
+		"source": "maillist-selected"
+	},
+	{
+		"type": "target",
+		"flow": "maillist-selected-to-mail",
+		"target": "mail"
+	}]
+}

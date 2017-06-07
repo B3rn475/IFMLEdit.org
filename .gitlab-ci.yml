@@ -1,0 +1,11 @@
+image: node:latest
+
+pages:
+  stage: deploy
+  script:
+  - npm install --unsafe-perm
+  artifacts:
+    paths:
+    - public
+  only:
+  - master

@@ -1,0 +1,94 @@
+<div class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit DB</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" data-bind="foreach: collections">
+                    <li data-bind="css: { active: $data === $parent.current() }">
+                        <a href="#" data-bind="click: $parent.setCurrent">
+                            <span data-bind="text: name" />
+                        </a>
+                    </li>
+                </ul>
+                <div class="db-table" data-bind="with: current">
+                    <button class="btn btn-primary col-xs-3" data-bind="click: load">
+                        <span data-bind="ifnot: loaded">load</span>
+                        <span data-bind="if: loaded">reset</span>
+                    </button>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <!-- ko foreach: fields -->
+                                <th data-bind="text: $data"></th>
+                                <!-- /ko -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- ko foreach: {data: documents, as: 'document'} -->
+                            <tr>
+                                <td data-bind="if: $parent.documents().length > 1">
+                                    <button class="btn btn-danger" data-bind="click: $parent.remove">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </td>
+                                <!-- ko foreach: {data: $parent.fields, as: 'field'} -->
+                                <td data-bind="with: document[field]">
+                                    <span data-bind="ifnot: multiline">
+                                        <div class="input-group">
+                                          <input type="text" class="form-control" data-bind="value: value">
+                                          <span class="input-group-btn">
+                                              <button class="btn btn-default" data-bind="click: expand">
+                                                  <span class="glyphicon glyphicon-resize-vertical"></span>
+                                              </button>
+                                          </span>
+                                        </div>
+                                    </span>
+                                    <span data-bind="if: multiline">
+                                        <textarea class="form-control" rows="3" data-bind="value: value"></textarea>
+                                    </span>
+                                </td>
+                                <!-- /ko -->
+                            </tr>
+                            <!-- /ko -->
+                            <tr data-bind="ifnot: loaded">
+                                <td data-bind="attr: {colspan: fields().length + 1}">Collection not loaded.</td>
+                            </tr>
+                            <tr data-bind="if: loaded">
+                                <td data-bind="attr: {colspan: fields().length + 1}">
+                                    <button class="btn btn-success" data-bind="click: add">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                    <button class="btn btn-default" data-bind="click: download">
+                                        <span class="glyphicon glyphicon-save"></span>
+                                    </button>
+                                    <label class="btn btn-default btn-file">
+                                        <span class="glyphicon glyphicon-open"></span>
+                                        <input type="file" data-bind="event: {change: function() { upload($element.files[0]); $element.value = ''; }}" style="display: none;">
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group dropup">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: save">Save</button>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" data-dismiss="modal" data-bind="click: saveAndReload">Save &amp; Reload</a></li>
+                        <li><a href="#" data-dismiss="modal" data-bind="click: saveAndHotReload">Save &amp; Hot-Reload</a></li>
+                    </ul>
+                </div>
+                <button class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

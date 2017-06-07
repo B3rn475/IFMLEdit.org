@@ -1,0 +1,10 @@
+extends ../index.jade
+
+block title
+    title <%= name %>
+
+block content
+    .page-header
+        .container
+            h1 <%= name %>
+    include ./<%= id %>.jade

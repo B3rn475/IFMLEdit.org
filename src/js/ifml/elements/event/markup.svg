@@ -1,5 +1,0 @@
-<g class="marker">
-    <circle class="ifml-event-background" fill="white" stroke="black" stroke-width="0.5" cx="10" cy="10" r="10" />
-    <circle class="ifml-event-magnet-rect" fill="white" stroke="red" stroke-width="1" cx="10" cy="10" r="10" style='cursor: cell'/>
-    <text fill="black" font-family="monospace" font-size="11" style="pointer-events: none"/>
-</g>

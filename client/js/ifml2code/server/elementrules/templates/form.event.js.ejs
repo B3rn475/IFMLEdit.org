@@ -1,0 +1,72 @@
+/*jslint node: true */
+"use strict";
+
+var Promise = require('bluebird'),
+    url = require('url'),
+    merge = require('merge');
+
+exports.createInitializer = function (options) {
+    function ViewModel(context, req) {
+        if (!(this instanceof ViewModel)) { return new ViewModel(context, req); }
+        this.context = context;
+    }
+
+    ViewModel.prototype.id = '<%= id %>';
+    ViewModel.prototype.targetChain = {
+<% for (var i = 0 ; i < targetActives.length; i++){ -%>
+       <%= i !== 0 ? ',' : '' %>'<%= targetActives[i].xor %>': '<%= targetActives[i].child %>'
+<% } -%>
+    };
+
+    ViewModel.prototype.broken = {
+<% for (var i = 0 ; i < broken.length; i++){ -%>
+       <%= i !== 0 ? ',' : '' %>'<%= broken[i] %>': true
+<% } -%>
+    };
+
+    ViewModel.prototype.compute = function () {
+        this.computed = true;
+        return Promise.resolve();
+    };
+
+    ViewModel.prototype.toObject = function () {
+        if (!this.computed) { return; }
+<% if (outcoming) { -%>
+        var source = this.context.elements['<%= component %>'].toObject(),
+            targetInputs = {
+<%     for (var i = 0 ; i < outcoming.bindings.length; i++){
+           if (outcoming.type === 'details') { -%>
+                <%= i !== 0 ? ',' : '' %>'<%= outcoming.target %>': source.fields && source.fields['<%= outcoming.bindings[i].output %>']
+<%         }
+           if (outcoming.type === 'list') { -%>
+                <%= i !== 0 ? ',' : '' %>'<%= outcoming.target %>$f$<%= outcoming.bindings[i].input %>': source.fields && source.fields['<%= outcoming.bindings[i].output %>']
+<%         }
+           if (outcoming.type === 'form') { -%>
+                <%= i !== 0 ? ',' : '' %>'<%= outcoming.target %>$f$<%= outcoming.bindings[i].input %>': source.fields && source.fields['<%= outcoming.bindings[i].output %>']
+<%         }
+           if (outcoming.type === 'action') { -%>
+                <%= i !== 0 ? ',' : '' %>'<%= outcoming.target %>$f$<%= outcoming.bindings[i].input %>': source.fields && source.fields['<%= outcoming.bindings[i].output %>']
+<%
+           }
+       } -%>
+            },
+            query;
+<% } else { -%>
+        var query;
+<% } -%>
+<% if (isSameTopLevel) { -%>
+        var query = merge(this.context.elements['<%= currentTopLevel %>'].toQuery(this), this.targetChain);
+<% } else { -%>
+        var query = this.targetChain;
+<% } -%>
+        return {
+<% if (outcoming) { -%>
+            href: url.format({pathname: './<%= path %>', query: merge(query, targetInputs)})
+<% } else { -%>
+            href: url.format({pathname: './<%= path %>', query: query})
+<% } -%>
+        };
+    };
+
+    return ViewModel;
+};

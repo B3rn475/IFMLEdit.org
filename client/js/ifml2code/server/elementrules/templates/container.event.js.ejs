@@ -1,0 +1,51 @@
+/*jslint node: true */
+"use strict";
+
+var Promise = require('bluebird'),
+    url = require('url'),
+    merge = require('merge');
+
+exports.createInitializer = function (options) {
+    function ViewModel(context, req) {
+        if (!(this instanceof ViewModel)) { return new ViewModel(context, req); }
+        this.context = context;
+    }
+
+    ViewModel.prototype.id = '<%= id %>';
+    ViewModel.prototype.targetChain = {
+<% for (var i = 0 ; i < targetActives.length; i++){ -%>
+       <%= i !== 0 ? ',' : '' %>'<%= targetActives[i].xor %>': '<%= targetActives[i].child %>'
+<% } -%>
+    };
+
+    ViewModel.prototype.broken = {
+<% for (var i = 0 ; i < broken.length; i++){ -%>
+       <%= i !== 0 ? ',' : '' %>'<%= broken[i] %>': true
+<% } -%>
+    };
+
+    ViewModel.prototype.compute = function () {
+        this.computed = true;
+        return Promise.resolve();
+    };
+
+    ViewModel.prototype.toObject = function () {
+        if (!this.computed) { return; }
+        var pathname = './<%= path %>',
+<% if (isSameTopLevel) { -%>
+            query = merge(this.context.elements['<%= currentTopLevel %>'].toQuery(this), this.targetChain);
+<% } else { -%>
+            query = this.targetChain;
+<% } -%>
+        return {
+<% if (targetsAction) { -%>
+            hiddens: {},
+            action: url.format({pathname: pathname, query: query})
+<% } else { -%>
+            href: url.format({pathname: pathname, query: query})
+<% } -%>
+        };
+    };
+
+    return ViewModel;
+};

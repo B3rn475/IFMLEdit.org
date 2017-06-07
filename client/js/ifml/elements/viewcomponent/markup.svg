@@ -1,0 +1,10 @@
+<g class="ifml-element">
+    <g class="scalable">
+        <rect class="ifml-component-reference-rect" width="1" height="1" fill="transparent"/>
+    </g>
+    <rect class="ifml-component-background-rect" fill="lightgray" stroke="black" stroke-width="0.5" rx="15" ry="15"/>
+    <rect class="ifml-component-magnet-rect" fill="lightgray" stroke="red" stroke-width="1" rx="15" ry="15" style='cursor: cell'/>
+    <rect class="ifml-component-binding-rect" fill="white" stroke="black" stroke-width="0.5" height="20"/>
+    <text class="ifml-component-headline" fill="black" font-family="monospace" font-size="11" text-anchor="middle" style="pointer-events: none"/>
+    <text class="ifml-component-binding" fill="black" font-family="monospace" font-size="11" text-anchor="middle" style="pointer-events: none"/>
+</g>

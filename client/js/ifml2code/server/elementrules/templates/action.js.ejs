@@ -1,0 +1,67 @@
+/*jslint node: true */
+"use strict";
+
+var Promise = require('bluebird');
+
+function Action(options) {
+    // TODO: Global Initialization
+    /*
+    example:
+    this.collection = options.repositories.mail;
+    */
+}
+
+Action.prototype.run = function(parameters, solve, reject) {
+    // Parameters
+<% for (var i = 0; i < parameters.length; i += 1) { -%>
+    // parameters['<%= parameters[i]%>']
+<% } -%>
+    // TODO: Execution
+    /*
+    example:
+    mail.find({subject: 'Re: ' + data.subject})
+        .then(solve);
+    */
+    // THIS CAN BE REMOVED (BEGIN)
+    console.log('<%= name %>');
+    solve({
+<% if (events.length) { -%>
+        event: '<%= events[0].id%>',
+<% } -%>
+<% for (var i = 1; i < events.length; i += 1) { -%>
+        // event: '<%= events[i].id%>',
+<% } -%>
+        data: {
+<% for (var i = 0; i < results.length; i += 1) {
+       if (parameters.indexOf(results[i]) === -1) { -%>
+            '<%= results[i]%>': '0',
+<%     } else { -%>
+            '<%= results[i]%>': parameters['<%= results[i]%>'],
+<%     }
+   } -%>
+        }
+    });
+    // THIS CAN BE REMOVED (END)
+}
+
+var events = {
+<% for (var i = 0; i < events.length; i += 1) { -%>
+    '<%= events[i].id%>': require('./<%= events[i].id%>'),
+<% } -%>
+}
+
+exports.createAction = function (options) {
+    var action = new Action(options);
+    return function (context, req) {
+        return new Promise(function (solve, reject) {
+            var parameters = {
+<% for (var i = 0; i < parameters.length; i += 1) { -%>
+                '<%= parameters[i]%>': req.body['<%= id%>$f$<%= parameters[i]%>'],
+<% } -%>
+            };
+            action.run(parameters, solve, reject);
+        }).then(function (result) {
+            return events[result.event](context, result.data);
+        });
+    };
+};
