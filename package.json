@@ -1,6 +1,6 @@
 {
   "name": "ifmledit.org",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "A basic IFML WebEditor",
   "private": true,
   "main": "index.js",
@@ -17,7 +17,7 @@
     "url": "git+https://github.com/B3rn475/IFMLEdit.org.git"
   },
   "author": "Carlo Bernaschina",
-  "license": "",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/B3rn475/IFMLEdit.org/issues"
   },

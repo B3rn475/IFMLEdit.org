@@ -1,5 +1,5 @@
 [
-<% for(var i=0; i < Math.pow(4, Math.max(fields.length, 1)); ++i) { -%>
+<% for(var i=0; i < Math.min(1000, Math.pow(4, Math.max(fields.length, 1))); ++i) { -%>
     <%= i !== 0 ? ',': '' %>{ "_id": <%= i %>, "id": "<%= i %>"<% for(var f=0; f < fields.length; ++f) { %>, "<%= fields[f] %>": "<%= Math.floor(i / Math.pow(4, fields.length - f - 1)) % 4 %>"<% } %>}
 <% } -%>
 ]
