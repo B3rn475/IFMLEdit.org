@@ -14,10 +14,10 @@ exports.rules = [
         function (flow, model) {
             var id = flow.id,
                 event = model.getSource(flow),
-                cid = model.getFlowContextId(flow, 'application'),
+                cid = model.getFlowContextId(flow, 'Application'),
                 obj = {};
-            obj[id + '-transitions'] = {children: id, position: {row: event.metadata.graphics.position.y / 5, col: event.metadata.graphics.position.x / 5}};
-            obj[cid + '-content'] = {children: id + '-transitions'};
+            obj[id + '-Transitions'] = {children: id, position: {row: event.metadata.graphics.position.y / 5, col: event.metadata.graphics.position.x / 5}};
+            obj[cid + '-Content'] = {children: id + '-Transitions'};
             return obj;
         }
     ),
@@ -39,15 +39,15 @@ exports.rules = [
                     new pcn.elements.Transition({id: id, name: {text: event.attributes.name}, priority: model.isAction(model.getParent(model.getSource(flow))) ? 2 : 1}),
                     new pcn.links.Link({id: atid + '->' + id, source: {id: atid}, target: {id: id}})
                 ])
-                    .concat(_.map(XORTargets, function (xid) { return new pcn.links.Link({id: id + '->' + xid + '-view-p', source: {id: id}, target: {id: xid + '-view-p'}}); }))
+                    .concat(_.map(XORTargets, function (xid) { return new pcn.links.Link({id: id + '->' + xid + '-View-p', source: {id: id}, target: {id: xid + '-View-p'}}); }))
                     .concat(_.map(displaySet, function (xcid) {
                         var tid = _.intersection(model.getTopMostXORDescendants(xcid), targetAncestors)[0];
                         if (tid) {
-                            return new pcn.links.Link({id: id + '->' + xcid + '-w-' + tid, source: {id: id}, target: {id: xcid + '-w-' + tid}});
+                            return new pcn.links.Link({id: id + '->' + xcid + '-W-' + tid, source: {id: id}, target: {id: xcid + '-W-' + tid}});
                         }
                         return new pcn.links.Link({id: id + '->' + xcid, source: {id: id}, target: {id: xcid}});
                     }))
-                    .concat(_.map(hideSet, function (xid) { return new pcn.links.Link({id: id + '->' + xid + '-view-n', source: {id: id}, target: {id: xid + '-view-n'}}); }))
+                    .concat(_.map(hideSet, function (xid) { return new pcn.links.Link({id: id + '->' + xid + '-View-n', source: {id: id}, target: {id: xid + '-View-n'}}); }))
                     .value(),
                 position: {row: 0, col: 0}
             };
@@ -65,13 +65,13 @@ exports.rules = [
                 obj = {};
             obj[id] = {
                 cells: _.chain([
-                    new pcn.links.Link({id: source.id + '-view-p->' + id, source: {id: source.id + '-view-p'}, target: {id: id}})
+                    new pcn.links.Link({id: source.id + '-View-p->' + id, source: {id: source.id + '-View-p'}, target: {id: id}})
                 ])
                     .concat((function () {
                         if (_.includes(model.getAncestors(source, true), target.id)) { return []; }
                         return [
                             new pcn.links.Link({id: sourceAncestor.id + '->' + id, source: {id: sourceAncestor.id}, target: {id: id}}),
-                            new pcn.links.Link({id: id + '->' + sourceAncestor.id + '-view-n', source: {id: id}, target: {id: sourceAncestor.id + '-view-n'}})
+                            new pcn.links.Link({id: id + '->' + sourceAncestor.id + '-View-n', source: {id: id}, target: {id: sourceAncestor.id + '-View-n'}})
                         ];
                     }()))
                     .value()
@@ -90,13 +90,13 @@ exports.rules = [
                 obj = {};
             obj[id] = {
                 cells: _.chain([
-                    new pcn.links.Link({id: source.id + '-running-p->' + id, source: {id: source.id + '-running-p'}, target: {id: id}})
+                    new pcn.links.Link({id: source.id + '-Running-p->' + id, source: {id: source.id + '-Running-p'}, target: {id: id}})
                 ])
                     .concat((function () {
                         if (_.includes(model.getAncestors(source, true), target.id)) { return []; }
                         return [
                             new pcn.links.Link({id: sourceAncestor.id + '->' + id, source: {id: sourceAncestor.id}, target: {id: id}}),
-                            new pcn.links.Link({id: id + '->' + sourceAncestor.id + '-view-n', source: {id: id}, target: {id: sourceAncestor.id + '-view-n'}})
+                            new pcn.links.Link({id: id + '->' + sourceAncestor.id + '-View-n', source: {id: id}, target: {id: sourceAncestor.id + '-View-n'}})
                         ];
                     }()))
                     .value()
@@ -124,40 +124,40 @@ exports.rules = [
                         if (XORTargetsInContext.length === 0) { return []; }
                         var targetAncestor = model.getCoDisplayedAncestor(target, _.last(XORTargetsInContext));
                         if (targetAncestor === target) {
-                            return new pcn.links.Link({id: targetAncestor.id + '-view-p->' + id, source: {id: targetAncestor.id + '-view-p'}, target: {id: id}});
+                            return new pcn.links.Link({id: targetAncestor.id + '-View-p->' + id, source: {id: targetAncestor.id + '-View-p'}, target: {id: id}});
                         }
                         return [
-                            new pcn.links.Link({id: targetAncestor.id + '-view-p->' + id, source: {id: targetAncestor.id + '-view-p'}, target: {id: id}}),
-                            new pcn.links.Link({id: id + '->' + targetAncestor.id + '-view-p', source: {id: id}, target: {id: targetAncestor.id + '-view-p'}}),
+                            new pcn.links.Link({id: targetAncestor.id + '-View-p->' + id, source: {id: targetAncestor.id + '-View-p'}, target: {id: id}}),
+                            new pcn.links.Link({id: id + '->' + targetAncestor.id + '-View-p', source: {id: id}, target: {id: targetAncestor.id + '-View-p'}}),
                         ];
                     }()))
                     .value(),
                 position: {row: 0, col: 0}
             };
             _.forEach(XORTargetsInContext, function (xid, index) {
-                var tid = id + '-via-' + xid,
+                var tid = id + '-Via-' + xid,
                     container = model.toElement(xid),
                     XORChildAncestor = model.getCoDisplayedAncestor(target, container),
                     XORTargets = model.getXORTargets(flow, container),
                     displaySet = model.getDisplaySet(flow, container),
                     hideSet = model.getHideSet(flow, container);
-                obj[id + '-transitions'] = {children: tid};
+                obj[id + '-Transitions'] = {children: tid};
                 obj[tid] = {
                     cells: _.chain([
                         new pcn.elements.Transition({id: tid, name: {text: event.attributes.name + '▶' + container.attributes.name}, priority: model.isAction(model.getParent(model.getSource(flow))) ? 2 : 1}),
                         new pcn.links.Link({id: xid + '->' + tid, source: {id: xid}, target: {id: tid}}),
-                        new pcn.links.Link({id: XORChildAncestor.id + '-view-n->' + tid, source: {id: XORChildAncestor.id + '-view-n'}, target: {id: tid}}),
-                        new pcn.links.Link({id: tid + '->' + xid + '-view-p', source: {id: tid}, target: {id: xid + '-view-p'}}),
+                        new pcn.links.Link({id: XORChildAncestor.id + '-View-n->' + tid, source: {id: XORChildAncestor.id + '-View-n'}, target: {id: tid}}),
+                        new pcn.links.Link({id: tid + '->' + xid + '-View-p', source: {id: tid}, target: {id: xid + '-View-p'}}),
                     ])
-                        .concat(_.map(XORTargets, function (xid) { return new pcn.links.Link({id: tid + '->' + xid + '-view-p', source: {id: tid}, target: {id: xid + '-view-p'}}); }))
+                        .concat(_.map(XORTargets, function (xid) { return new pcn.links.Link({id: tid + '->' + xid + '-View-p', source: {id: tid}, target: {id: xid + '-View-p'}}); }))
                         .concat(_.map(displaySet, function (xcid) {
                             var txid = _.intersection(model.getTopMostXORDescendants(xcid), targetAncestors)[0];
                             if (txid) {
-                                return new pcn.links.Link({id: tid + '->' + xcid + '-w-' + txid, source: {id: id}, target: {id: xcid + '-w-' + txid}});
+                                return new pcn.links.Link({id: tid + '->' + xcid + '-W-' + txid, source: {id: id}, target: {id: xcid + '-W-' + txid}});
                             }
                             return new pcn.links.Link({id: tid + '->' + xcid, source: {id: tid}, target: {id: xcid}});
                         }))
-                        .concat(_.map(hideSet, function (xid) { return new pcn.links.Link({id: tid + '->' + xid + '-view-n', source: {id: tid}, target: {id: xid + '-view-n'}}); }))
+                        .concat(_.map(hideSet, function (xid) { return new pcn.links.Link({id: tid + '->' + xid + '-View-n', source: {id: tid}, target: {id: xid + '-View-n'}}); }))
                         .value(),
                     position: {row: index + 1, col: 0}
                 };
@@ -177,27 +177,27 @@ exports.rules = [
                 obj = {};
             if (_.includes(model.getAncestors(source, true), target.id)) {
                 obj[id] = {
-                    cells: new pcn.links.Link({id: source.id + '-view-p->' + id, source: {id: source.id + '-view-p'}, target: {id: id}})
+                    cells: new pcn.links.Link({id: source.id + '-View-p->' + id, source: {id: source.id + '-View-p'}, target: {id: id}})
                 };
                 _.forEach(XORTargetsInContext, function (xid) {
-                    var tid = id + '-via-' + xid;
+                    var tid = id + '-Via-' + xid;
                     obj[tid] = {
-                        cells: new pcn.links.Link({id: source.id + '-view-p->' + tid, source: {id: source.id + '-view-p'}, target: {id: tid}})
+                        cells: new pcn.links.Link({id: source.id + '-View-p->' + tid, source: {id: source.id + '-View-p'}, target: {id: tid}})
                     };
                 });
             } else {
                 obj[id] = {
                     cells: [
-                        new pcn.links.Link({id: source.id + '-view-p->' + id, source: {id: source.id + '-view-p'}, target: {id: id}}),
-                        new pcn.links.Link({id: id + '->' + source.id + '-view-p', source: {id: id}, target: {id: source.id + '-view-p'}}),
+                        new pcn.links.Link({id: source.id + '-View-p->' + id, source: {id: source.id + '-View-p'}, target: {id: id}}),
+                        new pcn.links.Link({id: id + '->' + source.id + '-View-p', source: {id: id}, target: {id: source.id + '-View-p'}}),
                     ]
                 };
                 _.forEach(XORTargetsInContext, function (xid) {
-                    var tid = id + '-via-' + xid;
+                    var tid = id + '-Via-' + xid;
                     obj[tid] = {
                         cells: [
-                            new pcn.links.Link({id: source.id + '-view-p->' + tid, source: {id: source.id + '-view-p'}, target: {id: tid}}),
-                            new pcn.links.Link({id: tid + '->' + source.id + '-view-p', source: {id: tid}, target: {id: source.id + '-view-p'}}),
+                            new pcn.links.Link({id: source.id + '-View-p->' + tid, source: {id: source.id + '-View-p'}, target: {id: tid}}),
+                            new pcn.links.Link({id: tid + '->' + source.id + '-View-p', source: {id: tid}, target: {id: source.id + '-View-p'}}),
                         ]
                     };
                 });
@@ -217,27 +217,27 @@ exports.rules = [
                 obj = {};
             if (_.includes(model.getAncestors(source, true), target.id)) {
                 obj[id] = {
-                    cells: new pcn.links.Link({id: source.id + '-running-p->' + id, source: {id: source.id + '-running-p'}, target: {id: id}})
+                    cells: new pcn.links.Link({id: source.id + '-Running-p->' + id, source: {id: source.id + '-Running-p'}, target: {id: id}})
                 };
                 _.forEach(XORTargetsInContext, function (xid) {
-                    var tid = id + '-via-' + xid;
+                    var tid = id + '-Via-' + xid;
                     obj[tid] = {
-                        cells: new pcn.links.Link({id: source.id + '-running-p->' + tid, source: {id: source.id + '-running-p'}, target: {id: tid}})
+                        cells: new pcn.links.Link({id: source.id + '-Running-p->' + tid, source: {id: source.id + '-Running-p'}, target: {id: tid}})
                     };
                 });
             } else {
                 obj[id] = {
                     cells: [
-                        new pcn.links.Link({id: source.id + '-running-p->' + id, source: {id: source.id + '-running-p'}, target: {id: id}}),
-                        new pcn.links.Link({id: id + '->' + source.id + '-running-n', source: {id: id}, target: {id: source.id + '-running-n'}}),
+                        new pcn.links.Link({id: source.id + '-Running-p->' + id, source: {id: source.id + '-Running-p'}, target: {id: id}}),
+                        new pcn.links.Link({id: id + '->' + source.id + '-Running-n', source: {id: id}, target: {id: source.id + '-Running-n'}}),
                     ]
                 };
                 _.forEach(XORTargetsInContext, function (xid) {
-                    var tid = id + '-via-' + xid;
+                    var tid = id + '-Via-' + xid;
                     obj[tid] = {
                         cells: [
-                            new pcn.links.Link({id: source.id + '-running-p->' + tid, source: {id: source.id + '-running-p'}, target: {id: tid}}),
-                            new pcn.links.Link({id: tid + '->' + source.id + '-running-n', source: {id: tid}, target: {id: source.id + '-running-n'}}),
+                            new pcn.links.Link({id: source.id + '-Running-p->' + tid, source: {id: source.id + '-Running-p'}, target: {id: tid}}),
+                            new pcn.links.Link({id: tid + '->' + source.id + '-Running-n', source: {id: tid}, target: {id: source.id + '-Running-n'}}),
                         ]
                     };
                 });

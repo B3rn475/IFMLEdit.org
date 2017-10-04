@@ -1,0 +1,592 @@
+{
+	"elements": [{
+		"id": "application",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Application",
+			"default": true,
+			"landmark": false,
+			"xor": false
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -540,
+					"y": -70
+				},
+				"size": {
+					"width": 410,
+					"height": 290
+				}
+			}
+		}
+	},
+	{
+		"id": "changesong",
+		"type": "ifml.Action",
+		"attributes": {
+			"name": "Change Song",
+			"parameters": ["song"],
+			"results": []
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -410,
+					"y": 240
+				},
+				"size": {
+					"width": 75,
+					"height": 50
+				}
+			}
+		}
+	},
+	{
+		"id": "startsong",
+		"type": "ifml.Action",
+		"attributes": {
+			"name": "Start Song",
+			"parameters": ["song"],
+			"results": []
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -102.5,
+					"y": 10
+				},
+				"size": {
+					"width": 75,
+					"height": 50
+				}
+			}
+		}
+	},
+	{
+		"id": "stopsong",
+		"type": "ifml.Action",
+		"attributes": {
+			"name": "Stop Song",
+			"parameters": ["song"],
+			"results": []
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -102.5,
+					"y": 120
+				},
+				"size": {
+					"width": 75,
+					"height": 50
+				}
+			}
+		}
+	},
+	{
+		"id": "player",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Player",
+			"default": false,
+			"landmark": false,
+			"xor": true
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -340,
+					"y": -40
+				},
+				"size": {
+					"width": 200,
+					"height": 250
+				}
+			}
+		}
+	},
+	{
+		"id": "songlist",
+		"type": "ifml.ViewComponent",
+		"attributes": {
+			"name": "SongList",
+			"stereotype": "list",
+			"collection": "songs",
+			"fields": ["author",
+			"title"],
+			"filters": []
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -530,
+					"y": -40
+				},
+				"size": {
+					"width": 150,
+					"height": 230
+				}
+			}
+		}
+	},
+	{
+		"id": "song-started-from-list",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "started"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -350,
+					"y": 230
+				},
+				"name": {
+					"horizontal": "right-outer",
+					"vertical": "middle"
+				}
+			}
+		}
+	},
+	{
+		"id": "songstarted",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "started"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -105,
+					"y": 50
+				},
+				"name": {
+					"horizontal": "left",
+					"vertical": "bottom"
+				}
+			}
+		}
+	},
+	{
+		"id": "songstopped",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "stopped"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -105,
+					"y": 110
+				},
+				"name": {
+					"horizontal": "left",
+					"vertical": "top"
+				}
+			}
+		}
+	},
+	{
+		"id": "stopped",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Stopped",
+			"default": false,
+			"landmark": false,
+			"xor": false
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -330,
+					"y": -10
+				},
+				"size": {
+					"width": 180,
+					"height": 100
+				}
+			}
+		}
+	},
+	{
+		"id": "playing",
+		"type": "ifml.ViewContainer",
+		"attributes": {
+			"name": "Playing",
+			"default": false,
+			"landmark": false,
+			"xor": false
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -330,
+					"y": 100
+				},
+				"size": {
+					"width": 180,
+					"height": 100
+				}
+			}
+		}
+	},
+	{
+		"id": "songselected",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "selected"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -390,
+					"y": 180
+				},
+				"name": {
+					"horizontal": "left-outer",
+					"vertical": "bottom"
+				}
+			}
+		}
+	},
+	{
+		"id": "playerstopped",
+		"type": "ifml.ViewComponent",
+		"attributes": {
+			"name": "PlayerStopped",
+			"stereotype": "details",
+			"collection": "songs",
+			"fields": ["title"]
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -320,
+					"y": 20
+				},
+				"size": {
+					"width": 160,
+					"height": 60
+				}
+			}
+		}
+	},
+	{
+		"id": "playerplaying",
+		"type": "ifml.ViewComponent",
+		"attributes": {
+			"name": "PlayerPlaying",
+			"stereotype": "details",
+			"collection": "songs",
+			"fields": ["title"]
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -320,
+					"y": 130
+				},
+				"size": {
+					"width": 160,
+					"height": 60
+				}
+			}
+		}
+	},
+	{
+		"id": "play",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "play"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -170,
+					"y": 20
+				},
+				"name": {
+					"horizontal": "left-outer",
+					"vertical": "middle"
+				}
+			}
+		}
+	},
+	{
+		"id": "stop",
+		"type": "ifml.Event",
+		"attributes": {
+			"name": "stop"
+		},
+		"metadata": {
+			"graphics": {
+				"position": {
+					"x": -170,
+					"y": 135
+				},
+				"name": {
+					"horizontal": "left-outer",
+					"vertical": "middle"
+				}
+			}
+		}
+	},
+	{
+		"id": "3cd3db4e-6e43-49fa-a55f-09a7a6cc11d9",
+		"type": "ifml.NavigationFlow",
+		"attributes": {
+			"bindings": [{
+				"input": "song",
+				"output": "id"
+			}]
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	},
+	{
+		"id": "3d47f29c-964c-4bd8-bf3f-7a8aa00fe5ef",
+		"type": "ifml.DataFlow",
+		"attributes": {
+			"bindings": [{
+				"input": "id",
+				"output": "id"
+			}]
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	},
+	{
+		"id": "505e21ac-2693-4da1-be00-fb94c117ba66",
+		"type": "ifml.NavigationFlow",
+		"attributes": {
+			"bindings": [{
+				"input": "song",
+				"output": "id"
+			}]
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	},
+	{
+		"id": "7860e2d7-3b3b-4173-a9c5-4b2fe2c83d73",
+		"type": "ifml.NavigationFlow",
+		"attributes": {
+			"bindings": [{
+				"input": "song",
+				"output": "id"
+			}]
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	},
+	{
+		"id": "abd7a45b-a3a7-40e0-bfa8-1dec1d58b97f",
+		"type": "ifml.NavigationFlow",
+		"attributes": {
+			"bindings": []
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	},
+	{
+		"id": "b1e4fa39-931e-4b0a-ab07-cc6dfa140888",
+		"type": "ifml.NavigationFlow",
+		"attributes": {
+			"bindings": []
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	},
+	{
+		"id": "effbac2d-f6d5-4a8f-9536-29835da3ad9d",
+		"type": "ifml.DataFlow",
+		"attributes": {
+			"bindings": [{
+				"input": "id",
+				"output": "id"
+			}]
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	},
+	{
+		"id": "fafe15b1-d7d4-47ef-bbfe-a5d137e6f173",
+		"type": "ifml.NavigationFlow",
+		"attributes": {
+			"bindings": []
+		},
+		"metadata": {
+			"graphics": {
+
+			}
+		}
+	}],
+	"relations": [{
+		"type": "hierarchy",
+		"parent": "application",
+		"child": "player"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "application",
+		"child": "songlist"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "changesong",
+		"child": "song-started-from-list"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "startsong",
+		"child": "songstarted"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "stopsong",
+		"child": "songstopped"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "player",
+		"child": "stopped"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "player",
+		"child": "playing"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "songlist",
+		"child": "songselected"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "stopped",
+		"child": "playerstopped"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "playing",
+		"child": "playerplaying"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "playerstopped",
+		"child": "play"
+	},
+	{
+		"type": "hierarchy",
+		"parent": "playerplaying",
+		"child": "stop"
+	},
+	{
+		"type": "source",
+		"flow": "3cd3db4e-6e43-49fa-a55f-09a7a6cc11d9",
+		"source": "stop"
+	},
+	{
+		"type": "target",
+		"flow": "3cd3db4e-6e43-49fa-a55f-09a7a6cc11d9",
+		"target": "stopsong"
+	},
+	{
+		"type": "source",
+		"flow": "3d47f29c-964c-4bd8-bf3f-7a8aa00fe5ef",
+		"source": "songlist"
+	},
+	{
+		"type": "target",
+		"flow": "3d47f29c-964c-4bd8-bf3f-7a8aa00fe5ef",
+		"target": "playerstopped"
+	},
+	{
+		"type": "source",
+		"flow": "505e21ac-2693-4da1-be00-fb94c117ba66",
+		"source": "play"
+	},
+	{
+		"type": "target",
+		"flow": "505e21ac-2693-4da1-be00-fb94c117ba66",
+		"target": "startsong"
+	},
+	{
+		"type": "source",
+		"flow": "7860e2d7-3b3b-4173-a9c5-4b2fe2c83d73",
+		"source": "songselected"
+	},
+	{
+		"type": "target",
+		"flow": "7860e2d7-3b3b-4173-a9c5-4b2fe2c83d73",
+		"target": "changesong"
+	},
+	{
+		"type": "source",
+		"flow": "abd7a45b-a3a7-40e0-bfa8-1dec1d58b97f",
+		"source": "songstopped"
+	},
+	{
+		"type": "target",
+		"flow": "abd7a45b-a3a7-40e0-bfa8-1dec1d58b97f",
+		"target": "playerstopped"
+	},
+	{
+		"type": "source",
+		"flow": "b1e4fa39-931e-4b0a-ab07-cc6dfa140888",
+		"source": "song-started-from-list"
+	},
+	{
+		"type": "target",
+		"flow": "b1e4fa39-931e-4b0a-ab07-cc6dfa140888",
+		"target": "playerplaying"
+	},
+	{
+		"type": "source",
+		"flow": "effbac2d-f6d5-4a8f-9536-29835da3ad9d",
+		"source": "songlist"
+	},
+	{
+		"type": "target",
+		"flow": "effbac2d-f6d5-4a8f-9536-29835da3ad9d",
+		"target": "playerplaying"
+	},
+	{
+		"type": "source",
+		"flow": "fafe15b1-d7d4-47ef-bbfe-a5d137e6f173",
+		"source": "songstarted"
+	},
+	{
+		"type": "target",
+		"flow": "fafe15b1-d7d4-47ef-bbfe-a5d137e6f173",
+		"target": "playerplaying"
+	}],
+	"statistics": {
+		"session": {
+			"started_at": "2017-10-04T15:20:38.130Z",
+			"ended_at": "2017-10-04T15:21:22.777Z"
+		}
+	}
+}

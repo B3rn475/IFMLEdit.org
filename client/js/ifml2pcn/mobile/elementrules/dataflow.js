@@ -15,9 +15,9 @@ exports.rules = [
                 sid = model.getSourceId(id),
                 tid = model.getTargetId(id),
                 obj = {};
-            obj[tid + '-propagate'] = { cells: [
-                new pcn.links.Link({id: sid + '-view-p->' + tid + '-propagate', source: {id: sid + '-view-p'}, target: {id: tid + '-propagate'}}),
-                new pcn.links.Link({id: tid + '-propagate->' + sid + '-view-p', source: {id: tid + '-propagate'}, target: {id: sid + '-view-p'}})
+            obj[tid + '-Propagate'] = { cells: [
+                new pcn.links.Link({id: sid + '-View-p->' + tid + '-Propagate', source: {id: sid + '-View-p'}, target: {id: tid + '-Propagate'}}),
+                new pcn.links.Link({id: tid + '-Propagate->' + sid + '-View-p', source: {id: tid + '-Propagate'}, target: {id: sid + '-View-p'}})
             ]};
             return obj;
         }

@@ -14,38 +14,38 @@ exports.rules = [
         Rule.always,
         function () {
             return {
-                'waiting': {cells: [
-                    new pcn.elements.PlaceChart({id: 'waiting-p', name: {text: 'Waiting', vertical: 'top'}, tokens: 1}),
-                    new pcn.elements.PlaceChart({id: 'waiting-n', name: {text: '\\overline{Waiting}'}, position: {x: 0, y: 100}})
+                'Waiting': {cells: [
+                    new pcn.elements.PlaceChart({id: 'Waiting-p', name: {text: 'Waiting', vertical: 'top'}, tokens: 1}),
+                    new pcn.elements.PlaceChart({id: 'Waiting-n', name: {text: '\\overline{Waiting}'}, position: {x: 0, y: 100}})
                 ], position: {row: 1, col: 0}},
-                'open-close': {cells: [
-                    new pcn.elements.Transition({id: 'open', name: {text: 'open'}}),
-                    new pcn.elements.Transition({id: 'close', name: {text: 'close', vertical: 'top'}, position: {x: 0, y: 100}}),
-                    new pcn.links.Link({id: 'waiting-p->open', source: {id: 'waiting-p'}, target: {id: 'open'}}),
-                    new pcn.links.Link({id: 'open->waiting-n', source: {id: 'open'}, target: {id: 'waiting-n'}}),
-                    new pcn.links.Link({id: 'open->application', source: {id: 'open'}, target: {id: 'application'}}),
-                    new pcn.links.Link({id: 'application->open', source: {id: 'application'}, target: {id: 'open'}}),
-                    new pcn.links.Link({id: 'application->close', source: {id: 'application'}, target: {id: 'close'}}),
-                    new pcn.links.Link({id: 'close->waiting-p', source: {id: 'close'}, target: {id: 'waiting-p'}}),
-                    new pcn.links.Link({id: 'waiting-n->close', source: {id: 'waiting-n'}, target: {id: 'close'}})
+                'Open-Close': {cells: [
+                    new pcn.elements.Transition({id: 'Open', name: {text: 'Open'}}),
+                    new pcn.elements.Transition({id: 'Close', name: {text: 'Close', vertical: 'top'}, position: {x: 0, y: 100}}),
+                    new pcn.links.Link({id: 'Waiting-p->Open', source: {id: 'Waiting-p'}, target: {id: 'Open'}}),
+                    new pcn.links.Link({id: 'Open->Waiting-n', source: {id: 'Open'}, target: {id: 'Waiting-n'}}),
+                    new pcn.links.Link({id: 'Open->Application', source: {id: 'Open'}, target: {id: 'Application'}}),
+                    new pcn.links.Link({id: 'Application->Open', source: {id: 'Application'}, target: {id: 'Open'}}),
+                    new pcn.links.Link({id: 'Application->Close', source: {id: 'Application'}, target: {id: 'Close'}}),
+                    new pcn.links.Link({id: 'Close->Waiting-p', source: {id: 'Close'}, target: {id: 'Waiting-p'}}),
+                    new pcn.links.Link({id: 'Waiting-n->Close', source: {id: 'Waiting-n'}, target: {id: 'Close'}})
                 ], position: {row: 1, col: 1}},
-                'application-landmarks': {position: {row: 0, col: 2}},
-                'application': {
-                    cells: [new pcn.elements.PlaceChart({id: 'application', name: {text: 'Application'}})],
-                    children: ['application-view', 'application-content'],
+                'Application-Landmarks': {position: {row: 0, col: 2}},
+                'Application': {
+                    cells: [new pcn.elements.PlaceChart({id: 'Application', name: {text: 'Application'}})],
+                    children: ['Application-View', 'Application-Content'],
                     position: { row: 1, col: 2}
                 },
-                'application-view': {
+                'Application-View': {
                     cells: [
-                        new pcn.elements.PlaceChart({id: 'application-view-p', name: {text: 'View_{Application}'}}),
-                        new pcn.elements.PlaceChart({id: 'application-view-n', name: {text: '\\overline{View}_{Application}'}, position: {x: 0, y: 60}, tokens: 1}),
-                        new pcn.links.Link({id: 'application->application-view-p', source: {id: 'application'}, target: {id: 'application-view-p'}}),
-                        new pcn.links.Link({id: 'close->application-view-n', source: {id: 'close'}, target: {id: 'application-view-n'}}),
+                        new pcn.elements.PlaceChart({id: 'Application-View-p', name: {text: 'View_{Application}'}}),
+                        new pcn.elements.PlaceChart({id: 'Application-View-n', name: {text: '\\overline{View}_{Application}'}, position: {x: 0, y: 60}, tokens: 1}),
+                        new pcn.links.Link({id: 'Application->Application-View-p', source: {id: 'Application'}, target: {id: 'Application-View-p'}}),
+                        new pcn.links.Link({id: 'Close->Application-View-n', source: {id: 'Close'}, target: {id: 'Application-View-n'}}),
                     ],
                     position: { row: 0, col: 0 }
                 },
-                'application-content': {position: {row: 0, col: 1}},
-                'model': { children: ['waiting', 'open-close', 'application', 'application-landmarks'] }
+                'Application-Content': {position: {row: 0, col: 1}},
+                'Model': { children: ['Waiting', 'Open-Close', 'Application', 'Application-Landmarks'] }
             };
         }
     )

@@ -17,5 +17,6 @@ exports.examples = [
     {title: 'IFML 9', url: 'examples/ifml9.json', image: 'examples/ifml9.png'},
     {title: 'IFML 10', url: 'examples/ifml10.json', image: 'examples/ifml10.png'},
     {title: 'IFML 11', url: 'examples/ifml11.json', image: 'examples/ifml11.png'},
-    {title: 'IFML 12', url: 'examples/ifml12.json', image: 'examples/ifml12.png'}
+    {title: 'IFML 12', url: 'examples/ifml12.json', image: 'examples/ifml12.png'},
+    {title: 'IFML 13', url: 'examples/ifml13.json', image: 'examples/ifml13.png'}
 ];

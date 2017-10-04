@@ -18,21 +18,21 @@ exports.rules = [
                 event = model.getActionSource(action),
                 cid = model.getActionParentId(action),
                 obj = {};
-            obj[cid + '-content'] = {children: id};
+            obj[cid + '-Content'] = {children: id};
             obj[id] = {
                 cells: new pcn.elements.PlaceChart({id: id, name: {text: name}}),
-                children: [id + '-running-p', id + '-running-n'],
+                children: [id + '-Running-p', id + '-Running-n'],
                 position: {row: event.metadata.graphics.position.y / 5, col: event.metadata.graphics.position.x / 5 + 1}
             };
-            obj[id + '-running-p'] = {
+            obj[id + '-Running-p'] = {
                 cells: [
-                    new pcn.elements.PlaceChart({id: id + '-running-p', name: {text: 'Running' + suffix}}),
-                    new pcn.links.Link({id: id + '->' + id + '-running-p', source: {id: id}, target: {id: id + '-running-p'}})
+                    new pcn.elements.PlaceChart({id: id + '-Running-p', name: {text: 'Running' + suffix}}),
+                    new pcn.links.Link({id: id + '->' + id + '-Running-p', source: {id: id}, target: {id: id + '-Running-p'}})
                 ],
                 position: {row: 0, col: 0}
             };
-            obj[id + '-running-n'] = {
-                cells: new pcn.elements.PlaceChart({id: id + '-running-n', name: {text: '\\overline{Running}' + suffix}}),
+            obj[id + '-Running-n'] = {
+                cells: new pcn.elements.PlaceChart({id: id + '-Running-n', name: {text: '\\overline{Running}' + suffix}}),
                 position: {row: 1, col: 0}
             };
             return obj;

@@ -48,7 +48,7 @@ function length(array) {
 }
 
 function layout(transformed, id) {
-    id = id || 'model';
+    id = id || 'Model';
     if (!transformed[id]) { return; }
     var padding = 20,
         current = transformed[id],
