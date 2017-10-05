@@ -18,7 +18,7 @@ var $ = require('jquery'),
     },
     createPanner = require('./panner').Panner;
 
-var panner = createPanner({el: 'body'});
+var panner = createPanner({el: 'html'});
 
 function load(folder, file) {
     var module = { exports: {} };

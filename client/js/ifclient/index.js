@@ -19,6 +19,7 @@ function IFClient(options) {
     var el = $($(options.el)[0]),
         iframe = document.createElement('iframe');
     iframe.sandbox = 'allow-scripts allow-forms allow-same-origin allow-modals';
+    iframe.scrolling = options.scrolling;
     el.append(iframe);
 
     this.start = function (zip) {

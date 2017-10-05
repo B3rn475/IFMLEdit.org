@@ -110,7 +110,7 @@ var ifmlModel = new joint.dia.Graph(),
         BASE_PATH: BASE_PATH + 'web-server/'
     }),
     ifclient = createIFClient({el: '#web-client .ifclient', BASE_PATH: BASE_PATH + 'web-client/'}),
-    ifmobile = createIFClient({el: '#mobile .ifmobile-wrapper', BASE_PATH: BASE_PATH + 'mobile/'});
+    ifmobile = createIFClient({el: '#mobile .ifmobile-wrapper', BASE_PATH: BASE_PATH + 'mobile/', scrolling: 'no'});
 
 ifmlBoard.zoomE();
 statisticsBoard.zoomE();
