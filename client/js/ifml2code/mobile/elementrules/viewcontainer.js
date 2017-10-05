@@ -58,7 +58,7 @@ exports.rules = [
                     controls: {children: 'C-' + id}
                 };
             obj['C-' + id] = {isFolder: true, name: 'c-' + id, children: ['C-' + id + '-VM', 'C-' + id + '-V']};
-            obj['C-' + id + '-VM'] = {name: 'index.js', content: require('./templates/xor-vm.js.ejs')({id: id, defaultChild: defaultChild})};
+            obj['C-' + id + '-VM'] = {name: 'index.js', content: require('./templates/xor-vm.js.ejs')({id: id, defaultChild: defaultChild, landmarks: landmarks})};
             obj['C-' + id + '-V'] = {name: 'index.html', content: require('./templates/xor-v.html.ejs')({children: children, landmarks: landmarks, events: events})};
             return obj;
         }

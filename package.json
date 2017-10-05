@@ -61,7 +61,7 @@
     "knockout": "^3.4.0",
     "lodash": "^3.10.1",
     "material-design-icons-iconfont": "^2.0.4",
-    "materialize-css": "^0.97.5",
+    "materialize-css": "^0.100.2",
     "merge": "^1.2.0",
     "merge-stream": "^1.0.0",
     "nedb": "^1.8.0",

@@ -14,7 +14,9 @@ function ViewModel(params) {
         if (self.defaultChild && options.mask !== self.defaultChild) {
             self.context.vms[self.defaultChild].init(options);
         }
+<% if (landmarks.length) { -%>
         $('ul.tabs').tabs();
+<% } -%>
     };
 
     self.landmark = function (id) {
