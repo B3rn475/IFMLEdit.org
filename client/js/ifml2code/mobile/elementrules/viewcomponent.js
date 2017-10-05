@@ -48,11 +48,11 @@ exports.rules = [
                     .first()
                     .value(),
                 obj = {
-                    controls: {children: 'c-' + id}
+                    controls: {children: 'C-' + id}
                 };
-            obj['c-' + id] = {isFolder: true, name: 'c-' + id, children: ['c-' + id + '-vm', 'c-' + id + '-v']};
-            obj['c-' + id + '-vm'] = {name: 'index.js', content: require('./templates/list-vm.js.ejs')({id: id, selected: selected, collection: collection, filters: filters, fields: fields, incomings: incomings})};
-            obj['c-' + id + '-v'] = {name: 'index.html', content: require('./templates/list-v.html.ejs')({name: name, events: events, fields: fields, showSelection: showSelection})};
+            obj['C-' + id] = {isFolder: true, name: 'c-' + id, children: ['C-' + id + '-VM', 'C-' + id + '-V']};
+            obj['C-' + id + '-VM'] = {name: 'index.js', content: require('./templates/list-vm.js.ejs')({id: id, selected: selected, collection: collection, filters: filters, fields: fields, incomings: incomings})};
+            obj['C-' + id + '-V'] = {name: 'index.html', content: require('./templates/list-v.html.ejs')({name: name, events: events, fields: fields, showSelection: showSelection})};
             return obj;
         }
     ),
@@ -78,11 +78,11 @@ exports.rules = [
                     .map(function (event) { return { id: event.id, name: event.attributes.name}; })
                     .value(),
                 obj = {
-                    controls: {children: 'c-' + id}
+                    controls: {children: 'C-' + id}
                 };
-            obj['c-' + id] = {isFolder: true, name: 'c-' + id, children: ['c-' + id + '-vm', 'c-' + id + '-v']};
-            obj['c-' + id + '-vm'] = {name: 'index.js', content: require('./templates/details-vm.js.ejs')({id: id, collection: collection, fields: fields, incomings: incomings})};
-            obj['c-' + id + '-v'] = {name: 'index.html', content: require('./templates/details-v.html.ejs')({name: name, events: events, fields: fields})};
+            obj['C-' + id] = {isFolder: true, name: 'c-' + id, children: ['C-' + id + '-VM', 'C-' + id + '-V']};
+            obj['C-' + id + '-VM'] = {name: 'index.js', content: require('./templates/details-vm.js.ejs')({id: id, collection: collection, fields: fields, incomings: incomings})};
+            obj['C-' + id + '-V'] = {name: 'index.html', content: require('./templates/details-v.html.ejs')({name: name, events: events, fields: fields})};
             return obj;
         }
     ),
@@ -107,11 +107,11 @@ exports.rules = [
                     .map(function (event) { return { id: event.id, name: event.attributes.name}; })
                     .value(),
                 obj = {
-                    controls: {children: 'c-' + id}
+                    controls: {children: 'C-' + id}
                 };
-            obj['c-' + id] = {isFolder: true, name: 'c-' + id, children: ['c-' + id + '-vm', 'c-' + id + '-v']};
-            obj['c-' + id + '-vm'] = {name: 'index.js', content: require('./templates/form-vm.js.ejs')({id: id, fields: fields, incomings: incomings})};
-            obj['c-' + id + '-v'] = {name: 'index.html', content: require('./templates/form-v.html.ejs')({id: id, name: name, events: events, fields: fields})};
+            obj['C-' + id] = {isFolder: true, name: 'c-' + id, children: ['C-' + id + '-VM', 'C-' + id + '-V']};
+            obj['C-' + id + '-VM'] = {name: 'index.js', content: require('./templates/form-vm.js.ejs')({id: id, fields: fields, incomings: incomings})};
+            obj['C-' + id + '-V'] = {name: 'index.html', content: require('./templates/form-v.html.ejs')({id: id, name: name, events: events, fields: fields})};
             return obj;
         }
     )

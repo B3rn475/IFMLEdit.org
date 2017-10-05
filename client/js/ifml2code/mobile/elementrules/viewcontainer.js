@@ -24,11 +24,11 @@ exports.rules = [
                     .map(function (event) { return { id: event.id, name: event.attributes.name}; })
                     .value(),
                 obj = {
-                    controls: {children: 'c-' + id}
+                    controls: {children: 'C-' + id}
                 };
-            obj['c-' + id] = {isFolder: true, name: 'c-' + id, children: ['c-' + id + '-vm', 'c-' + id + '-v']};
-            obj['c-' + id + '-vm'] = {name: 'index.js', content: require('./templates/nonxor-vm.js.ejs')({id: id, children: children})};
-            obj['c-' + id + '-v'] = {name: 'index.html', content: require('./templates/nonxor-v.html.ejs')({children: children, events: events})};
+            obj['C-' + id] = {isFolder: true, name: 'c-' + id, children: ['C-' + id + '-VM', 'C-' + id + '-V']};
+            obj['C-' + id + '-VM'] = {name: 'index.js', content: require('./templates/nonxor-vm.js.ejs')({id: id, children: children})};
+            obj['C-' + id + '-V'] = {name: 'index.html', content: require('./templates/nonxor-v.html.ejs')({children: children, events: events})};
             return obj;
         }
     ),
@@ -55,11 +55,11 @@ exports.rules = [
                     .map(function (event) { return { id: event.id, name: event.attributes.name}; })
                     .value(),
                 obj = {
-                    controls: {children: 'c-' + id}
+                    controls: {children: 'C-' + id}
                 };
-            obj['c-' + id] = {isFolder: true, name: 'c-' + id, children: ['c-' + id + '-vm', 'c-' + id + '-v']};
-            obj['c-' + id + '-vm'] = {name: 'index.js', content: require('./templates/xor-vm.js.ejs')({id: id, defaultChild: defaultChild})};
-            obj['c-' + id + '-v'] = {name: 'index.html', content: require('./templates/xor-v.html.ejs')({children: children, landmarks: landmarks, events: events})};
+            obj['C-' + id] = {isFolder: true, name: 'c-' + id, children: ['C-' + id + '-VM', 'C-' + id + '-V']};
+            obj['C-' + id + '-VM'] = {name: 'index.js', content: require('./templates/xor-vm.js.ejs')({id: id, defaultChild: defaultChild})};
+            obj['C-' + id + '-V'] = {name: 'index.html', content: require('./templates/xor-v.html.ejs')({children: children, landmarks: landmarks, events: events})};
             return obj;
         }
     )

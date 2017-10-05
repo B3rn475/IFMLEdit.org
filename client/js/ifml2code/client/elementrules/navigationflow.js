@@ -36,9 +36,9 @@ exports.rules = [
                     .first()
                     .value(),
                 obj = {
-                    events: {children: 'e-' + id}
+                    events: {children: 'E-' + id}
                 };
-            obj['e-' + id] = {name: id + '.js', content: require('./templates/event.js.ejs')({id: id, target: target, targetTop: targetTop, targetActives: targetActives, bindings: bindings})};
+            obj['E-' + id] = {name: id + '.js', content: require('./templates/event.js.ejs')({id: id, target: target, targetTop: targetTop, targetActives: targetActives, bindings: bindings})};
             return obj;
         }
     ),
@@ -65,9 +65,9 @@ exports.rules = [
                     .first()
                     .value(),
                 obj = {
-                    events: {children: 'e-' + id}
+                    events: {children: 'E-' + id}
                 };
-            obj['e-' + id] = {name: id + '.js', content: require('./templates/event-to-action.js.ejs')({id: id, containerId: containerId, target: target, bindings: bindings})};
+            obj['E-' + id] = {name: id + '.js', content: require('./templates/event-to-action.js.ejs')({id: id, containerId: containerId, target: target, bindings: bindings})};
             return obj;
         }
     )

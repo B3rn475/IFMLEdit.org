@@ -48,9 +48,8 @@ exports.rules = [
                     .value();
             return {
                 '': {isFolder: true, children: 'clientexample'},
-                'clientexample' : { isFolder: true, name: 'clientexample', children: ['src', 'package', 'config', 'gulp', 'gitignore']},
+                'clientexample' : { isFolder: true, name: 'clientexample', children: ['src', 'package', 'gulp', 'gitignore']},
                 'package': {name: 'package.json', content: require('./templates/package.json.ejs')()},
-                'config': {name: 'config.xml', content: require('./templates/config.xml.ejs')()},
                 'gitignore': {name: '.gitignore', content: require('./templates/gitignore.ejs')()},
                 'gulp': {name: 'gulpfile.js', content: require('./templates/gulpfile.js.ejs')()},
                 'src': {isFolder: true, name: 'src', children: ['js', 'index']},
@@ -59,9 +58,9 @@ exports.rules = [
                 'js-index': {name: 'index.js', content: require('./templates/index.js.ejs')()},
                 'controls': {isFolder: true, name: 'controls', children: ['controls-index', 'main-application']},
                 'controls-index': {name: 'index.js', content: require('./templates/controls-index.js.ejs')({controls: controls})},
-                'main-application': {isFolder: true, name: 'main-application', children: ['main-application-vm', 'main-application-v']},
-                'main-application-vm': {name: 'index.js', content: require('./templates/main-application-vm.js.ejs')({defaultChild: defaultChild})},
-                'main-application-v': {name: 'index.html', content: require('./templates/main-application-v.html.ejs')({children: children, landmarks: landmarks})},
+                'main-application': {isFolder: true, name: 'main-application', children: ['main-application-VM', 'main-application-V']},
+                'main-application-VM': {name: 'index.js', content: require('./templates/main-application-vm.js.ejs')({defaultChild: defaultChild})},
+                'main-application-V': {name: 'index.html', content: require('./templates/main-application-v.html.ejs')({children: children, landmarks: landmarks})},
                 'events': {isFolder: true, name: 'events', children: ['events-index']},
                 'events-index': {name: 'index.js', content: require('./templates/events-index.js.ejs')({events: events})},
                 'actions': {isFolder: true, name: 'actions', children: ['actions-index']},
@@ -90,12 +89,12 @@ exports.rules = [
                     })
                     .value(),
                 obj = {
-                    'repositories': {children: _.map(collections, function (c) { return c.name + '-repository'; })},
+                    'repositories': {children: _.map(collections, function (c) { return c.name + '-Repository'; })},
                 };
             _.each(collections, function (c) {
-                obj[c.name + '-repository'] = {isFolder: true, name: c.name, children: [c.name + '-repository-index', c.name + '-repository-default']};
-                obj[c.name + '-repository-index'] = {name: 'index.js', content: require('./templates/repository.js.ejs')({name: c.name})};
-                obj[c.name + '-repository-default'] = {name: 'default.json', content: require('./templates/default.json.ejs')({fields: c.fields})};
+                obj[c.name + '-Repository'] = {isFolder: true, name: c.name, children: [c.name + '-Repository-Index', c.name + '-Repository-Default']};
+                obj[c.name + '-Repository-Index'] = {name: 'index.js', content: require('./templates/repository.js.ejs')({name: c.name})};
+                obj[c.name + '-Repository-Default'] = {name: 'default.json', content: require('./templates/default.json.ejs')({fields: c.fields})};
             });
             return obj;
         }

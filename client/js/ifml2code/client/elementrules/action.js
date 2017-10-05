@@ -9,7 +9,7 @@ var _ = require('lodash'),
     createRule = require('almost').createRule;
 
 exports.rules = [
-    createRule( // map list
+    createRule( // map action
         function (element, model) { return model.isAction(element); },
         function (element, model) {
             var id = element.id,
@@ -23,9 +23,9 @@ exports.rules = [
                     .map(function (event) { return { id: event.id, name: event.attributes.name}; })
                     .value(),
                 obj = {
-                    actions: {children: 'a-' + id}
+                    actions: {children: 'A-' + id}
                 };
-            obj['a-' + id] = {name: id + '.js', content: require('./templates/action.js.ejs')({id: id, name: name, parameters: parameters, results: results, events: events})};
+            obj['A-' + id] = {name: id + '.js', content: require('./templates/action.js.ejs')({id: id, name: name, parameters: parameters, results: results, events: events})};
             return obj;
         }
     )
