@@ -8,10 +8,9 @@ var elements = require('../elements').elements,
     links = require('../links').links;
 
 function createDetails() {
-    var component = new elements.ViewComponent({position: {x: 0, y: 0}, stereotype: 'list'}),
-        selected = new elements.Event({position: {x: 140, y: 50}, parentLifecicle: true, name: {text: 'selected', vertical: 'bottom', horizontal: 'right'}});
-    component.embed(selected);
-    return [component, selected];
+    return [
+        new elements.ViewComponent({position: {x: 0, y: 0}, stereotype: 'details'})
+    ];
 }
 
 exports.createDetails = createDetails;
