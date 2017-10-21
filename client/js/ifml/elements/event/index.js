@@ -46,8 +46,9 @@ exports.Event = joint.shapes.basic.Generic.extend({
         type: 'ifml.Event',
         size: {width: 20, height: 20},
         name: {text: 'event', vertical: 'top', horizontal: 'left-outer'},
+        fixedParent: true,
         attrs: {
-            '.': {magnet: false},
+            '.': {magnet: 'passive'},
             '.ifml-event-magnet-rect': {magnet: true, visibility: 'hidden'},
             'text': {
                 'ref-x': 0.5,
