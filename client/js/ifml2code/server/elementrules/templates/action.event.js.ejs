@@ -46,9 +46,9 @@ function computeTarget(context, source) {
     query = target.targetChain;
 <% } -%>
 <% if (outcoming) { -%>
-    return url.format({pathname: '<%= path %>', query: merge(query, targetInputs)})
+    return url.format({pathname: '/<%= path %>', query: merge(query, targetInputs)})
 <% } else { -%>
-    return  url.format({pathname: '<%= path %>', query: query})
+    return  url.format({pathname: '/<%= path %>', query: query})
 <% } -%>
 };
 

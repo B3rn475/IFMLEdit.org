@@ -29,7 +29,8 @@ exports.rules = [
                 targetsAction = model.isAction(target),
                 targetTop = model.getTopLevelAncestor(target),
                 targetTopLevel = targetTop.id,
-                path = model.isDefault(targetTop) ? '' : targetTopLevel,
+                path = targetsAction ? target.id
+                                     : model.isDefault(targetTop) ? '' : targetTopLevel,
                 isSameTopLevel = currentTopLevel === targetTopLevel,
                 targetActives = _.chain(model.getAncestors(target))
                     .filter(function (id) { return model.isViewContainer(id); })
@@ -65,7 +66,8 @@ exports.rules = [
                 targetsAction = model.isAction(target),
                 targetTop = model.getTopLevelAncestor(target),
                 targetTopLevel = targetTop.id,
-                path = model.isDefault(targetTop) ? '' : targetTopLevel,
+                path = targetsAction ? target.id
+                                     : model.isDefault(targetTop) ? '' : targetTopLevel,
                 isSameTopLevel = currentTopLevel === targetTopLevel,
                 outcoming = _.chain(model.getOutbounds(id))
                     .filter(function (id) { return model.isNavigationFlow(id); })
@@ -117,7 +119,6 @@ exports.rules = [
                 sourceTop = model.getTopLevelAncestor(source),
                 currentTopLevel = sourceTop.id,
                 target = model.getTarget(flow),
-                targetsAction = model.isAction(target),
                 targetTop = model.getTopLevelAncestor(target),
                 targetTopLevel = targetTop.id,
                 path = model.isDefault(targetTop) ? '' : targetTopLevel,
@@ -131,7 +132,7 @@ exports.rules = [
                     .map(function (flow) {
                         return {
                             target: target.id,
-                            type: targetsAction ? 'action' : target.attributes.stereotype,
+                            type: target.attributes.stereotype,
                             bindings: flow.attributes.bindings
                         };
                     })
@@ -153,7 +154,6 @@ exports.rules = [
                 currentTopLevel: currentTopLevel,
                 isSameTopLevel: isSameTopLevel,
                 targetActives: targetActives,
-                targetsAction: targetsAction,
                 broken: broken,
                 outcoming: outcoming
             })};

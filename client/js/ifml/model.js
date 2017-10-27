@@ -76,6 +76,9 @@ var config = {
             return _getAncestors(this.getParentId(element)).value();
         },
         getTopLevelAncestorId: function (element, defaultValue) {
+            if (this.isAction(element)) {
+                return this.getTopLevelAncestorId(this.getActionSource(element));
+            }
             if (!this.getParentId(element)) {
                 return this.toId(element);
             }
