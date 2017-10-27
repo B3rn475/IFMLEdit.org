@@ -7,7 +7,7 @@ var Promise = require('bluebird'),
 function Repository(options) {
     if (!(this instanceof Repository)) { return new Repository(options); }
 
-    this.db = Promise.promisifyAll(new DataStore({filename: '<%=name%>'}));
+    this.db = Promise.promisifyAll(new DataStore({filename: '<%=name%>', inMemoryOnly: true}));
     this.db.insert(require('./default'));
 }
 
