@@ -57,6 +57,8 @@ html
                                 a(role='tab', data-toggle='tab', aria-controls='mobile', href='#mobile') Mobile
                             li(role='presentation')
                                 a(role='tab', data-toggle='tab', aria-controls='statistics', href='#statistics') Statistics
+                            li(role='presentation')
+                                a(role='tab', data-toggle='tab', aria-controls='about', href='#about') About
             .tab-content
                 #ifml.tab-pane.editor.active(role='tabpanel')
                     .sidebar
@@ -337,6 +339,47 @@ html
                                 br
                                 br
                                 br
+                #about.tab-pane(role='tabpanel')
+                    .container
+                        .row
+                            .col-xs-12
+                                h2 IFMLEdit.org
+                                    br
+                                    small is an open source on-line tool offered to the software engineering community, usable for model driven engineering education and for rapid prototyping of web and mobile applications based on&nbsp;
+                                    small
+                                        a(href="http://ifml.org") IFML
+                                    small &nbsp;.
+                                h3 Do you want to help?
+                                    h4
+                                        a(href="https://github.com/B3rn475/IFMLEdit.org/issues") Fork on github
+                                        br
+                                        small Help us grow an make the tool better
+                                    h4
+                                        a(href="https://github.com/B3rn475/IFMLEdit.org/issues") Open an issues
+                                        br
+                                        small Send us suggestions or bug reports
+                                h3 The tool is build with:
+                                h4
+                                    a(href="https://github.com/B3rn475/ALMOsTjs") ALMOsT
+                                    br
+                                    small ALMOsT is an AgiLe MOdel Transformations framework for JavaScript
+                                h4
+                                    a(href="https://github.com/B3rn475/ALMOsTjs") ALMOsT-Joint
+                                    br
+                                    small ALMOsT-Joint is a plugin for ALMOsT which focuses on Graphical Notations
+                                h3 Related Research:
+                                    h4
+                                        a(href="https://dl.acm.org/citation.cfm?id=3104129") IFMLEdit.org: model driven rapid prototyping of mobile apps
+                                        br
+                                        small Carlo Bernaschina, Sara Comai, Piero Fraternali
+                                    h4
+                                        a(href="https://dl.acm.org/citation.cfm?id=3104079") Online model editing, simulation and code generation for web and mobile applications
+                                        br
+                                        small Carlo Bernaschina, Sara Comai, Piero Fraternali
+                                    H4
+                                        a(href="https://link.springer.com/chapter/10.1007/978-3-319-60131-1_5") ALMOsT.js: An Agile Model to Model and Model to Text Transformation Framework
+                                        br
+                                        small Carlo Bernaschina
         script(type='text/javascript', src='./js/lodash.min.js')
         script(type='text/javascript', src='./js/jquery.min.js')
         script(type='text/javascript', src='./js/jquery.mousewheel.min.js')
