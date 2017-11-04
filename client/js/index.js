@@ -334,10 +334,25 @@ $('#web-client .zip-try').click(function () {
     return false;
 });
 
-$('#mobile .zip-download').click(function () {
+$('#mobile #cordova .zip-download').click(function () {
     try {
         var start = new Date();
         saveAs(ifml2code.mobile(ifml.toJSON(ifmlModel)).generate({type: 'blob'}), 'mobileexample.zip');
+        $.notify({message: 'Convertion completed in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
+    } catch (e) {
+        if (e instanceof AException) {
+            $.notify({title: "<strong>Convertion Failed</strong><br>", message: e.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
+        } else {
+            $.notify({title: 'Convertion Failed.'}, {allow_dismiss: true, type: 'danger'});
+        }
+    }
+    return false;
+});
+
+$('#mobile #flutter .zip-download').click(function () {
+    try {
+        var start = new Date();
+        saveAs(ifml2code.flutter(ifml.toJSON(ifmlModel)).generate({type: 'blob'}), 'flutterexample.zip');
         $.notify({message: 'Convertion completed in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
     } catch (e) {
         if (e instanceof AException) {

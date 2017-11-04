@@ -10,6 +10,7 @@ var _ = require('lodash'),
     server = require('./server'),
     client = require('./client'),
     mobile = require('./mobile'),
+    flutter = require('./flutter'),
     ifml2code = { };
 
 exports.ifml2code = ifml2code;
@@ -26,5 +27,10 @@ ifml2code.client = function (ifml) {
 
 ifml2code.mobile = function (ifml) {
     var transformed = mobile.transform(createModel(ifml));
+    return compact(transformed);
+};
+
+ifml2code.flutter = function (ifml) {
+    var transformed = flutter.transform(createModel(ifml));
     return compact(transformed);
 };

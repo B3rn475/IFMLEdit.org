@@ -1,10 +1,8 @@
 <g class="ifml-element">
     <g class="scalable">
-        <rect class="ifml-viewcontainer-reference-rect almost-joint-no-grip" 
-width="1" height="1" fill="transparent"/>
+        <rect class="ifml-viewcontainer-reference-rect almost-joint-no-grip" width="1" height="1" fill="transparent"/>
     </g>
-    <rect class="ifml-viewcontainer-background-rect almost-joint-no-grip" 
-fill="white" stroke="black" stroke-width="0.5"/>
+    <rect class="ifml-viewcontainer-background-rect almost-joint-no-grip" fill="white" stroke="black" stroke-width="0.5"/>
     <rect class="ifml-viewcontainer-title-rect" height="20" stroke="black" fill='transparent' stroke-width="0.5"/>
     <text fill="black" font-family="monospace" font-size="14"/>
 </g>

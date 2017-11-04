@@ -225,77 +225,115 @@ html
                                                 a.btn.btn-default
                                                     li.glyphicon.glyphicon-th-large
                             .col-xs-12.col-md-7
-                                h3 Or...
-                                    a.btn.btn-primary.zip-download(href='#!') Download the Source Files
-                                h3 Once downloaded...
-                                ol
-                                    li
-                                        | Install&nbsp;
-                                        strong Node.js®
-                                        | &nbsp;following the instructions on the&nbsp;
-                                        a(href='https://nodejs.org/en/download/') official website
-                                    li
-                                        | Install&nbsp;
-                                        strong Cordova®
-                                        pre
-                                            span.text-primary npm&nbsp;
-                                            span.text-success install -g cordova
-                                        | For the platform specific dependencies follow the instructions on the&nbsp;
-                                        a(href='https://cordova.apache.org/docs/en/latest/guide/cli/index.html#install-pre-requisites-for-building') official website
-                                    li
-                                        | Unpack the
-                                        code mobileexample.zip
-                                        | file
-                                    li
-                                        | Open a terminal and navigate to the
-                                        code mobileexample
-                                        | folder:
-                                        pre
-                                            span.text-primary cd&nbsp;
-                                            span.text-success path_to_workspace/mobileexample
-                                    li
-                                        | Install all the dependencies running the command:
-                                        pre
-                                            span.text-primary npm&nbsp;
-                                            span.text-success install
-                                    li
-                                        | Rebuild sources after a code change:
-                                        pre
-                                            span.text-primary npm&nbsp;
-                                            span.text-success run-script build
-                                    li
-                                        | Add the target platforms
-                                        pre
-                                            span.text-primary cordova&nbsp;
-                                            span.text-success platform add android
-                                            br
-                                            span.text-primary cordova&nbsp;
-                                            span.text-success platform add ios
-                                            br
-                                            span.text-primary cordova&nbsp;
-                                            span.text-success platform add ...
-                                    li
-                                        | Build the application
-                                        pre
-                                            span.text-primary cordova&nbsp;
-                                            span.text-success build android
-                                            br
-                                            span.text-primary cordova&nbsp;
-                                            span.text-success build ios
-                                            br
-                                            span.text-primary cordova&nbsp;
-                                            span.text-success build ...
-                                    li
-                                        | Run the application
-                                        pre
-                                            span.text-primary cordova&nbsp;
-                                            span.text-success run android
-                                            br
-                                            span.text-primary cordova&nbsp;
-                                            span.text-success run ios
-                                            br
-                                            span.text-primary cordova&nbsp;
-                                            span.text-success run ...
+                                ul.nav.nav-tabs(role='tablist')
+                                    li.active(role='presentation')
+                                        a(role='tab', data-toggle='tab', aria-controls='cordova', href='#cordova') Cordova
+                                    li(role="presentation")
+                                        a(role='tab', data-toggle='tab', aria-controls='flutter', href='#flutter') Flutter
+                                .tab-content
+                                    #cordova.tab-pane.active(role='tabpanel')
+                                        h3 Or...
+                                        a.btn.btn-primary.zip-download(href='#!') Download the Source Files
+                                        h3 Once downloaded...
+                                        ol
+                                            li
+                                                | Install&nbsp;
+                                                strong Node.js®
+                                                | &nbsp;following the instructions on the&nbsp;
+                                                a(href='https://nodejs.org/en/download/') official website
+                                            li
+                                                | Install&nbsp;
+                                                strong Cordova®
+                                                pre
+                                                    span.text-primary npm&nbsp;
+                                                    span.text-success install -g cordova
+                                                | For the platform specific dependencies follow the instructions on the&nbsp;
+                                                a(href='https://cordova.apache.org/docs/en/latest/guide/cli/index.html#install-pre-requisites-for-building') official website
+                                            li
+                                                | Unpack the
+                                                code mobileexample.zip
+                                                | file
+                                            li
+                                                | Open a terminal and navigate to the
+                                                code mobileexample
+                                                | folder:
+                                                pre
+                                                    span.text-primary cd&nbsp;
+                                                    span.text-success path_to_workspace/mobileexample
+                                            li
+                                                | Install all the dependencies running the command:
+                                                pre
+                                                    span.text-primary npm&nbsp;
+                                                    span.text-success install
+                                            li
+                                                | Rebuild sources after a code change:
+                                                pre
+                                                    span.text-primary npm&nbsp;
+                                                    span.text-success run-script build
+                                            li
+                                                | Add the target platforms
+                                                pre
+                                                    span.text-primary cordova&nbsp;
+                                                    span.text-success platform add android
+                                                    br
+                                                    span.text-primary cordova&nbsp;
+                                                    span.text-success platform add ios
+                                                    br
+                                                    span.text-primary cordova&nbsp;
+                                                    span.text-success platform add ...
+                                            li
+                                                | Build the application
+                                                pre
+                                                    span.text-primary cordova&nbsp;
+                                                    span.text-success build android
+                                                    br
+                                                    span.text-primary cordova&nbsp;
+                                                    span.text-success build ios
+                                                    br
+                                                    span.text-primary cordova&nbsp;
+                                                    span.text-success build ...
+                                            li
+                                                | Run the application
+                                                pre
+                                                    span.text-primary cordova&nbsp;
+                                                    span.text-success run android
+                                                    br
+                                                    span.text-primary cordova&nbsp;
+                                                    span.text-success run ios
+                                                    br
+                                                    span.text-primary cordova&nbsp;
+                                                    span.text-success run ...
+                                    #flutter.tab-pane(role='tabpanel')
+                                        .alert.alert-warning(role="alert") Experimental
+                                        h3 Or...
+                                        a.btn.btn-primary.zip-download(href='#!') Download the Source Files
+                                        h3 Once downloaded...
+                                        ol
+                                            li
+                                                | Install&nbsp;
+                                                strong Flutter®
+                                                | &nbsp;following the instructions on the&nbsp;
+                                                a(href='https://flutter.io/setup/') official website
+                                            li
+                                                | Unpack the
+                                                code flutterexample.zip
+                                                | file
+                                            li
+                                                | Open a terminal and navigate to the folder where you unpacked the zip
+                                            li
+                                                | Create all the support files:
+                                                pre
+                                                    span.text-primary flutter&nbsp;
+                                                    span.text-success create&nbsp;
+                                                    span.text-success flutterexample
+                                            li
+                                                | Run the application:
+                                                pre
+                                                    span.text-primary cd&nbsp;
+                                                    span.text-success path_to_workspace/mobileexample
+                                                    br
+                                                    span.text-primary flutter&nbsp;
+                                                    span.text-success run
                                 br
                                 br
                                 br
