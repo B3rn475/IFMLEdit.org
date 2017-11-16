@@ -8,14 +8,17 @@ var $ = require('jquery'),
     ko = require('knockout'),
     window = require('window'),
     createZip = require('jszip'),
+    Promise = require('bluebird'),
     createNamespace = require('./datastore').Namespace,
     namespace = createNamespace(),
     requires = {
         jquery: $,
         knockout: ko,
         nedb: namespace.nedb,
-        bluebird: require('bluebird')
+        bluebird: Promise
     };
+
+Promise.config({cancellation: true});
 
 function load(folder, file) {
     var module = { exports: {} };
