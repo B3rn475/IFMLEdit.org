@@ -59,7 +59,6 @@ gulp.task('favicon', function () {
 gulp.task('vendor', function () {
     return merge(
         gulp.src(['./node_modules/jquery/dist/jquery.js',
-                './node_modules/jquery-mousewheel/jquery.mousewheel.js',
                 './node_modules/backbone/backbone.js',
                 './node_modules/jointjs/dist/joint.js',
                 './node_modules/bootstrap/dist/js/bootstrap.js',
