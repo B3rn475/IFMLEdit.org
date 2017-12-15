@@ -1,0 +1,22 @@
+import '../commands.dart';
+
+<% if (forceBindings || (bindings && bindings.length)) { -%>
+void invoke(CommandsBroker broker, Map<String, String> data) {
+<% } else { -%>
+void invoke(CommandsBroker broker) {
+<% } -%>
+  broker.add(const ActivateCommand(null, '<%= targetTop %>'));
+<% for (var i = 0 ; i < targetActives.length; i++) { -%>
+  broker.add(const ActivateCommand('<%=targetActives[i].xor %>', '<%=targetActives[i].child %>'));
+<% }
+   if (bindings && bindings.length) { -%>
+  final Map<String, String> target = <String, String>{
+<% for (var i = 0 ; i < bindings.length; i++) { -%>
+    '<%=bindings[i].input %>': data['<%=bindings[i].output %>'],
+<% } -%>
+  };
+  broker.add(new SetCommand('<%= target %>', target));
+<% } else { -%>
+  broker.add(const SetCommand('<%= target %>'));
+<% } -%>
+}

@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+import 'main_application.dart';
+import 'commands.dart';
+
+void main() {
+  CommandsBroker broker = new CommandsBroker();
+  broker.add(new SetCommand(null));
+  runApp(new FlutterExampleApp(broker));
+}
+
+class FlutterExampleApp extends StatelessWidget {
+  final CommandsBroker broker;
+
+  FlutterExampleApp(this.broker);
+
+  @overrride
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: 'Flutter Example',
+      theme: new ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: new Commands(
+        broker: broker,
+        child: new MainApplication(),
+      )
+    );
+  }
+}

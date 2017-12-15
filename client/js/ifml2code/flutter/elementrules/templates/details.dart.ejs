@@ -1,0 +1,162 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import '../commands.dart';
+import '../repositories/<%=collection %>.dart';
+<% for (var i = 0; i < events.length; i++) { -%>
+import '../events/<%=events[i].id %>.dart' as E<%=i %>;
+<% } -%>
+
+enum _Status {clear, ready, computed}
+
+class ViewElement extends StatefulWidget {
+  const ViewElement();
+  static const String id = '<%=id %>';
+
+  // TODO: inject
+  final Repository repository = const Repository();
+
+  @override
+  _ViewElementState createState() => new _ViewElementState();
+}
+
+class _ViewElementState extends State<ViewElement> {
+  CommandsBroker broker;
+  StreamSubscription sub;
+
+  _Status _status = _Status.ready;
+  String _id;
+  Map<String, String> _item;
+
+  final List<PropagateCallback> _propagateCallbacks = <PropagateCallback>[];
+
+<% if (incomings.length) { -%>
+  Future _propagate() async {
+    await Future.wait([
+<%     for (var i = 0; i < incomings.length; i++) { -%>
+      () async {
+        final Completer<Map<String, String>> completer =
+            new Completer<Map<String, String>>();
+        broker.add(new PropagateCommand('<%=incomings[i].source %>', completer.complete));
+        final Map<String, String> partial = await completer.future;
+<%         var bindings = incomings[i].bindings;
+           for (var k = 0; k < bindings.length; k++) { -%>
+        _id = _id ?? partial['<%=bindings[k].output %>'];
+<%         } -%>
+      }(),
+<%     } -%>
+    ]);
+    setState(() {
+      _status = _Status.ready;
+    });
+    await _compute();
+  }
+
+<% } -%>
+  Future _compute() async {
+    final item = await widget.repository.findById(_id);
+    setState(() {
+      _status = _Status.computed;
+      _item = item;
+    });
+    _propagateCallbacks.forEach((callback) => callback(_item));
+    _propagateCallbacks.clear();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final Commands commands = Commands.of(context);
+    if (commands.broker == broker) {
+      return;
+    }
+    if (broker != null) {
+      broker.unregister(ViewElement.id);
+      sub.cancel();
+    }
+    broker = commands.broker;
+    sub = broker.stream
+      .where((c) => c.target == ViewElement.id)
+      .listen((c) {
+        if (c is SetCommand) {
+          setState(() {
+            _id = c.input['id'];
+            _status = _Status.ready;
+            _item = null;
+          });
+<% if (incomings.length) { -%>
+          _propagate();
+<% } else { -%>
+          _compute();
+<% } -%>
+        } else if (c is PropagateCommand) {
+          if (_status == _Status.computed) {
+            c.callback(_item);
+          } else {
+            _propagateCallbacks.add(c.callback);
+          }
+        }
+      });
+    broker.register(ViewElement.id);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    broker.unregister(ViewElement.id);
+    broker = null;
+    sub.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final CommandsBroker broker = Commands.of(context).broker;
+    final List<Widget> children = <Widget>[
+      const ListTile(title: const Text('<%=name %>',
+        style: const TextStyle(fontWeight: FontWeight.bold))),
+    ];
+    if (_item != null) {
+      children.addAll(<Widget>[
+        new Container(
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget> [
+<% if (fields.length === 1) { -%>
+              new ListTile(
+                title: new Text(_item['<%= fields[0] %>']),
+              ),
+<% } else {
+        for (var i = 0; i < fields.length; i++) { -%>
+              const Text('<%=fields[i] %>',
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+              new Text(_item['<%=fields[i] %>']),
+<%     }
+   } -%>
+              new ButtonBar(
+                children: <Widget>[
+<% for (var i = 0; i < events.length; i++) { -%>
+                  new FlatButton(
+<%     if (events[i].bindings && events[i].bindings.length) { -%>
+                    onPressed: () => E<%=i %>.invoke(broker, _item),
+<%     } else { -%>
+                    onPressed: () => E<%=i %>.invoke(broker),
+<%     } -%>
+                    child: const Text('<%=events[i].name %>')
+                  ),
+<% } -%>
+                ]
+              ),
+            ]
+          )
+        ),
+      ]);
+    }
+    return new Card(
+      child: new Container(
+        child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: children
+        )
+      )
+    );
+  }
+}

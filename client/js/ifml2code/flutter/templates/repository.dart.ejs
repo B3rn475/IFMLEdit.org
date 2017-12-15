@@ -1,0 +1,28 @@
+import 'dart:async';
+
+const List<Map<String, String>> _defaults = const <Map<String, String>>[
+<% for(var i=0; i < Math.min(1000, Math.pow(4, Math.max(fields.length, 1))); ++i) { -%>
+    const {"id": "<%= i %>"<% for(var f=0; f < fields.length; ++f) { %>, "<%= fields[f] %>": "<%= Math.floor(i / Math.pow(4, fields.length - f - 1)) % 4 %>"<% } %>},
+<% } -%>
+];
+
+class Repository {
+    const Repository();
+
+    Future<Map<String, String>> findById(String id) async {
+        final Iterable<Map<String, String>> matches
+            = _defaults.where((Map<String, String> element) => element["id"] == id);
+        if (matches.isNotEmpty) {
+            return matches.single;
+        }
+        return null;
+    }
+
+    Future<Iterable<Map<String, String>>> find(Map<String, String> filters) async {
+      if (filters.isEmpty) {
+        return _defaults;
+      }
+      return _defaults.where((Map<String, String> element)
+        => filters.keys.every((String key) => element[key] == filters[key]));
+    }
+}

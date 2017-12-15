@@ -1,0 +1,19 @@
+import '../commands.dart';
+import '../actions/<%=target %>.dart' as A;
+
+<% if (bindings && bindings.length) { -%>
+void invoke(CommandsBroker broker, Map<String, String> data) {
+<% } else { -%>
+void invoke(CommandsBroker broker) {
+<% }
+   if (bindings && bindings.length) { -%>
+  final Map<String, String> parameters = <String, String>{
+<% for (var i = 0 ; i < bindings.length; i++) { -%>
+    '<%=bindings[i].input %>': data['<%=bindings[i].output %>'],
+<% } -%>
+  };
+  A.execute(broker, parameters);
+<% } else { -%>
+  A.execute(broker);
+<% } -%>
+}

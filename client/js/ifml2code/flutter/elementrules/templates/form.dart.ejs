@@ -1,0 +1,163 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import '../commands.dart';
+<% for (var i = 0; i < events.length; i++) { -%>
+import '../events/<%=events[i].id %>.dart' as E<%=i %>;
+<% } -%>
+
+enum _Status {clear, ready, computed}
+
+class ViewElement extends StatefulWidget {
+  const ViewElement();
+  static const String id = '<%=id %>';
+
+  @override
+  _ViewElementState createState() => new _ViewElementState();
+}
+
+class _ViewElementState extends State<ViewElement> {
+  CommandsBroker broker;
+  StreamSubscription sub;
+
+  _Status _status = _Status.ready;
+  Map<String, String> _input;
+  Map<String, TextEditingController> _fields;
+  Map<String, InputDecoration> _errors;
+
+  Map<String, String> get _output => new Map.fromIterable(
+    _fields.keys,
+    value: (key) => _fields[key].text
+  );
+
+  final List<PropagateCallback> _propagateCallbacks = <PropagateCallback>[];
+
+<% if (incomings.length) { -%>
+  Future _propagate() async {
+    await Future.wait([
+<%     for (var i = 0; i < incomings.length; i++) { -%>
+      () async {
+        final Completer<Map<String, String>> completer =
+            new Completer<Map<String, String>>();
+        broker.add(new PropagateCommand('<%=incomings[i].source %>', completer.complete));
+        final Map<String, String> partial = await completer.future;
+<%         var bindings = incomings[i].bindings;
+           for (var k = 0; k < bindings.length; k++) { -%>
+        _input['<%=bindings[k].input %>'] = _input['<%=bindings[k].input %>'] ?? partial['<%=bindings[k].output %>'];
+<%         } -%>
+      }(),
+<%     } -%>
+    ]);
+    setState(() {
+      _status = _Status.ready;
+    });
+    await _compute();
+  }
+
+<% } -%>
+  Future _compute() async {
+    final Map<String, TextEditingController> fields = <String, TextEditingController>{
+<% for (var i = 0; i < fields.length; i++) { -%>
+      '<%=fields[i] %>': new TextEditingController(text: _input['<%=fields[i] %>'] ?? ''),
+<% } -%>
+    };
+    final Map<String, InputDecoration> errors = <String, InputDecoration>{
+<% for (var i = 0; i < fields.length; i++) { -%>
+      '<%=fields[i] %>': new InputDecoration(errorText: _input['<%=fields[i] %>-error']),
+<% } -%>
+    };
+    setState(() {
+      _status = _Status.computed;
+      _fields = fields;
+      _errors = errors;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final Commands commands = Commands.of(context);
+    if (commands.broker == broker) {
+      return;
+    }
+    if (broker != null) {
+      broker.unregister(ViewElement.id);
+      sub.cancel();
+    }
+    broker = commands.broker;
+    sub = broker.stream
+      .where((c) => c.target == ViewElement.id)
+      .listen((c) {
+        if (c is SetCommand) {
+          setState(() {
+<% if (incomings.length) { -%>
+            _input = new Map<String, String>.from(c.input);
+            _status = _Status.clear;
+<% } else { -%>
+            _input = c.input;
+            _status = _Status.ready;
+<% } -%>
+            _fields = null;
+            _errors = null;
+          });
+<% if (incomings.length) { -%>
+          _propagate();
+<% } else { -%>
+          _compute();
+<% } -%>
+        } else if (c is PropagateCommand) {
+          if (_status == _Status.computed) {
+            c.callback(_output);
+          } else {
+            _propagateCallbacks.add(c.callback);
+          }
+        }
+      });
+    broker.register(ViewElement.id);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    broker.unregister(ViewElement.id);
+    broker = null;
+    sub.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final CommandsBroker broker = Commands.of(context).broker;
+    final List<Widget> children = <Widget> [
+      new ListTile( title: const Text('<%=name %>',
+        style: const TextStyle(fontWeight: FontWeight.bold)))
+    ];
+    if (_fields != null) {
+      children.addAll(<Widget>[
+<% for (var i = 0; i < fields.length; i++) { -%>
+        const Text('<%=fields[i] %>'),
+        new TextField(
+          controller: _fields['<%=fields[i] %>'],
+          decoration: _errors['<%=fields[i] %>'],
+        ),
+<% }
+   for (var i = 0; i < events.length; i++) { -%>
+        new RaisedButton(
+<%     if (events[i].bindings && events[i].bindings.length) { -%>
+          onPressed: () => E<%=i %>.invoke(broker, _output),
+<%     } else { -%>
+          onPressed: () => E<%=i %>.invoke(broker),
+<%     } -%>
+          child: const Text('<%=events[i].name %>')
+        ),
+<% } -%>
+      ]);
+    }
+    return new Card(
+      child: new Container(
+        child: new Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: children
+        )
+      )
+    );
+  }
+}

@@ -1,0 +1,111 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import '../commands.dart';
+<% for (var i = 0; i < children.length; i++) { -%>
+import '<%=children[i].id %>.dart' as C<%=i %>;
+<% }
+   for (var i = 0; i < events.length; i++) { -%>
+import '../events/<%=events[i].id %>.dart' as E<%=i %>;
+<% } -%>
+
+class ViewElement extends StatefulWidget {
+  const ViewElement();
+  static const String id = '<%=id %>';
+  @override
+  _ViewElementState createState() => new _ViewElementState();
+}
+
+class _ViewElementState extends State<ViewElement> {
+  CommandsBroker broker;
+  StreamSubscription sub;
+  String current;
+
+  @override
+  void didChangeDependencies() {
+      super.didChangeDependencies();
+      final Commands commands = Commands.of(context);
+      if (commands.broker == broker) {
+          return;
+      }
+      if (broker != null) {
+        broker.unregister(ViewElement.id);
+        sub.cancel();
+      }
+      broker = commands.broker;
+      sub = broker.stream
+        .where((c) => c.target == ViewElement.id)
+        .listen((c) {
+          if (c is ActivateCommand) {
+            if (c.child != current) {
+              setState(() {
+                current = c.child;
+              });
+            }
+          } else if (c is SetCommand) {
+            setState(() {
+<% if (defaultChild) { -%>
+              current = '<%=defaultChild %>';
+<% } else { -%>
+              current = null;
+<% } -%>
+            });
+<% if (defaultChild) { -%>
+            scheduleMicrotask(() {
+              broker.add(new SetCommand('<%=defaultChild %>'));
+            });
+<% } -%>
+          }
+        });
+    broker.register(ViewElement.id);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    broker.unregister(ViewElement.id);
+    broker = null;
+    sub.cancel();
+  }
+
+  Widget _build(BuildContext context) {
+    switch (current) {
+<% for (var i = 0; i < children.length; i++) { -%>
+      case '<%=children[i].id %>':
+        // <%=children[i].name %>
+        return const C<%=i %>.ViewElement();
+<% } -%>
+      default:
+        return const Text('');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final CommandsBroker broker = Commands.of(context).broker;
+    return new Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget> [
+        new Row(
+          children: <Widget>[
+<% for (var i = 0; i < landmarks.length; i++) { -%>
+            new RaisedButton(
+              onPressed: () {
+                broker.add(const ActivateCommand(ViewElement.id, '<%=landmarks[i].id %>'));
+                broker.add(const SetCommand('<%=landmarks[i].id %>'));
+              },
+              child: const Text('<%=landmarks[i].name %>')
+            ),
+<% } -%>
+          ]
+        ),
+        _build(context),
+<% for (var i = 0; i < events.length; i++) { -%>
+        new RaisedButton(
+          onPressed: () => E<%=i %>.invoke(broker),
+          child: const Text('<%=events[i].name %>')
+        ),
+<% } -%>
+      ]
+    );
+  }
+}

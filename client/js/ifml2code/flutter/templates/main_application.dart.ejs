@@ -1,0 +1,92 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'commands.dart';
+<% for (var i = 0; i < children.length; i++) { -%>
+import 'widgets/<%=children[i] %>.dart' as C<%=i %>;
+<% } -%>
+
+class MainApplication extends StatefulWidget {
+  @override
+  _MainApplicationState createState() => new _MainApplicationState();
+}
+
+class _MainApplicationState extends State<MainApplication> {
+  CommandsBroker broker;
+  StreamSubscription sub;
+  String current;
+
+  @override
+  void didChangeDependencies() {
+      super.didChangeDependencies();
+      final Commands commands = Commands.of(context);
+      if (commands.broker == broker) {
+          return;
+      }
+      if (broker != null) {
+        broker.unregister(ViewElement.id);
+        sub.cancel();
+      }
+      broker = commands.broker;
+      sub = broker.stream
+        .where((c) => c.target == null)
+        .listen((c) {
+          if (c is ActivateCommand) {
+            setState(() {
+              current = c.child;
+            });
+          } else if (c is SetCommand) {
+<% if (defaultChild) { -%>
+            setState(() {
+              current = '<%=defaultChild %>';
+            });
+            broker.add(new SetCommand('<%=defaultChild %>'));
+<% } -%>
+          }
+        });
+    broker.register(null);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    broker.unregister(null);
+    broker = null;
+    sub.cancel();
+  }
+
+  Widget _build(BuildContext context) {
+    switch (current) {
+<% for (var i = 0; i < children.length; i++) { -%>
+      case '<%=children[i] %>':
+        return const C<%=i %>.ViewElement();
+<% } -%>
+      default:
+        return const Text('Empty Application - Forgot a default?');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: const Text('Flutter Example')
+      ),
+      body: new SingleChildScrollView(
+        child: _build(context)
+      ),
+      drawer: new Column(
+        children: <Widget>[
+<% for (var i = 0; i < landmarks.length; i++) { -%>
+          new RaisedButton(
+            onPressed: () {
+              broker.add(const ActivateCommand(ViewElement.id, '<%=landmarks[i].id %>'));
+              broker.add(const SetCommand('<%=landmarks[i].id %>'));
+            },
+            child: const Text('<%=landmarks[i].name %>')
+          ),
+<% } -%>
+        ]
+      )
+    );
+  }
+}

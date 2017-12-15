@@ -1,0 +1,41 @@
+import 'dart:async';
+import '../commands.dart';
+<% for (var i = 0; i < events.length; i++) { -%>
+import '../events/<%=events[i].id %>.dart' as E<%=i %>;
+<% } -%>
+
+<% if (parameters.length) { -%>
+Future execute(CommandsBroker broker, Map<String, String> parameters) async {
+  // Parameters:
+<%     for (var i = 0; i < parameters.length; i += 1) { -%>
+  // parameters['<%= parameters[i]%>']
+<%     }
+   } else { -%>
+void invoke(CommandsBroker broker) async {
+<% } -%>
+
+   // TODO: Implement
+
+<% if (events.length) {
+       if (results.length) { -%>
+  final Map<String, String> results = <String, String>{
+<%        for (var i = 0; i < results.length; i += 1) {
+              if (parameters.indexOf(results[i]) === -1) { -%>
+    '<%= results[i]%>': '0',
+<%            } else { -%>
+    '<%= results[i]%>': parameters['<%= results[i]%>'],
+<%            }
+          } -%>
+  };
+  E0.invoke(broker, results); // <%= events[0].name %>
+<%        for (var i = 1; i < events.length; i++) { -%>
+  E<%=i %>.invoke(broker, results);  // <%= events[i].name %>
+<%        }
+       } else { -%>
+   E0.invoke(broker); // <%= events[0].name %>
+<%        for (var i = 1; i < events.length; i++) { -%>
+   E<%=i %>.invoke(broker);  // <%= events[i].name %>
+<%        }
+       }
+   } -%>
+}

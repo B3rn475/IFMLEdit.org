@@ -1,0 +1,74 @@
+import 'dart:async';
+import 'dart:collection';
+import 'package:flutter/material.dart';
+
+abstract class Command {
+  String get target;
+}
+
+class ActivateCommand implements Command {
+  final String target;
+  final String child;
+  const ActivateCommand(this.target, this.child);
+}
+
+class SetCommand implements Command {
+  final String target;
+  final Map<String, String> input;
+  const SetCommand(this.target, [this.input = const <String, String>{}]);
+}
+
+typedef void PropagateCallback(Map<String, String> input);
+
+class PropagateCommand implements Command {
+  final String target;
+  final PropagateCallback callback;
+  PropagateCommand(this.target, this.callback);
+}
+
+class CommandsBroker {
+  final StreamController<Command> _controller
+      = new StreamController<Command>.broadcast(sync: true);
+  final Set<String> _registered = new Set<String>.from([]);
+  final Queue<Command> _queue = new Queue<Command>();
+
+  void add(Command command) {
+    assert(command != null);
+    if (_queue.isNotEmpty || !_registered.contains(command.target)) {
+      _queue.addLast(command);
+    } else {
+  	  _controller.add(command);
+    }
+  }
+
+  void register(String id) {
+    _registered.add(id);
+    while (_queue.isNotEmpty && _registered.contains(_queue.first.target)) {
+      _controller.add(_queue.removeFirst());
+    }
+  }
+
+  void unregister(String id) {
+    _registered.remove(id);
+  }
+
+  Stream<Command> get stream => _controller.stream;
+}
+
+class Commands extends InheritedWidget {
+  Commands({
+    Key key,
+    @required this.broker,
+    @required Widget child,
+  }): assert(broker != null),
+      assert(child != null),
+      super(key: key, child: child);
+
+  final CommandsBroker broker;
+
+  static Commands of(BuildContext context) =>
+      context.inheritFromWidgetOfExactType(Commands);
+
+  @override
+  bool updateShouldNotify(Commands old) => broker != old.broker;
+}

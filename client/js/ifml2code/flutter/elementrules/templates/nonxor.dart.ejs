@@ -1,0 +1,76 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import '../commands.dart';
+<% for (var i = 0; i < children.length; i++) { -%>
+import '<%=children[i].id %>.dart' as C<%=i %>;
+<% }
+   for (var i = 0; i < events.length; i++) { -%>
+import '../events/<%=events[i].id %>.dart' as E<%=i %>;
+<% } -%>
+
+class ViewElement extends StatefulWidget {
+  const ViewElement();
+  static const String id = '<%=id %>';
+
+  @override
+  _ViewElementState createState() => new _ViewElementState();
+}
+
+class _ViewElementState extends State<ViewElement> {
+  CommandsBroker broker;
+  StreamSubscription sub;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final Commands commands = Commands.of(context);
+    if (commands.broker == broker) {
+      return;
+    }
+    if (broker != null) {
+      broker.unregister(ViewElement.id);
+      sub.cancel();
+    }
+    broker = commands.broker;
+    sub = broker.stream
+      .where((c) => c.target == ViewElement.id)
+      .listen((c) {
+        if (c is SetCommand) {
+          scheduleMicrotask(() {
+<% for (var i = 0; i < children.length; i++) { -%>
+            broker.add(const SetCommand('<%=children[i].id %>'));
+<% } -%>
+          });
+        }
+      });
+    broker.register(ViewElement.id);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    broker.unregister(ViewElement.id);
+    broker = null;
+    sub.cancel();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+      final CommandsBroker broker = Commands.of(context).broker;
+      return new Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget> [
+<% for (var i = 0; i < children.length; i++) { -%>
+          // <%=children[i].name %>
+          const C<%=i %>.ViewElement(),
+<% }
+   for (var i = 0; i < events.length; i++) { -%>
+          new RaisedButton(
+              onPressed: () => E<%=i %>.invoke(broker),
+              child: const Text('<%=events[i].name %>')
+          ),
+<% } -%>
+        ]
+      );
+  }
+}
