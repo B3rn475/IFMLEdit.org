@@ -197,7 +197,7 @@ $('#ifml > .sidebar .modal-example').click(function () {
         });
     }});
     return false;
-});
+}).click();
 
 $('#statistics > input[type=file]').change(function () {
     var reader = new FileReader(),
