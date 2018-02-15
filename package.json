@@ -1,6 +1,6 @@
 {
   "name": "ifmledit.org",
-  "version": "1.5.7",
+  "version": "1.5.8",
   "description": "A basic IFML WebEditor",
   "private": true,
   "main": "index.js",
