@@ -16,7 +16,7 @@ var gulp = require('gulp'),
     minifyjs = require('gulp-uglify'),
     minifyjson = require('gulp-json-minify'),
     merge = require('merge-stream'),
-    jade = require('gulp-jade'),
+    pug = require('gulp-pug'),
     icongen = require('icon-gen');
 
 var production = process.env.NODE_ENV === 'production',
@@ -33,8 +33,8 @@ gulp.task('clean', function () {
 });
 
 gulp.task('html', function () {
-    return gulp.src('./client/index.jade')
-        .pipe(jade({
+    return gulp.src('./client/index.pug')
+        .pipe(pug({
             locals: {base_path: base_path},
             pretty: !production
         }))
@@ -179,8 +179,8 @@ gulp.task('demo-web-server-index', function () {
 });
 
 gulp.task('demo-web-client-html', function () {
-    return gulp.src('./client/demo-web-client/index.jade')
-        .pipe(jade({
+    return gulp.src('./client/demo-web-client/index.pug')
+        .pipe(pug({
             locals: {base_path: base_path},
             pretty: !production
         }))
@@ -188,8 +188,8 @@ gulp.task('demo-web-client-html', function () {
 });
 
 gulp.task('demo-mobile-html', function () {
-    return gulp.src('./client/demo-mobile/index.jade')
-        .pipe(jade({
+    return gulp.src('./client/demo-mobile/index.pug')
+        .pipe(pug({
             locals: {base_path: base_path},
             pretty: !production
         }))

@@ -10,7 +10,7 @@ var createZip = require('jszip'),
     namespace = createNamespace(),
     requires = {
         fs: require('fs'),
-        jade: require('jade'),
+        pug: require('pug'),
         express: require('express'),
         'body-parser': require('body-parser'),
         bluebird: require('bluebird'),

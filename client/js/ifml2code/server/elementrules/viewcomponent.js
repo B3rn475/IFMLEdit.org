@@ -45,8 +45,8 @@ exports.rules = [
                     .value(),
                 fields = element.attributes.fields,
                 obj = {};
-            obj[tid + '-view'] = {children: id + '-jade'};
-            obj[id + '-jade'] = {name: id + '.jade', content: require('./templates/list.jade.ejs')({id: id, name: name, fields: fields, events: events, selected: selected})};
+            obj[tid + '-view'] = {children: id + '-pug'};
+            obj[id + '-pug'] = {name: id + '.pug', content: require('./templates/list.pug.ejs')({id: id, name: name, fields: fields, events: events, selected: selected})};
             obj[tid + '-viewmodel'] = {children: id + '-view-js'};
             obj[id + '-view-js'] = {name: id + '.js', content: require('./templates/list.js.ejs')({id: id, incomings: incomings, collection: collection, fields: fields, filters: filters, events: unfilteredevents})};
             return obj;
@@ -86,8 +86,8 @@ exports.rules = [
                     .value(),
                 fields = element.attributes.fields,
                 obj = {};
-            obj[tid + '-view'] = {children: id + '-jade'};
-            obj[id + '-jade'] = {name: id + '.jade', content: require('./templates/form.jade.ejs')({id: id, name: name, fields: fields, events: events})};
+            obj[tid + '-view'] = {children: id + '-pug'};
+            obj[id + '-pug'] = {name: id + '.pug', content: require('./templates/form.pug.ejs')({id: id, name: name, fields: fields, events: events})};
             obj[tid + '-viewmodel'] = {children: id + '-view-js'};
             obj[id + '-view-js'] = {name: id + '.js', content: require('./templates/form.js.ejs')({id: id, incomings: incomings, fields: fields, events: events})};
             return obj;
@@ -121,8 +121,8 @@ exports.rules = [
                     .value(),
                 fields = element.attributes.fields,
                 obj = {};
-            obj[tid + '-view'] = {children: id + '-jade'};
-            obj[id + '-jade'] = {name: id + '.jade', content: require('./templates/details.jade.ejs')({id: id, name: name, fields: fields, events: events})};
+            obj[tid + '-view'] = {children: id + '-pug'};
+            obj[id + '-pug'] = {name: id + '.pug', content: require('./templates/details.pug.ejs')({id: id, name: name, fields: fields, events: events})};
             obj[tid + '-viewmodel'] = {children: id + '-js'};
             obj[id + '-js'] = {name: id + '.js', content: require('./templates/details.js.ejs')({id: id, incomings: incomings, collection: collection, fields: fields, events: events})};
             return obj;

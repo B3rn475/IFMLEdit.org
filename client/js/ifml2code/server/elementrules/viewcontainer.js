@@ -31,7 +31,7 @@ exports.rules = [
             obj[id + '-route'] = {isFolder: true, name: id, children: id + '-route-index'};
             obj[id + '-route-index'] = {name: 'index.js', content: require('./templates/route.page.index.js.ejs')({id: id})};
             obj[id + '-view'] = {isFolder: true, name: id, children: id + '-view-index'};
-            obj[id + '-view-index'] = {name: 'index.jade', content: require('./templates/view.index.jade.ejs')({id: id, name: name})};
+            obj[id + '-view-index'] = {name: 'index.pug', content: require('./templates/view.index.pug.ejs')({id: id, name: name})};
             obj[id + '-viewmodel'] = {isFolder: true, name: id, children: id + '-viewmodel-index'};
             obj[id + '-viewmodel-index'] = {name: 'index.js', content: require('./templates/viewmodel.index.js.ejs')({main: id, descendants: descendants})};
             return obj;
@@ -59,8 +59,8 @@ exports.rules = [
                 top = model.getTopLevelAncestor(element),
                 tid = top.id,
                 obj = {};
-            obj[tid + '-view'] = {children: id + '-jade'};
-            obj[id + '-jade'] = {name: id + '.jade', content: require('./templates/nonxor.jade.ejs')({id: id, children: children, events: events})};
+            obj[tid + '-view'] = {children: id + '-pug'};
+            obj[id + '-pug'] = {name: id + '.pug', content: require('./templates/nonxor.pug.ejs')({id: id, children: children, events: events})};
             obj[tid + '-viewmodel'] = {children: id + '-view-js'};
             obj[id + '-view-js'] = {name: id + '.js', content: require('./templates/nonxor.js.ejs')({id: id, children: children, events: events})};
             return obj;
@@ -104,8 +104,8 @@ exports.rules = [
                 tid = top.id,
                 path = model.isDefault(top) ? '' : tid,
                 obj = {};
-            obj[tid + '-view'] = {children: id + '-jade'};
-            obj[id + '-jade'] = {name: id + '.jade', content: require('./templates/xor.jade.ejs')({id: id, children: children, events: events, landmarks: landmarks})};
+            obj[tid + '-view'] = {children: id + '-pug'};
+            obj[id + '-pug'] = {name: id + '.pug', content: require('./templates/xor.pug.ejs')({id: id, children: children, events: events, landmarks: landmarks})};
             obj[tid + '-viewmodel'] = {children: id + '-view-js'};
             obj[id + '-view-js'] = {name: id + '.js', content: require('./templates/xor.js.ejs')({id: id, children: children, events: events, defaultChild: defaultChild, currentTopLevel: tid, landmarks: landmarks, path: path})};
             return obj;
