@@ -63,7 +63,7 @@ exports.rules = [
                 'repositories': {isFolder: true, name: 'repositories', children: 'repositories-index'},
                 'routes-index': {name: 'index.js', content: require('./templates/routes.index.js.ejs')({routes: routes})},
                 'actions-index': {name: 'index.js', content: require('./templates/actions.index.js.ejs')({actions: actions})},
-                'views-index': {name: 'index.jade', content: require('./templates/views.index.jade.ejs')({landmarks: landmarks})},
+                'views-index': {name: 'index.pug', content: require('./templates/views.index.pug.ejs')({landmarks: landmarks})},
                 'viewmodels-index': {name: 'index.js', content: require('./templates/viewmodels.index.js.ejs')({vms: vms})},
                 'repositories-index': {name: 'index.js', content: require('./templates/repositories.index.js.ejs')({collections: collections})}
             };
