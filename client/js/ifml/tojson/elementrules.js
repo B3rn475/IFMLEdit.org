@@ -5,13 +5,12 @@
 "use strict";
 
 var almost = require('almost'),
+    Rule = almost.Rule,
     createRule = almost.createRule;
 
 module.exports = [
     createRule(
-        function (element, model) {
-            return model.isElement(element);
-        },
+        Rule.always,
         function (element) {
             var statistics = element.get('statistics');
             return {

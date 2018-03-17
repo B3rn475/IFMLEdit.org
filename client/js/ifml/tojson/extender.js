@@ -14,6 +14,9 @@ exports.extend = createExtender({
         isViewComponent: function (element) {
             return element.get('type') === 'ifml.ViewComponent';
         },
+        isViewElement: function (element) {
+            return this.isViewContainer(element) || this.isViewComponent(element);
+        },
         isAction: function (element) {
             return element.get('type') === 'ifml.Action';
         },
@@ -40,16 +43,14 @@ exports.extend = createExtender({
         },
         isElement: function (element) {
             return this.isEvent(element) || this.isAction(element)
-                || this.isViewComponent(element) || this.isViewContainer(element)
-                || this.isFlow(element);
+                || this.isViewElement(element) || this.isFlow(element);
         },
         isElementWithPosition: function (element) {
             return this.isEvent(element) || this.isAction(element)
-                || this.isViewComponent(element) || this.isViewContainer(element);
+                || this.isViewElement(element);
         },
         isElementWithSize: function (element) {
-            return this.isAction(element) || this.isViewComponent(element)
-                || this.isViewContainer(element);
+            return this.isAction(element) || this.isViewElement(element);
         },
         isChildElement: function (element) {
             return this.isEvent(element) || this.isViewComponent(element) || (this.isViewContainer(element)
