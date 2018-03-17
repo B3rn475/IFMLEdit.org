@@ -6,12 +6,11 @@
 
 var elementRules = require('./elementrules'),
     extender = require('../extender'),
-    core = require('almost-core'),
-    createTransformer = require('almost').createTransformer;
+    almost = require('almost');
 
-var transformer = createTransformer({
+var transformer = almost.createTransformer({
         element: elementRules
-    }, core.concat());
+    }, almost.core.concat());
 
 exports.toJoint = function (model) {
     return transformer(extender.extend(model));

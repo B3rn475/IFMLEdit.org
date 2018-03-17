@@ -7,21 +7,23 @@
 var elementRules = require('./elementrules'),
     relationRules = require('./relationrules'),
     extender = require('../extender'),
-    core = require('almost-core'),
-    createTransformer = require('almost').createTransformer;
+    almost = require('almost');
 
-var transformer = createTransformer(
+var transformer = almost.createTransformer(
     {
         element: elementRules,
         relation: relationRules
     },
-    core.merge(
-        core.none(),
+    almost.core.merge(
+        almost.core.none(),
         {
-            elements: core.reduceBy('id', core.merge(core.mergeOrSingle(), {
-                id: core.first(),
-                embeds: core.concat()
-            }))
+            elements: almost.core.reduceBy('id', almost.core.merge(
+                almost.core.mergeOrSingle(),
+                {
+                    id: almost.core.first(),
+                    embeds: almost.core.concat()
+                }
+            ))
         }
     )
 );

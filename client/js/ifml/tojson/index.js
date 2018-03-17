@@ -6,7 +6,6 @@
 
 var elementRules = require('./elementrules'),
     extender = require('./extender'),
-    core = require('almost-core'),
     createTransformer = require('almost').createTransformer;
 
 var transformer = createTransformer({
