@@ -4,13 +4,14 @@
 /*jslint node: true, nomen: true */
 "use strict";
 
-var almost = require('almost'),
+var _ = require('lodash'),
+    almost = require('almost'),
     createRule = almost.createRule;
 
 module.exports = [
     createRule(
         function (element, model) {
-            return model.isPositionedElement(element);
+            return model.isElement(element);
         },
         function (element) {
             var statistics = element.get('statistics');
@@ -19,10 +20,47 @@ module.exports = [
                     id: element.id,
                     type: element.get('type'),
                     metadata: {
-                        graphics: {
-                            position: element.get('position')
-                        },
                         statistics: statistics && statistics.slice()
+                    }
+                }
+            };
+        }
+    ),
+    createRule(
+        function (element, model) {
+            return model.isElementWithPosition(element);
+        },
+        function (element) {
+            return {
+                elements: {
+                    id: element.id,
+                    metadata: {
+                        graphics: {
+                            position: {
+                                x: element.prop('position/x'),
+                                y: element.prop('position/y')
+                            }
+                        }
+                    }
+                }
+            };
+        }
+    ),
+    createRule(
+        function (element, model) {
+            return model.isElementWithSize(element);
+        },
+        function (element) {
+            return {
+                elements: {
+                    id: element.id,
+                    metadata: {
+                        graphics: {
+                            size: {
+                                height: element.prop('size/height'),
+                                width: element.prop('size/width')
+                            }
+                        }
                     }
                 }
             };
@@ -61,12 +99,11 @@ module.exports = [
                     id: element.id,
                     attributes: {
                         name: element.get('name'),
-                        parameters: (element.get('parameters') && element.get('parameters').slice()) || [],
-                        results: (element.get('results') && element.get('results').slice()) || []
+                        parameters: (element.get('parameters') || []).slice(),
+                        results: (element.get('results') || []).slice()
                     },
                     metadata: {
                         graphics: {
-                            size: element.get('size'),
                             parent: element.get('parent')
                         }
                     }
@@ -85,13 +122,8 @@ module.exports = [
                     attributes: {
                         name: element.get('name'),
                         stereotype: element.get('stereotype'),
-                        fields: (element.get('fields') && element.get('fields').slice()) || []
+                        fields: (element.get('fields') || []).slice()
                     },
-                    metadata: {
-                        graphics: {
-                            size: element.get('size')
-                        }
-                    }
                 }
             };
         }
@@ -121,7 +153,7 @@ module.exports = [
                 elements: {
                     id: element.id,
                     attributes: {
-                        filters: (element.get('filters') && element.get('filters').slice()) || []
+                        filters: (element.get('filters') || []).slice()
                     }
                 }
             };
@@ -142,11 +174,6 @@ module.exports = [
                         landmark: element.get('landmark'),
                         xor: element.get('xor')
                     },
-                    metadata: {
-                        graphics: {
-                            size: element.get('size')
-                        }
-                    }
                 }
             };
         }
@@ -156,20 +183,17 @@ module.exports = [
             return model.isFlow(element);
         },
         function (element) {
-            var vertices = element.get('vertices'),
-                statistics = element.get('statistics');
+            var vertices = element.get('vertices');
             return {
                 elements: {
                     id: element.id,
-                    type: element.get('type'),
                     attributes: {
                         bindings: element.get('bindings').slice()
                     },
                     metadata: {
                         graphics: {
                             vertices: vertices && vertices.slice()
-                        },
-                        statistics: statistics && statistics.slice()
+                        }
                     }
                 }
             };
@@ -198,7 +222,7 @@ module.exports = [
                 relations: {
                     type: 'source',
                     flow: element.id,
-                    source: element.get('source').id
+                    source: element.prop('source/id')
                 }
             };
         }
@@ -212,7 +236,7 @@ module.exports = [
                 relations: {
                     type: 'target',
                     flow: element.id,
-                    target: element.get('target').id
+                    target: element.prop('target/id')
                 }
             };
         }

@@ -9,27 +9,21 @@ var createExtender = require('almost-extend').createExtender;
 exports.extend = createExtender({
     custom: {
         isViewContainer: function (element) {
-            if (arguments.length < 1) { return false; }
             return element.get('type') === 'ifml.ViewContainer';
         },
         isViewComponent: function (element) {
-            if (arguments.length < 1) { return false; }
             return element.get('type') === 'ifml.ViewComponent';
         },
         isAction: function (element) {
-            if (arguments.length < 1) { return false; }
             return element.get('type') === 'ifml.Action';
         },
         isEvent: function (element) {
-            if (arguments.length < 1) { return false; }
             return element.get('type') === 'ifml.Event';
         },
         isDataFlow: function (element) {
-            if (arguments.length < 1) { return false; }
             return element.get('type') === 'ifml.DataFlow';
         },
         isNavigationFlow: function (element) {
-            if (arguments.length < 1) { return false; }
             return element.get('type') === 'ifml.NavigationFlow';
         },
         isFlow: function (element) {
@@ -44,13 +38,22 @@ exports.extend = createExtender({
         isListOrDetails: function (element) {
             return this.isList(element) || this.isDetails(element);
         },
-        isPositionedElement: function (element) {
+        isElement: function (element) {
+            return this.isEvent(element) || this.isAction(element)
+                || this.isViewComponent(element) || this.isViewContainer(element)
+                || this.isFlow(element);
+        },
+        isElementWithPosition: function (element) {
             return this.isEvent(element) || this.isAction(element)
                 || this.isViewComponent(element) || this.isViewContainer(element);
         },
+        isElementWithSize: function (element) {
+            return this.isAction(element) || this.isViewComponent(element)
+                || this.isViewContainer(element);
+        },
         isChildElement: function (element) {
-            return (this.isEvent(element) || this.isViewComponent(element) || this.isViewContainer(element))
-                && element.get('parent');
+            return this.isEvent(element) || this.isViewComponent(element) || (this.isViewContainer(element)
+                && element.get('parent'));
         }
     }
 });
