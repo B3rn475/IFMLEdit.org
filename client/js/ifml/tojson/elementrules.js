@@ -9,8 +9,8 @@ var almost = require('almost'),
 
 module.exports = [
     createRule(
-        function (element) {
-            return ['ifml.Event', 'ifml.Action', 'ifml.ViewComponent', 'ifml.ViewContainer'].includes(element.get('type'));
+        function (element, model) {
+            return model.isPositionedElement(element);
         },
         function (element) {
             var statistics = element.get('statistics');
@@ -29,8 +29,8 @@ module.exports = [
         }
     ),
     createRule(
-        function (element) {
-            return element.get('type') === 'ifml.Event';
+        function (element, model) {
+            return model.isEvent(element);
         },
         function (element) {
             return {
@@ -52,8 +52,8 @@ module.exports = [
         }
     ),
     createRule(
-        function (element) {
-            return element.get('type') === 'ifml.Action';
+        function (element, model) {
+            return model.isAction(element);
         },
         function (element) {
             return {
@@ -75,8 +75,8 @@ module.exports = [
         }
     ),
     createRule(
-        function (element) {
-            return element.get('type') === 'ifml.ViewComponent';
+        function (element, model) {
+            return model.isViewComponent(element);
         },
         function (element) {
             return {
@@ -97,8 +97,8 @@ module.exports = [
         }
     ),
     createRule(
-        function (element) {
-            return element.get('type') === 'ifml.ViewComponent' && ['list', 'details'].includes(element.get('stereotype'));
+        function (element, model) {
+            return model.isListOrDetails(element);
         },
         function (element) {
             return {
@@ -113,8 +113,8 @@ module.exports = [
 
     ),
     createRule(
-        function (element) {
-            return element.get('type') === 'ifml.ViewComponent' && element.get('stereotype') === 'list';
+        function (element, model) {
+            return model.isList(element);
         },
         function (element) {
             return {
@@ -129,8 +129,8 @@ module.exports = [
 
     ),
     createRule(
-        function (element) {
-            return element.get('type') === 'ifml.ViewContainer';
+        function (element, model) {
+            return model.isViewContainer(element);
         },
         function (element) {
             return {
@@ -152,8 +152,8 @@ module.exports = [
         }
     ),
     createRule(
-        function (element) {
-            return ['ifml.DataFlow', 'ifml.NavigationFlow'].includes(element.get('type'));
+        function (element, model) {
+            return model.isFlow(element);
         },
         function (element) {
             var vertices = element.get('vertices'),
@@ -176,9 +176,8 @@ module.exports = [
         }
     ),
     createRule(
-        function (element) {
-            return ['ifml.Event', 'ifml.ViewContainer', 'ifml.ViewComponent'].includes(element.get('type')) &&
-                element.get('parent');
+        function (element, model) {
+            return model.isChildElement(element);
         },
         function (element) {
             return {
@@ -191,8 +190,8 @@ module.exports = [
         }
     ),
     createRule(
-        function (element) {
-            return ['ifml.DataFlow', 'ifml.NavigationFlow'].includes(element.get('type'));
+        function (element, model) {
+            return model.isFlow(element);
         },
         function (element) {
             return {
@@ -205,8 +204,8 @@ module.exports = [
         }
     ),
     createRule(
-        function (element) {
-            return ['ifml.DataFlow', 'ifml.NavigationFlow'].includes(element.get('type'));
+        function (element, model) {
+            return model.isFlow(element);
         },
         function (element) {
             return {

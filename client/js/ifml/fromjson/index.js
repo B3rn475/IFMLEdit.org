@@ -10,5 +10,5 @@ var _ = require('lodash'),
     utils = require('almost-joint').utils;
 
 exports.fromJSON = function (model) {
-    return utils.sortCells(_.values(toJoint(transform(model))));
+    return utils.sortCells(toJoint(transform(model)));
 };

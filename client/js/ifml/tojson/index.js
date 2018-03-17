@@ -5,22 +5,16 @@
 "use strict";
 
 var elementRules = require('./elementrules'),
+    extender = require('./extender'),
     core = require('almost-core'),
     createTransformer = require('almost').createTransformer;
 
-var transformer = createTransformer(
-        {
-            element: elementRules
-        },
-        core.merge(
-            core.none(),
-            {
-                elements: core.reduceBy('id'),
-                relations: core.flatten()
-            }
-        )
-    );
+var transformer = createTransformer({
+        element: elementRules
+    }, 'm2a');
 
 exports.toJSON = function (graph) {
-    return transformer({elements: graph.getCells()});
+    return transformer(extender.extend({
+        elements: graph.getCells()
+    }));
 };
