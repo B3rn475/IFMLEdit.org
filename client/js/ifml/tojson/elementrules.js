@@ -4,8 +4,7 @@
 /*jslint node: true, nomen: true */
 "use strict";
 
-var _ = require('lodash'),
-    almost = require('almost'),
+var almost = require('almost'),
     createRule = almost.createRule;
 
 module.exports = [
