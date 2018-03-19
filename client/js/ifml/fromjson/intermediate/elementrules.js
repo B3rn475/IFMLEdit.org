@@ -86,10 +86,13 @@ module.exports = [
         },
         function (element) {
             return {
-                elements: {
+                elements: [{
+                    id: element.id,
+                    parent: element.metadata.graphics.parent
+                }, {
                     id: element.metadata.graphics.parent,
                     embeds: element.id
-                }
+                }]
             };
         }
     ),

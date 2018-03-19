@@ -14,23 +14,13 @@ module.exports = [
         },
         function (relation) {
             return {
-                elements: {
+                elements: [{
                     id: relation.child,
                     parent: relation.parent
-                }
-            };
-        }
-    ),
-    createRule(
-        function (relation, model) {
-            return model.isHierarchicalRelation(relation);
-        },
-        function (relation) {
-            return {
-                elements: {
+                }, {
                     id: relation.parent,
                     embeds: relation.child
-                }
+                }]
             };
         }
     ),
@@ -40,38 +30,16 @@ module.exports = [
         },
         function (relation) {
             return {
-                elements: {
+                elements: [{
                     id: relation.flow,
+                    parent: relation.source,
                     source: {
                         id: relation.source
                     }
-                }
-            };
-        }
-    ),
-    createRule(
-        function (relation, model) {
-            return model.isSourceRelation(relation);
-        },
-        function (relation) {
-            return {
-                elements: {
-                    id: relation.flow,
-                    parent: relation.source
-                }
-            };
-        }
-    ),
-    createRule(
-        function (relation, model) {
-            return model.isSourceRelation(relation);
-        },
-        function (relation) {
-            return {
-                elements: {
+                }, {
                     id: relation.source,
                     embeds: relation.flow
-                }
+                }]
             };
         }
     ),

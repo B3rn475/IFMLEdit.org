@@ -17,13 +17,15 @@ var transformer = almost.createTransformer(
     almost.core.merge(
         almost.core.none(),
         {
-            elements: almost.core.reduceBy('id', almost.core.merge(
-                almost.core.mergeOrSingle(),
-                {
-                    id: almost.core.first(),
-                    embeds: almost.core.concat()
-                }
-            ))
+            elements: almost.core.flatten(
+                almost.core.reduceBy('id', almost.core.merge(
+                    almost.core.mergeOrSingle(),
+                    {
+                        id: almost.core.first(),
+                        embeds: almost.core.flatten()
+                    }
+                ))
+            )
         }
     )
 );
