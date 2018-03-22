@@ -12,7 +12,7 @@ exports.rules = [
     createRule( // map list
         function (element, model) { return model.isViewComponent(element) && element.attributes.stereotype === 'list'; },
         function (element, model) {
-            var id = element.id,
+            var id = model.toId(element),
                 name = element.attributes.name,
                 collection = element.attributes.collection,
                 filters = element.attributes.filters,
@@ -33,7 +33,7 @@ exports.rules = [
                     .map(function (event) {
                         var flow = model.getOutbounds(event)[0],
                             target = flow && model.getTarget(flow);
-                        return { id: event.id, name: event.attributes.name, targetsAction: model.isAction(target, false)};
+                        return { id: model.toId(event), name: event.attributes.name, targetsAction: model.isAction(target, false)};
                     })
                     .value(),
                 events = _.chain(unfilteredevents)
@@ -55,7 +55,7 @@ exports.rules = [
     createRule( // map form
         function (element, model) { return model.isViewComponent(element) && element.attributes.stereotype === 'form'; },
         function (element, model) {
-            var id = element.id,
+            var id = model.toId(element),
                 name = element.attributes.name,
                 top = model.getTopLevelAncestor(element),
                 tid = top.id,
@@ -75,7 +75,7 @@ exports.rules = [
                         var flow = model.toElement(model.getOutbounds(event)[0]),
                             target = model.getTarget(flow);
                         return {
-                            id: event.id,
+                            id: model.toId(event),
                             name: event.attributes.name,
                             target: model.toId(target),
                             targetsAction: model.isAction(target),
@@ -96,7 +96,7 @@ exports.rules = [
     createRule( // map details
         function (element, model) { return model.isViewComponent(element) && element.attributes.stereotype === 'details'; },
         function (element, model) {
-            var id = element.id,
+            var id = model.toId(element),
                 name = element.attributes.name,
                 collection = element.attributes.collection,
                 top = model.getTopLevelAncestor(element),
@@ -116,7 +116,7 @@ exports.rules = [
                     .map(function (event) {
                         var flow = model.getOutbounds(event)[0],
                             target = flow && model.getTarget(flow);
-                        return { id: event.id, name: event.attributes.name, targetsAction: model.isAction(target)};
+                        return { id: model.toId(event), name: event.attributes.name, targetsAction: model.isAction(target)};
                     })
                     .value(),
                 fields = element.attributes.fields,

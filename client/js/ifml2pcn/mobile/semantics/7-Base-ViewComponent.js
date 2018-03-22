@@ -36,7 +36,7 @@ var element = [almost.createRule(
         return model.isViewComponent(element);
     },
     function (component, model) {
-        var id = component.id,
+        var id = model.toId(component),
             pid = model.getParentId(component),
             mid = id + '-Model',
             ipid = id + '-In-p',

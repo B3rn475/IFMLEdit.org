@@ -17,8 +17,8 @@ var element = [almost.createRule(
         // A ViewComponent \ifml{\namevc} without incoming data flows
         return model.isViewComponent(element) && !model.isTargetOfDataFlow(element);
     },
-    function (component) {
-        var id = component.id,
+    function (component, model) {
+        var id = model.toId(component),
             mid = id + '-Model',
             ipid = id + '-In-p',
             onid = id + '-Out-n',

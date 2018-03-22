@@ -13,8 +13,8 @@ var element = [almost.createRule(
     function (element, model) {
         return model.isViewContainer(element);
     },
-    function (container) {
-        var id = container.id,
+    function (container, model) {
+        var id = model.toId(container),
             vpid = id + '-View-p',
             vnid = id + '-View-n',
             lid = 'L-' + id,
@@ -51,7 +51,7 @@ var element = [almost.createRule(
         return model.isViewContainer(element) && model.isXOR(element);
     },
     function (container, model) {
-        var id = container.id,
+        var id = model.toId(container),
             pid = model.getParentId(container),
             lgid = 'L-' + id + '-Group',
             lpcid = 'L-' + pid + '-Content',
@@ -71,7 +71,7 @@ var element = [almost.createRule(
         return model.isViewContainer(element) && !model.isXOR(element);
     },
     function (container, model) {
-        var id = container.id,
+        var id = model.toId(container),
             pid = model.getParentId(id, 'Application'),
             topMostXORDescendants = model.getTopMostXORDescendants(container),
             lgid = 'L-' + id + '-Group',
@@ -135,7 +135,7 @@ var element = [almost.createRule(
         return model.isViewContainer(element) && model.isLandmark(element) && model.isXOR(model.getParent(element), true); // Rule 5
     },
     function (container, model) {
-        var id = container.id,
+        var id = model.toId(container),
             tid = id + '-Landmark',
             pid = model.getParentId(container, 'Application'),
             ltid = 'L-' + id + '-Landmark',
@@ -160,7 +160,7 @@ var element = [almost.createRule(
         return model.isViewContainer(element) && model.isLandmark(element) && model.isXOR(model.getParent(element)); // Rule 5
     },
     function (container, model) {
-        var id = container.id,
+        var id = model.toId(container),
             tid = id + '-Landmark',
             pid = model.getParentId(container);
         return {

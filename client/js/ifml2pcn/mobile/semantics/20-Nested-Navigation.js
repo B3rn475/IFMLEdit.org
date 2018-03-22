@@ -48,7 +48,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             target = model.getTarget(flow),
             context = model.getInteractionContext(flow),
             caid = model.getCoDisplayedAncestorId(target, context),
@@ -80,7 +80,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             context = model.getInteractionContext(flow),
             xorTargetsSet = model.getXORTargetSet(flow, context),
         // For each ViewContainer \ifml{\namexorvc_i} in the XOR targets set of \ifml{\namenavflow} inside \ifmlinteractioncontext
@@ -115,7 +115,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             context = model.getInteractionContext(flow),
             hideSet = model.getHideSet(flow, context),
         // For each element \ifmlhideitem{i} in the hide set of \ifml{\namenavflow} inside \ifmlinteractioncontext[],
@@ -150,7 +150,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             target = model.getTarget(flow),
             context = model.getInteractionContext(flow),
             displaySet = model.getDisplaySet(flow, context),

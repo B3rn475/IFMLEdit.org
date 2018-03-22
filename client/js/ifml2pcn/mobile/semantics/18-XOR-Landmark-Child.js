@@ -24,7 +24,7 @@ var element = [almost.createRule(
         return model.isViewContainer(element) && model.isLandmark(element) && model.isXOR(model.getParent(element), true); // Rule 5
     },
     function (container, model) {
-        var id = container.id,
+        var id = model.toId(container),
             tid = id + '-Landmark',
             pid = model.getParentId(element, 'Application'), // Rule 5
             vid = pid + '-View-p',
@@ -71,7 +71,7 @@ var element = [almost.createRule(
         return model.isViewContainer(element) && model.isLandmark(element) && model.isXOR(model.getParent(element));
     },
     function (container, model) {
-        var id = container.id,
+        var id = model.toId(container),
             tid = id + '-Landmark',
             parent = model.getParent(element),
             // For each ViewContainer \ifml{\namechild_i} child of \ifml{\namexorvc}

@@ -32,7 +32,7 @@ var element = [almost.createRule(
     },
     function (container, model) {
         // each topmost XOR descendant \ifml{\namexorvc_i} of \ifml{\namevc} maps to:
-        var id = container.id,
+        var id = model.toId(container),
             vpid = id + '-View-p',
             topMostXORDescendants = model.getTopMostXORDescendants(container),
             prefix = container.attributes.name + '/',
@@ -67,7 +67,7 @@ var element = [almost.createRule(
     },
     function (container, model) {
         // each topmost XOR descendant \ifml{\namexorvc_i} of \ifml{\namevc} maps to:
-        var id = container.id,
+        var id = model.toId(container),
             topMostXORDescendants = model.getTopMostXORDescendants(container),
             children = model.getChildren(container),
             partials = _.flatten(_.map(topMostXORDescendants, function (xid) {
@@ -103,7 +103,7 @@ var element = [almost.createRule(
     },
     function (container, model) {
         // each topmost XOR descendant \ifml{\namexorvc_i} of \ifml{\namevc} maps to:
-        var id = container.id,
+        var id = model.toId(container),
             pid = model.getParentId(container, 'Application'),
             topMostXORDescendants = model.getTopMostXORDescendants(container),
             ringids = _.map(topMostXORDescendants, function (xid) {
@@ -133,7 +133,7 @@ var element = [almost.createRule(
             !model.isXOR(model.getParent(element), true);
     },
     function (container, model) {
-        var id = container.id,
+        var id = model.toId(container),
             pid = model.getParentId(container),
             topMostXORDescendants = model.getTopMostXORDescendants(container),
             partials = _.map(topMostXORDescendants, function (xid) {
@@ -163,7 +163,7 @@ var element = [almost.createRule(
         return model.isViewContainer(element) && model.isXOR(element); // Rule 2
     },
     function (container, model) {
-        var id = container.id,
+        var id = model.toId(container),
             pid = model.getParentId(container);
         return {
             elements: [],

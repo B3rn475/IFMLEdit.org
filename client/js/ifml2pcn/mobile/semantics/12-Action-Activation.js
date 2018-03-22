@@ -23,7 +23,7 @@ var element = [almost.createRule(
         // Given an Action \ifml{\nameaction}, a NavigationFlow \ifml{\namenavflow} targeting \ifml{\nameaction}
         // and starting from an Event \ifml{\nameevent}
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             aid = model.getTargetId(flow),
             name = event.attributes.name,
         // related to the ViewElement \ifml{\namevc}.

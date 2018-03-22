@@ -20,7 +20,7 @@ exports.rules = [
             return model.isViewComponent(parent) && parent.attributes.stereotype === 'list' && element.attributes.name === 'selected';
         },
         function (element, model) {
-            var id = element.id,
+            var id = model.toId(element),
                 list = model.getParent(element),
                 top = model.getTopLevelAncestor(list),
                 currentTopLevel = top.id,

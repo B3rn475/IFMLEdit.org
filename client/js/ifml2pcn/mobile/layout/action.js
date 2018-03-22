@@ -13,11 +13,11 @@ var element = [almost.createRule(
         return model.isAction(element) && model.getInbounds(element).length;
     },
     function (action, model) {
-        var id = action.id,
-            pid = model.getActionParentId(action),
+        var id = model.toId(action),
+            oid = model.getActionOriginId(action),
             rpid = id + '-Running-p',
             rnid = id + '-Running-n',
-            lpcid = 'L-' + pid + '-Content',
+            locid = 'L-' + oid + '-Content',
             lid = 'L-' + id,
             lrpid = lid + '-Running-p',
             lrnid = lid + '-Running-n',
@@ -30,7 +30,7 @@ var element = [almost.createRule(
                 {id: lrnid, type: 'layout.Leaf', attributes: {row: 1, column: 0, width: 40, height: 40}}
             ],
             relations: [
-                {type: 'layout.Hierarchy', parent: lpcid, child: lid},
+                {type: 'layout.Hierarchy', parent: locid, child: lid},
                 {type: 'layout.Hierarchy', parent: lid, child: lrpid},
                 {type: 'layout.Hierarchy', parent: lid, child: lrnid},
                 {type: 'layout.For', layout: lid, pcn: id},

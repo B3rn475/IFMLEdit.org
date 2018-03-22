@@ -34,7 +34,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             sid = model.getParentId(event),
             // let \ifml{\nameancestor} be the co-displayed ancestor of \ifml{\namesource} inside \ifmlinteractioncontext.
             context = model.getInteractionContext(flow),
@@ -82,7 +82,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             sid = model.getParentId(model.getParent(event)),
             // let \ifml{\nameancestor} be the co-displayed ancestor of \ifml{\namesource} inside \ifmlinteractioncontext.
             context = model.getInteractionContext(flow),

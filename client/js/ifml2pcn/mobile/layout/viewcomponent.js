@@ -13,7 +13,7 @@ var element = [almost.createRule(
         return model.isViewComponent(element);
     },
     function (component, model) {
-        var id = component.id,
+        var id = model.toId(component),
             pid = model.getParentId(component),
             mid = id + '-Model',
             ipid = id + '-In-p',
@@ -101,7 +101,7 @@ var element = [almost.createRule(
         return model.isViewComponent(element) && model.isTargetOfDataFlow(element);
     },
     function (component, model) {
-        var id = component.id,
+        var id = model.toId(component),
             pid = model.getParentId(component, 'Application'),
             tid = id + '-Propagate',
             lid = 'L-' + id,

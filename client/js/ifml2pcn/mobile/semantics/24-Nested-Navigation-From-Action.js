@@ -35,7 +35,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             aid = model.getParentId(event),
             rpid = aid + '-Running-p',
             rid = rpid + '->' + id;
@@ -68,11 +68,11 @@ var element = [almost.createRule(
             return false;
         }
         // if \pcn{\nametarget} is not an ancestor of \pcnactionorigin;
-        return _.intersection(model.getAncestors(model.getActionOrigin(source)), [target.id]).length;
+        return _.intersection(model.getAncestors(model.getActionOrigin(source)), [model.toId(target)]).length;
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             action = model.getParent(event),
             context = model.getInteractionContext(flow),
             // let \ifmlactionorigin be the Origin of the Action \ifml{\nameaction}

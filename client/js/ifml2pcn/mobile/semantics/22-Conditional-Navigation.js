@@ -56,7 +56,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             name = event.attributes.name,
             tid = model.getTargetId(flow),
             rtid = tid + '->' + id,
@@ -89,7 +89,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             context = model.getInteractionContext(flow),
             target = model.getTarget(flow),
             ancestors = model.getAncestors(target),
@@ -140,7 +140,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             target = model.getTarget(flow),
             context = model.getInteractionContext(flow),
             xorTargetsSet = model.getXORTargetSet(flow, context),
@@ -150,7 +150,7 @@ var element = [almost.createRule(
                 // where \ifml{\nameancestor_{i}} is the co-displayed ancestor of
                 // \ifml{\nametarget} inside \ifml{\namexorvc_i};
                 var ancestor = model.getCoDisplayedAncestor(target, xid),
-                    aid = ancestor.id,
+                    aid = model.toId(ancestor),
                     vnid = aid + '-View-n',
                     tid = id + '-Via-' + xid,
                     rxid = xid + '->' + tid,
@@ -197,7 +197,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             context = model.getInteractionContext(flow),
             xorTargetsSet = model.getXORTargetSet(flow, context),
             // For each ViewContainer \ifml{\namexorvc_i} in the XOR targets set
@@ -240,7 +240,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             context = model.getInteractionContext(flow),
             target = model.getTarget(flow),
             ancestors = model.getAncestors(target),
@@ -291,7 +291,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             context = model.getInteractionContext(flow),
             xorTargetsSet = model.getXORTargetSet(flow, context),
             // For each ViewContainer \ifml{\namexorvc_i} in the XOR targets set

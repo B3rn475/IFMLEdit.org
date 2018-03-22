@@ -45,7 +45,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             sid = model.getParentId(event),
             rpid = sid + '-Running-p',
             rid = rpid + '->' + id;
@@ -82,11 +82,11 @@ var element = [almost.createRule(
         }
         origin = model.getActionOrigin(source);
         // if \ifml{\nametarget} is not an ancestor of \ifmlactionorigin;
-        return !(_.intersection(model.getAncestors(origin), [target.id]).length);
+        return !(_.intersection(model.getAncestors(origin), [model.toId(target)]).length);
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             sid = model.getParentId(event),
             rnid = sid + '-Running-n',
             aid = id + '->' + rnid;
@@ -116,7 +116,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             sid = model.getParentId(event),
             context = model.getInteractionContext(flow),
             xorTargetsSet = model.getXORTargetSet(flow, context),
@@ -164,11 +164,11 @@ var element = [almost.createRule(
         }
         origin = model.getActionOrigin(source);
         // if \ifml{\nametarget} is not an ancestor of \ifmlactionorigin;
-        return !(_.intersection(model.getAncestors(origin), [target.id]).length);
+        return !(_.intersection(model.getAncestors(origin), [model.toId(target)]).length);
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             sid = model.getParentId(event),
             context = model.getInteractionContext(flow),
             xorTargetsSet = model.getXORTargetSet(flow, context),

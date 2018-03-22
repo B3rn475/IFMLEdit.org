@@ -11,16 +11,16 @@ var _ = require('lodash'),
 exports.rules = [
     createRule( // map list
         function (element, model) { return model.isAction(element); },
-        function (element, model) {
-            var id = element.id,
-                name = element.attributes.name,
-                parameters = element.attributes.parameters,
-                results = element.attributes.results,
+        function (action, model) {
+            var id = model.toId(action),
+                name = action.attributes.name,
+                parameters = action.attributes.parameters,
+                results = action.attributes.results,
                 events = _.chain(model.getChildren(id))
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (id) { return model.getOutbounds(id).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: event.id, name: event.attributes.name}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name}; })
                     .value(),
                 obj = {
                     actions: {children: 'A-' + id}

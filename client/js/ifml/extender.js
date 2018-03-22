@@ -56,7 +56,13 @@ var config = {
                 .value();
         },
         getActionOriginId: function (action, defaultValue) {
-            return this.getParentId(this.getSource(_.first(this.getInbounds(action, defaultValue))));
+            var flow = _.first(this.getInbounds(action)),
+                event = this.getSource(flow),
+                source = this.getParentId(event);
+            if (this.isViewContainer(source, true)) {
+                return source;
+            }
+            return this.getParentId(source) || defaultValue;
         },
         getActionOrigin: function (action, defaultValue) {
             return this.toElement(this.getActionOriginId(action, defaultValue));
@@ -198,16 +204,6 @@ var config = {
                 })
                 .flatten()
                 .value();
-        },
-        getActionParentId: function (action, defaultValue) {
-            var source = this.getActionOriginId(action);
-            if (this.isViewContainer(source, true)) {
-                return source;
-            }
-            return this.getParentId(source) || defaultValue;
-        },
-        getActionParent: function (action, defaultValue) {
-            return this.toElement(this.getActionParentId(action, defaultValue));
         }
     }
 };

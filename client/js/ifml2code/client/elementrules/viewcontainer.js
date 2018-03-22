@@ -11,17 +11,17 @@ var _ = require('lodash'),
 exports.rules = [
     createRule( // map View Container
         function (element, model) { return model.isViewContainer(element) && !model.isXOR(element); },
-        function (element, model) {
-            var id = element.id,
-                children = _.chain(model.getChildren(element))
+        function (container, model) {
+            var id = model.toId(container),
+                children = _.chain(model.getChildren(container))
                     .reject(function (id) { return model.isEvent(id); })
                     .map(function (id) { return {id: id, name: model.toElement(id).attributes.name}; })
                     .value(),
-                events = _.chain(model.getChildren(element))
+                events = _.chain(model.getChildren(container))
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (id) { return model.getOutbounds(id).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: event.id, name: event.attributes.name}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name}; })
                     .value(),
                 obj = {
                     controls: {children: 'C-' + id}
@@ -34,25 +34,25 @@ exports.rules = [
     ),
     createRule( // map XOR View Container
         function (element, model) { return model.isViewContainer(element) && model.isXOR(element); },
-        function (element, model) {
-            var id = element.id,
-                children = _.chain(model.getChildren(element))
+        function (container, model) {
+            var id = model.toId(container),
+                children = _.chain(model.getChildren(container))
                     .filter(function (id) { return model.isViewContainer(id); })
                     .map(function (id) { return model.toElement(id); })
                     .map(function (e) { return {id: e.id, name: e.attributes.name}; })
                     .value(),
-                defaultChild = _.chain(model.getChildren(element))
+                defaultChild = _.chain(model.getChildren(container))
                     .filter(function (id) { return model.isDefault(id); })
                     .first()
                     .value(),
                 landmarks = _.chain(children)
                     .filter(function (c) { return model.isLandmark(c.id); })
                     .value(),
-                events = _.chain(model.getChildren(element))
+                events = _.chain(model.getChildren(container))
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (id) { return model.getOutbounds(id).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: event.id, name: event.attributes.name}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name}; })
                     .value(),
                 obj = {
                     controls: {children: 'C-' + id}

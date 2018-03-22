@@ -21,7 +21,7 @@ exports.rules = [
         function (flow, model) { return model.isNavigationFlow(flow) && model.isViewContainer(model.getParent(model.getSource(flow))); },
         function (flow, model) {
             var event = model.getSource(flow),
-                id = event.id,
+                id = model.toId(event),
                 source = model.getParent(event),
                 sourceTop = model.getTopLevelAncestor(source),
                 currentTopLevel = sourceTop.id,
@@ -58,7 +58,7 @@ exports.rules = [
         function (flow, model) { return model.isNavigationFlow(flow) && model.isViewComponent(model.getParent(model.getSource(flow))); },
         function (flow, model) {
             var event = model.getSource(flow),
-                id = event.id,
+                id = model.toId(event),
                 source = model.getParent(event),
                 sourceTop = model.getTopLevelAncestor(source),
                 currentTopLevel = sourceTop.id,
@@ -112,11 +112,11 @@ exports.rules = [
         function (flow, model) { return model.isNavigationFlow(flow) && model.isAction(model.getParent(model.getSource(flow))); },
         function (flow, model) {
             var event = model.getSource(flow),
-                id = event.id,
+                id = model.toId(event),
                 action = model.getParent(event),
                 aid = model.toId(action),
-                source = model.getActionOrigin(action),
-                sourceTop = model.getTopLevelAncestor(source),
+                origin = model.getActionOrigin(action),
+                sourceTop = model.getTopLevelAncestor(origin),
                 currentTopLevel = sourceTop.id,
                 target = model.getTarget(flow),
                 targetTop = model.getTopLevelAncestor(target),

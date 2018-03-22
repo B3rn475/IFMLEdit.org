@@ -18,7 +18,7 @@ var element = [almost.createRule(
         return model.isViewContainer(element) && !model.isXOR(model.getParent(element), true);
     },
     function (container, model) {
-        var id = container.id,
+        var id = model.toId(container),
             pid = model.getParentId(container),
             iid = pid + '->' + id;
         return {

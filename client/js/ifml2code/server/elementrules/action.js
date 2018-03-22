@@ -20,7 +20,9 @@ exports.rules = [
         },
         function (action, model) {
             var id = action.id,
-                source = model.getActionOriginId(action),
+                flow = _.first(model.getInbounds(action)),
+                event = model.getSource(flow),
+                source = model.getParent(event),
                 vm = model.getTopLevelAncestorId(source),
                 name = action.attributes.name,
                 parameters = action.attributes.parameters,
@@ -29,7 +31,7 @@ exports.rules = [
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (id) { return model.getOutbounds(id).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: event.id, name: event.attributes.name}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name}; })
                     .value(),
                 obj = {
                     routes: {children: id + '-route'},

@@ -16,9 +16,9 @@ exports.rules = [
         },
         function (flow, model) {
             var event = model.getSource(flow),
-                id = event.id,
-                target = model.getTarget(flow).id,
-                targetTop = model.getTopLevelAncestor(target).id,
+                id = model.toId(event),
+                target = model.getTargetId(flow),
+                targetTop = model.getTopLevelAncestorId(target),
                 targetActives = _.chain(model.getAncestors(target, true))
                     .filter(function (id) { return model.isViewContainer(id); })
                     .filter(function (id) { return model.isXOR(model.getParent(id)); })
@@ -50,9 +50,9 @@ exports.rules = [
         },
         function (flow, model) {
             var event = model.getSource(flow),
-                id = event.id,
-                target = model.getTarget(flow).id,
-                containerId = model.getActionParentId(target),
+                id = model.toId(event),
+                target = model.getTargetId(flow),
+                containerId = model.getActionOriginId(target),
                 bindings = _.chain(model.getOutbounds(id))
                     .filter(function (id) { return model.isNavigationFlow(id); })
                     .map(function (id) { return model.toElement(id); })

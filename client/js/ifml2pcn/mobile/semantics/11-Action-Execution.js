@@ -26,7 +26,7 @@ var element = [almost.createRule(
         return model.isAction(element) && model.getInbounds(element).length;
     },
     function (action, model) {
-        var id = action.id,
+        var id = model.toId(action),
             // let \ifmlactionorigin be the Origin of \ifml{\nameaction}.
             oid = model.getActionOriginId(action),
             rpid = id + '-Running-p',

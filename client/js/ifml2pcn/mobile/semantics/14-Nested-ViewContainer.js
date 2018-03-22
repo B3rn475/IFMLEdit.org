@@ -20,8 +20,8 @@ var element = [almost.createRule(
         // A ViewContainer \ifml{\namechild} child of another ViewContainer \ifml{\nameparent} maps to:
         return model.isViewContainer(element); // Rule 2
     },
-    function (container) {
-        var id = container.id,
+    function (container, model) {
+        var id = model.toId(container),
             vpid = id + '-View-p',
             vnid = id + '-View-n',
             iid = id + '->' + vpid,

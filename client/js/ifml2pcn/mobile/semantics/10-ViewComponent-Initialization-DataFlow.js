@@ -28,8 +28,8 @@ var element = [almost.createRule(
         // A ViewComponent \ifml{\namevc}, target of a non empty set \ifmldataflowset{\namevc} of DataFlows, maps into:
         return model.isViewComponent(element) && model.isTargetOfDataFlow(element);
     },
-    function (component) {
-        var id = component.id,
+    function (component, model) {
+        var id = model.toId(component),
             mid = id + '-Model',
             inid = id + '-In-n',
             ipid = id + '-In-p',

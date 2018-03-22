@@ -15,7 +15,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             lid = 'L-' + id,
             lgid = lid + '-Group',
             column = event.metadata.graphics.position.x,
@@ -38,16 +38,17 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
-            pid = model.getActionParentId(model.getTarget(flow)),
+            id = model.toId(event),
+            target = model.getTarget(flow),
+            oid = model.getActionOriginId(target),
             lgid = 'L-' + id + '-Group',
-            lpcid = 'L-' + pid + '-Content';
+            locid = 'L-' + oid + '-Content';
         return {
             elements: [
-                {id: id, metadata: {graphics: {parent: pid}}}
+                {id: id, metadata: {graphics: {parent: oid}}}
             ],
             relations: [
-                {type: 'layout.Hierarchy', parent: lpcid, child: lgid},
+                {type: 'layout.Hierarchy', parent: locid, child: lgid},
             ]
         };
     }
@@ -57,7 +58,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             cid = model.getInteractionContextId(flow, 'Application'),
             lgid = 'L-' + id + '-Group',
             lccid = 'L-' + cid + '-Content';
@@ -78,7 +79,7 @@ var element = [almost.createRule(
     },
     function (flow, model) {
         var event = model.getSource(flow),
-            id = event.id,
+            id = model.toId(event),
             cid = model.getInteractionContextId(flow, 'Application'),
             lgid = 'L-' + id + '-Group',
             xorTargetsSet = model.getXORTargetSet(flow, cid),

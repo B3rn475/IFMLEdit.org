@@ -12,7 +12,7 @@ exports.rules = [
     createRule( // map View Container
         function (element, model) { return model.isViewContainer(element) && model.getParent(element) === undefined; },
         function (element, model) {
-            var id = element.id,
+            var id = model.toId(element),
                 name = element.attributes.name,
                 descendants = _.chain(model.getDescendants(element, true))
                     .map(function (id) { return model.toElement(id); })
@@ -40,7 +40,7 @@ exports.rules = [
     createRule( // map View Container
         function (element, model) { return model.isViewContainer(element) && !model.isXOR(element); },
         function (element, model) {
-            var id = element.id,
+            var id = model.toId(element),
                 children = _.chain(model.getChildren(element))
                     .reject(function (id) { return model.isEvent(id); })
                     .map(function (id) { return model.toElement(id); })
@@ -53,7 +53,7 @@ exports.rules = [
                     .map(function (event) {
                         var flow = model.getOutbounds(event)[0],
                             target = model.getTarget(flow);
-                        return { id: event.id, name: event.attributes.name, targetsAction: model.isAction(target)};
+                        return { id: model.toId(event), name: event.attributes.name, targetsAction: model.isAction(target)};
                     })
                     .value(),
                 top = model.getTopLevelAncestor(element),
@@ -69,7 +69,7 @@ exports.rules = [
     createRule( // map XOR View Container
         function (element, model) { return model.isViewContainer(element) && model.isXOR(element); },
         function (element, model) {
-            var id = element.id,
+            var id = model.toId(element),
                 children = _.chain(model.getChildren(element))
                     .filter(function (id) { return model.isViewContainer(id); })
                     .value(),
@@ -78,7 +78,7 @@ exports.rules = [
                     .map(function (id) { return model.toElement(id); })
                     .map(function (element) {
                         return {
-                            id: element.id,
+                            id: model.toId(element),
                             name: element.attributes.name,
                             broken: _.chain(model.getDescendants(element, true))
                                 .reject(function (id) { return model.isEvent(id); })
@@ -97,7 +97,7 @@ exports.rules = [
                     .map(function (event) {
                         var flow = model.getOutbounds(event)[0],
                             target = model.getTarget(flow);
-                        return { id: event.id, name: event.attributes.name, targetsAction: model.isAction(target)};
+                        return { id: model.toId(event), name: event.attributes.name, targetsAction: model.isAction(target)};
                     })
                     .value(),
                 top = model.getTopLevelAncestor(element),

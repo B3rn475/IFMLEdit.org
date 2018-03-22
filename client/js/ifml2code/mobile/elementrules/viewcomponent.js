@@ -11,12 +11,12 @@ var _ = require('lodash'),
 exports.rules = [
     createRule( // map list
         function (element, model) { return model.isViewComponent(element) && element.attributes.stereotype === 'list'; },
-        function (element, model) {
-            var id = element.id,
-                name = element.attributes.name,
-                collection = element.attributes.collection,
-                filters = element.attributes.filters,
-                fields = element.attributes.fields,
+        function (component, model) {
+            var id = model.toId(component),
+                name = component.attributes.name,
+                collection = component.attributes.collection,
+                filters = component.attributes.filters,
+                fields = component.attributes.fields,
                 incomings = _.chain(model.getInbounds(id))
                     .filter(function (id) { return model.isDataFlow(id); })
                     .map(function (id) { return model.toElement(id); })
@@ -38,7 +38,7 @@ exports.rules = [
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (event) { return model.getOutbounds(event).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: event.id, name: event.attributes.name}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name}; })
                     .value(),
                 events = _.chain(unfilteredevents)
                     .reject({name: 'selected'})
@@ -58,11 +58,11 @@ exports.rules = [
     ),
     createRule( // map details
         function (element, model) { return model.isViewComponent(element) && element.attributes.stereotype === 'details'; },
-        function (element, model) {
-            var id = element.id,
-                name = element.attributes.name,
-                collection = element.attributes.collection,
-                fields = element.attributes.fields,
+        function (component, model) {
+            var id = model.toId(component),
+                name = component.attributes.name,
+                collection = component.attributes.collection,
+                fields = component.attributes.fields,
                 incomings = _.chain(model.getInbounds(id))
                     .filter(function (id) { return model.isDataFlow(id); })
                     .map(function (id) { return model.toElement(id); })
@@ -75,7 +75,7 @@ exports.rules = [
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (id) { return model.getOutbounds(id).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: event.id, name: event.attributes.name}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name}; })
                     .value(),
                 obj = {
                     controls: {children: 'C-' + id}
@@ -88,10 +88,10 @@ exports.rules = [
     ),
     createRule( // map form
         function (element, model) { return model.isViewComponent(element) && element.attributes.stereotype === 'form'; },
-        function (element, model) {
-            var id = element.id,
-                name = element.attributes.name,
-                fields = element.attributes.fields,
+        function (component, model) {
+            var id = model.toId(component),
+                name = component.attributes.name,
+                fields = component.attributes.fields,
                 incomings = _.chain(model.getInbounds(id))
                     .filter(function (id) { return model.isDataFlow(id); })
                     .map(function (id) { return model.toElement(id); })
@@ -104,7 +104,7 @@ exports.rules = [
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (id) { return model.getOutbounds(id).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: event.id, name: event.attributes.name}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name}; })
                     .value(),
                 obj = {
                     controls: {children: 'C-' + id}
