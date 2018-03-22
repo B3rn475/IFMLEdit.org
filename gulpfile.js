@@ -63,7 +63,7 @@ gulp.task('vendor', function () {
                 './node_modules/jointjs/dist/joint.js',
                 './node_modules/bootstrap/dist/js/bootstrap.js',
                 './node_modules/bootstrap-notify/bootstrap-notify.js',
-                './node_modules/filesaver.js/FileSaver.js',
+                './node_modules/file-saver/dist/FileSaver.js',
                 './node_modules/almost/dist/almost.js',
                 './node_modules/almost-joint/dist/almost-joint.js'])
                 .pipe(gulpif(!production, sourcemaps.init()))
@@ -115,7 +115,7 @@ gulp.task('index', function () {
                 'atob': 'atob',
                 'Uint8Array': 'Uint8Array',
                 'Blob': 'Blob',
-                'FileSaver': 'saveAs',
+                'FileSaver': 'FileSaver.default',
                 'FileReader': 'FileReader',
                 'URL': 'URL',
                 'Worker': 'Worker',
