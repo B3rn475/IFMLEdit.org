@@ -12,8 +12,8 @@ function Panner(options) {
     if (!(this instanceof Panner)) { return new Panner(options); }
     options = options || {};
 
-    if (!options.el) { throw new Error('el option is mandatory'); }
-    if ($(options.el).length === 0) { throw new Error('invalid el option'); }
+    if (!options.el) { throw new Error('listener option is mandatory'); }
+    if ($(options.el).length === 0) { throw new Error('invalid listener option'); }
 
     var el = $(options.el)[0],
         moved,
@@ -25,13 +25,13 @@ function Panner(options) {
 
     function mousemove(e) {
         if (e.buttons === 0) {
-            document.body.style.pointerEvents = null;
+            el.style.pointerEvents = null;
             return removeHandlers();
         }
         if (!moved) {
             if (Math.abs(startClientX - e.clientX) + Math.abs(startClientY - e.clientY) > 10) {
                 moved = true;
-                document.body.style.pointerEvents = 'none';
+                el.style.pointerEvents = 'none';
             }
         }
         el.scrollLeft += (lastClientX - e.clientX);
@@ -44,7 +44,7 @@ function Panner(options) {
     function mouseup() {
         removeHandlers();
         if (moved) {
-            document.body.style.pointerEvents = null;
+            el.style.pointerEvents = null;
         }
     }
 

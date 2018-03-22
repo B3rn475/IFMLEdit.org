@@ -6,6 +6,7 @@
 
 var $ = require('jquery'),
     ko = require('knockout'),
+    document = require('document'),
     window = require('window'),
     createZip = require('jszip'),
     Promise = require('bluebird'),
@@ -21,7 +22,7 @@ var $ = require('jquery'),
 
 Promise.config({cancellation: true});
 
-var panner = createPanner({el: 'html'});
+var panner = createPanner({el: document.scrollingElement});
 
 function load(folder, file) {
     var module = { exports: {} };
