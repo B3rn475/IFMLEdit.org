@@ -266,7 +266,7 @@ $('#pcn > .sidebar .model-generate').click(function () {
     var start = new Date();
     pcnSimulator.stop();
     pcnModel.clear();
-    pcnModel.addCells(ifml2pcn.mobile(ifml.toJSON(ifmlModel)));
+    pcnModel.addCells(pcn.fromJSON(ifml2pcn.mobile(ifml.toJSON(ifmlModel))));
     pcnBoard.zoomE();
     $.notify({message: 'Convertion completed in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
     return false;

@@ -6,31 +6,31 @@
 
 var _ = require('lodash'),
     compact = require('./compact').compact,
-    createModel = require('../ifml/model').createModel,
-    server = require('./server'),
-    client = require('./client'),
-    mobile = require('./mobile'),
-    flutter = require('./flutter'),
+    ifml = require('../ifml').ifml,
+    ifml2server = require('./server').transform,
+    ifml2client = require('./client').transform,
+    ifml2mobile = require('./mobile').transform,
+    ifml2flutter = require('./flutter'),
     ifml2code = { };
 
 exports.ifml2code = ifml2code;
 
-ifml2code.server = function (ifml) {
-    var transformed = server.transform(createModel(ifml));
+ifml2code.server = function (ifmlModel) {
+    var transformed = ifml2server(ifml.extend(ifmlModel));
     return compact(transformed);
 };
 
-ifml2code.client = function (ifml) {
-    var transformed = client.transform(createModel(ifml));
+ifml2code.client = function (ifmlModel) {
+    var transformed = ifml2client(ifml.extend(ifmlModel));
     return compact(transformed);
 };
 
-ifml2code.mobile = function (ifml) {
-    var transformed = mobile.transform(createModel(ifml));
+ifml2code.mobile = function (ifmlModel) {
+    var transformed = ifml2mobile(ifml.extend(ifmlModel));
     return compact(transformed);
 };
 
-ifml2code.flutter = function (ifml) {
-    var transformed = flutter.transform(createModel(ifml));
+ifml2code.flutter = function (ifmlModel) {
+    var transformed = ifml2mobile(ifml.extend(ifmlModel));
     return compact(transformed);
 };

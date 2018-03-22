@@ -4,7 +4,8 @@
 /*jslint node: true, nomen: true */
 "use strict";
 
-var createExtender = require('almost-extend').createExtender;
+var _ = require('lodash'),
+    createExtender = require('almost-extend').createExtender;
 
 exports.extend = createExtender({
     custom: {

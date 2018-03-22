@@ -5,7 +5,7 @@
 "use strict";
 
 var _ = require('lodash'),
-    createExtender = require('almost').createExtender;
+    almost = require('almost');
 
 var config = {
     type: {
@@ -55,18 +55,18 @@ var config = {
                 .map(_.bind(this.toId, this))
                 .value();
         },
-        getActionSourceId: function (action, defaultValue) {
+        getActionOriginId: function (action, defaultValue) {
             return this.getParentId(this.getSource(_.first(this.getInbounds(action, defaultValue))));
         },
-        getActionSource: function (action, defaultValue) {
-            return this.toElement(this.getActionSourceId(action, defaultValue));
+        getActionOrigin: function (action, defaultValue) {
+            return this.toElement(this.getActionOriginId(action, defaultValue));
         },
         getAncestors: function (element, inclusive) {
             var self = this;
             function _getAncestors(id) {
                 if (!id) { return _.chain([]); }
                 if (self.isAction(id)) {
-                    return _getAncestors(self.getActionSourceId(id)).concat(id);
+                    return _getAncestors(self.getActionOriginId(id)).concat(id);
                 }
                 return _getAncestors(self.getParentId(id)).concat(id);
             }
@@ -77,14 +77,14 @@ var config = {
         },
         getTopLevelAncestorId: function (element, defaultValue) {
             if (this.isAction(element)) {
-                return this.getTopLevelAncestorId(this.getActionSource(element));
+                return this.getTopLevelAncestorId(this.getActionOrigin(element));
             }
             if (!this.getParentId(element)) {
                 return this.toId(element);
             }
             var top = _.first(this.getAncestors(element));
             if (this.isAction(top)) {
-                return this.getTopLevelAncestorId(this.getActionSource(top));
+                return this.getTopLevelAncestorId(this.getActionOrigin(top));
             }
             return top || defaultValue;
         },
@@ -104,13 +104,13 @@ var config = {
             }
             return _getDescendants(_([]), id).compact().value();
         },
-        getFlowContextId: function (flow, defaultValue) {
+        getInteractionContextId: function (flow, defaultValue) {
             var event = this.getSource(flow),
                 source = this.getParent(event),
                 target = this.getTarget(flow),
                 context;
             if (this.isAction(source)) {
-                source = this.getActionSource(source);
+                source = this.getActionOrigin(source);
             }
             if (this.isAction(target)) {
                 target = source;
@@ -129,8 +129,8 @@ var config = {
             }
             return this.toId(context) || defaultValue;
         },
-        getFlowContext: function (flow, defaultValue) {
-            return this.toElement(this.getFlowContextId(flow, defaultValue));
+        getInteractionContext: function (flow, defaultValue) {
+            return this.toElement(this.getInteractionContextId(flow, defaultValue));
         },
         getTopMostXORDescendants: function (element) {
             if (!this.isViewContainer(element)) { return []; }
@@ -153,7 +153,7 @@ var config = {
         getCoDisplayedAncestor: function (element, ancestor, defaultValue) {
             return this.toElement(this.getCoDisplayedAncestorId(element, ancestor, defaultValue));
         },
-        getXORTargets: function (flow, context) {
+        getXORTargetSet: function (flow, context) {
             var self = this,
                 cid = this.toId(context),
                 target = this.getTarget(flow),
@@ -163,10 +163,17 @@ var config = {
                     .filter(function (id) { return self.isViewContainer(id) && self.isXOR(id); })
                     .value();
         },
+        getExtendedXORTargetSet: function (flow, context) {
+            var xorTargetSet = this.getXORTargetSet(flow, context);
+            if (this.isXOR(context)) {
+                return _.flatten([xorTargetSet, this.toId(context)]);
+            }
+            return xorTargetSet;
+        },
         getDisplaySet: function (flow, ancestor) {
             var self = this,
                 target = this.getTarget(flow),
-                XORTargets = this.getXORTargets(flow, ancestor),
+                XORTargets = this.getXORTargetSet(flow, ancestor),
                 chain = _.chain(XORTargets)
                     .map(function (xid) {
                         return self.toId(self.getCoDisplayedAncestor(target, xid));
@@ -178,9 +185,9 @@ var config = {
         },
         getHideSet: function (flow, ancestor) {
             var self = this,
-                context = this.getFlowContext(flow),
-                ancestors = this.getAncestors(this.getTarget(flow)),
-                XORTargets = this.getXORTargets(flow, ancestor),
+                context = this.getInteractionContext(flow),
+                ancestors = this.getAncestors(this.getTarget(flow), true),
+                XORTargets = this.getXORTargetSet(flow, ancestor),
                 chain = _.chain(XORTargets);
             if (this.isXOR(ancestor, true) && ancestor !== context) {
                 chain = chain.concat(this.toId(ancestor));
@@ -193,7 +200,7 @@ var config = {
                 .value();
         },
         getActionParentId: function (action, defaultValue) {
-            var source = this.getActionSourceId(action);
+            var source = this.getActionOriginId(action);
             if (this.isViewContainer(source, true)) {
                 return source;
             }
@@ -205,4 +212,4 @@ var config = {
     }
 };
 
-exports.createModel = createExtender(config);
+exports.extend = almost.createExtender(config);

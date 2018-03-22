@@ -6,22 +6,17 @@
 
 var _ = require('lodash'),
     utils = require('almost-joint').utils,
-    createModel = require('../ifml/model').createModel,
-    layout = require('./layout').layout,
-    transform = require('./mobile').transform,
-    ifml2pcn = { };
+    ifml = require('../ifml').ifml,
+    pcn = require('../pcn').pcn,
+    ifml2mobile = require('./mobile').transform,
+    layout = require('./layout').layout;
 
-exports.ifml2pcn = ifml2pcn;
+function mobile(ifmlModel) {
+    var pcnModel = ifml2mobile(ifml.extend(ifmlModel));
+    layout(pcnModel);
+    return pcnModel;
+}
 
-ifml2pcn.mobile = function (ifml) {
-    var transformed = transform(createModel(ifml));
-    layout(transformed);
-    return utils.sortCells(
-        _.chain(transformed)
-            .values()
-            .map('cells')
-            .flatten()
-            .filter()
-            .value()
-    );
+exports.ifml2pcn = {
+    mobile: mobile
 };

@@ -20,7 +20,7 @@ exports.rules = [
         },
         function (action, model) {
             var id = action.id,
-                source = model.getActionSourceId(action),
+                source = model.getActionOriginId(action),
                 vm = model.getTopLevelAncestorId(source),
                 name = action.attributes.name,
                 parameters = action.attributes.parameters,

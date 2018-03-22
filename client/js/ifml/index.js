@@ -13,3 +13,4 @@ ifml.links = require('./links').links;
 ifml.nets = require('./nets').nets;
 ifml.toJSON = require('./tojson').toJSON;
 ifml.fromJSON = require('./fromjson').fromJSON;
+ifml.extend = require('./extender').extend;

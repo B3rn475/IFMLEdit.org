@@ -5,20 +5,19 @@
 "use strict";
 
 var _ = require('lodash'),
-    modelRules = require('./modelrules').rules,
-    elementRules = require('./elementrules').rules,
-    almost = require('almost');
+    almost = require('almost'),
+    semantics = require('./semantics').semantics,
+    layout = require('./layout').layout;
 
-exports.transform = almost.createTransformer({
-    model: modelRules,
-    element: elementRules,
-}, almost.core.merge(
-    almost.core.merge(
-        almost.core.none(),
-        {
-            cells: almost.core.flatten(),
-            children: almost.core.flatten(),
-            position: almost.core.merge()
-        }
-    )
-));
+var rules = [
+    semantics.rules,
+    layout.rules
+];
+
+var transform = almost.createTransformer({
+    model: _.flatten(_.map(rules, 'model')),
+    element: _.flatten(_.map(rules, 'element')),
+    relations: _.flatten(_.map(rules, 'relation')),
+}, 'm2a');
+
+exports.transform = transform;

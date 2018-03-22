@@ -1,110 +1,129 @@
-// Copyright (c) 2016, the IFMLEdit.org project authors. Please see the
+// Copyright (c) 2018, the IFMLEdit.org project authors. Please see the
 // AUTHORS file for details. All rights reserved. Use of this source code is
 // governed by a MIT-style license that can be found in the LICENSE file.
 /*jslint node: true, nomen: true */
 "use strict";
 
 var _ = require('lodash'),
-    joint = require('joint');
+    createExtender = require('almost-extend').createExtender;
 
-function getBBox(cells) {
-    return _.reduce(
-        cells || [],
-        function (result, cell) {
-            if (cell.isLink()) { return result; }
-            if (result) { return result.union(cell.getBBox({useModelGeometry: true})); }
-            return cell.getBBox({useModelGeometry: true});
-        },
-        undefined
-    ) || joint.g.rect(0, 0, 0, 0);
-}
+var extend = createExtender({
+    type: {
+        Leaf: 'layout.Leaf',
+        Node: 'layout.Node',
+        ForRelation: 'layout.For',
+        ElementWithName: ['pcn.PlaceChart', 'pcn.Transition'],
+        ElementWithRotation: ['pcn.Transition']
+    },
+    relation: {
+        Parent: {relation: 'layout.Hierarchy', from: 'child', to: 'parent', single: true},
+        Children: {relation: 'layout.Hierarchy', from: 'parent', to: 'child'}
+    },
+});
 
-function minus(a, b) { return a - b; }
+function toCoordinate(sizes, spacing) {
+    var keys = _.map(_.keys(sizes), function (key) { return parseFloat(key); }),
+        coordinates = {},
+        accumulated;
+    keys.sort(function (a, b) { return a - b; });
+    if (keys.length) {
+        accumulated = -spacing;
+        _.forEach(keys, function (key) {
+            var size = sizes[key];
 
-function gridBy(objs, row, col) {
-    return {
-        rows: _.chain(objs).map(row).sort(minus).uniq().value(),
-        cols: _.chain(objs).map(col).sort(minus).uniq().value(),
-        cell: _.chain(objs).groupBy(row).mapValues(function (row) { return _.groupBy(row, col); }).value(),
-    };
-}
+            coordinates[key] = accumulated + spacing;
 
-function deepTranslate(objs, x, y, transformed) {
-    _.each(objs || [], function (obj) {
-        deepTranslate(_.map(obj.children, _.partial(_.get, transformed)), x, y, transformed);
-        _.each(obj.cells || [], function (cell) { cell.translate(x, y); });
-    });
-}
-
-function deepParent(objs, parent, transformed) {
-    _.each(objs || [], function (obj) {
-        deepParent(_.map(obj.children, _.partial(_.get, transformed)), parent, transformed);
-        _.each(obj.cells || [], function (cell) { if (!cell.get('parent')) { parent.embed(cell); } });
-    });
-}
-
-function length(array) {
-    return array && array.length;
-}
-
-function layout(transformed, id) {
-    id = id || 'Model';
-    if (!transformed[id]) { return; }
-    var padding = 20,
-        current = transformed[id],
-        grid,
-        maxcol,
-        mincol,
-        maxrow,
-        minrow,
-        ws,
-        hs,
-        xs,
-        ys,
-        bbox;
-    if (length(current.children)) {
-        _.each(current.children, function (id) { layout(transformed, id); });
-        grid = gridBy(_.map(current.children, function (id) { return transformed[id]; }), 'position.row', 'position.col');
-        maxcol = _.max(grid.cols);
-        maxrow = _.max(grid.rows);
-        mincol = _.min(grid.cols);
-        minrow = _.min(grid.rows);
-        ws = _.range(0, maxcol - mincol + 1, 0);
-        hs = _.range(0, maxrow - minrow + 1, 0);
-        _.each(grid.rows, function (row) {
-            _.each(grid.cols, function (col) {
-                _.each(grid.cell[row][col], function (cell) {
-                    ws[col - mincol] = Math.max(ws[col - mincol], cell.size.width);
-                    hs[row - minrow] = Math.max(hs[row - minrow], cell.size.height);
-                });
-            });
+            if (size !== 0) {
+                accumulated += spacing + size;
+            }
         });
-        current.size = {width: _.sum(ws), height: _.sum(hs)};
-        xs = _.reduce(ws, function (xs, w) { return _(xs).concat(_.last(xs) + (w ? w + padding : 0)).value(); }, [length(current.cells) ? padding : 0]);
-        ys = _.reduce(hs, function (ys, h) { return _(ys).concat(_.last(ys) + (h ? h + padding : 0)).value(); }, [length(current.cells) ? padding : 0]);
-        _.each(grid.rows, function (row) {
-            _.each(grid.cols, function (col) {
-                var objs = grid.cell[row][col];
-                if (length(objs)) {
-                    _.each(objs, function (obj) {
-                        deepTranslate([obj], xs[col - mincol] + (ws[col - mincol] - obj.size.width) / 2, ys[row - minrow] + (hs[row - minrow] - obj.size.height) / 2, transformed);
-                    });
-                    if (length(current.cells)) {
-                        deepParent(objs, current.cells[0], transformed);
-                    }
-                }
-            });
-        });
-        if (length(current.cells)) {
-            current.cells[0].resize(_.last(xs), _.last(ys));
-            current.size = {width: _.last(xs), height: _.last(ys)};
-        } else {
-            current.size = {width: _.last(xs) - padding, height: _.last(ys) - padding};
-        }
     } else {
-        bbox = getBBox(current.cells);
-        current.size = {width: bbox.width, height: bbox.height};
+        accumulated = 0;
     }
+    coordinates.total = accumulated;
+    return coordinates;
+}
+
+function size(parent, model) {
+    if (model.isLeaf(parent)) {
+        return;
+    }
+    var children = _.map(model.getChildren(parent), function (id) {
+            return model.toElement(id);
+        }),
+        padding = parent.attributes.padding || 0,
+        spacing = parent.attributes.spacing || 0,
+        rows = {},
+        columns = {},
+        xs,
+        ys;
+    if (!children.length) {
+        parent.attributes.width = 0;
+        parent.attributes.height = 0;
+    }
+    _.forEach(children, function (child) {
+        size(child, model);
+        var row = child.attributes.row,
+            column = child.attributes.column,
+            width = child.attributes.width,
+            height = child.attributes.height;
+        rows[row] = Math.max(rows[row] || 0, height);
+        columns[column] = Math.max(columns[column] || 0, width);
+    });
+    xs = toCoordinate(columns, spacing);
+    ys = toCoordinate(rows, spacing);
+    parent.attributes.width = xs.total + 2 * padding;
+    parent.attributes.height = ys.total + 2 * padding;
+    _.forEach(children, function (child) {
+        child.attributes.x = xs[child.attributes.column] + padding;
+        child.attributes.y = ys[child.attributes.row] + padding;
+    });
+}
+
+function position(parent, model) {
+    var children = _.map(model.getChildren(parent), function (id) {
+            return model.toElement(id);
+        });
+    _.forEach(children, function (child) {
+        child.attributes.x += parent.attributes.x;
+        child.attributes.y += parent.attributes.y;
+        position(child, model);
+    });
+}
+
+function addMetadata(model) {
+    _(model.relations).filter(function (relation) {
+        return model.isForRelation(relation);
+    }).forEach(function (relation) {
+        var layout = model.toElement(relation.layout),
+            pcn = model.toElement(relation.pcn);
+        pcn.metadata = pcn.metadata || {};
+        pcn.metadata.graphics = pcn.metadata.graphics || {};
+        pcn.metadata.graphics.position = {
+            x: layout.attributes.x,
+            y: layout.attributes.y,
+        };
+        pcn.metadata.graphics.size = {
+            width: layout.attributes.width,
+            height: layout.attributes.height,
+        };
+        if (model.isElementWithRotation(pcn)) {
+            pcn.metadata.graphics.angle = pcn.metadata.graphics.angle || 0;
+        }
+        if (model.isElementWithName(pcn)) {
+            pcn.metadata.graphics.name = pcn.metadata.graphics.name || {};
+            pcn.metadata.graphics.name.vertical = pcn.metadata.graphics.name.vertical || 'bottom';
+            pcn.metadata.graphics.name.horizontal = pcn.metadata.graphics.name.horizontal || 'middle';
+        }
+    }).value();
+}
+
+function layout(model) {
+    model = extend(model);
+    var root = model.toElement('L-Root');
+    size(root, model);
+    position(root, model);
+    addMetadata(model);
 }
 
 exports.layout = layout;

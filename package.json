@@ -45,15 +45,14 @@
     "gulp-cssnano": "^2.1.0",
     "gulp-extract-sourcemap": "^0.1.6",
     "gulp-if": "^2.0.0",
-    "gulp-pug": "^3.3.0",
     "gulp-json-minify": "^1.0.4",
+    "gulp-pug": "^3.3.0",
     "gulp-rename": "^1.2.2",
     "gulp-rimraf": "^0.2.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.1",
     "gulp-uglify": "^3.0.0",
     "icon-gen": "^1.2.0",
-    "pug": "^2.0.1",
     "jointjs": "^2.0.0",
     "jquery": "3.1.1",
     "jszip": "^2.5.0",
@@ -64,9 +63,10 @@
     "merge": "^1.2.0",
     "merge-stream": "^1.0.0",
     "nedb": "^1.8.0",
+    "pug": "^2.0.1",
     "save-svg-as-png": "^1.2.0",
     "stringify": "^5.2.0",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^2.0.0"
   }
 }

@@ -8,6 +8,8 @@ var pcn = { };
 
 exports.pcn = pcn;
 
+pcn.extend = require('./extender').extend;
+pcn.fromJSON = require('./fromjson').fromJSON;
 pcn.elements = require('./elements').elements;
 pcn.links = require('./links').links;
 pcn.nets = require('./nets').nets;
