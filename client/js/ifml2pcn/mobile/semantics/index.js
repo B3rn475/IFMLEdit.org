@@ -21,7 +21,7 @@ var _ = require('lodash'),
         require('./12-Action-Activation').rules,
         // Rule 13 is just a particular case of Rule 20
         require('./14-Nested-ViewContainer').rules,
-        require('./15-NonXor-Parent').rules,
+        require('./15-NonXOR-Parent').rules,
         require('./16-XOR-Default-Child').rules,
         require('./17-XOR-NonDefault-Child').rules,
         require('./18-XOR-Landmark-Child').rules,
