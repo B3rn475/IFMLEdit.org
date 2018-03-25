@@ -43,8 +43,7 @@ var ifmlModel = new joint.dia.Graph(),
         container: '#ifml > .sidebar > ul',
         template: '<a class="list-group-item almost-place-holder"></a>',
         builders: ifmlBuilders,
-        width: 170,
-        padding: 5
+        width: 170
     }),
     statisticsModel = new joint.dia.Graph(),
     statisticsBoard = createBoard({
@@ -96,8 +95,7 @@ var ifmlModel = new joint.dia.Graph(),
         container: '#pcn > .sidebar > ul',
         template: '<a class="list-group-item almost-place-holder"></a>',
         builders: pcnBuilders,
-        width: 170,
-        padding: 5
+        width: 170
     }),
     pcnSimulator = pcn.Simulator({model: pcnModel, paper: pcnBoard.paper()}),
     ifbrowser = createIFBrowser({
