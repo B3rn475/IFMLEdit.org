@@ -46,16 +46,18 @@ exports.Event = joint.shapes.basic.Generic.extend({
         type: 'ifml.Event',
         size: {width: 20, height: 20},
         name: {text: 'event', vertical: 'top', horizontal: 'left-outer'},
+        stereotype: 'user',
         fixedParent: true,
         attrs: {
             '.': {magnet: 'passive'},
             '.ifml-event-magnet-rect': {magnet: true, visibility: 'hidden'},
+            '.ifml-event-system': {visibility: 'hidden'},
             'text': {
                 'ref-x': 0.5,
                 'ref-y': -11,
                 'x-alignment': 'middle',
                 ref: '.ifml-event-magnet-rect'
-            }
+            },
         }
     }, joint.shapes.basic.Generic.prototype.defaults),
 
@@ -76,6 +78,10 @@ exports.Event = joint.shapes.basic.Generic.extend({
                 {value: 'middle', name: 'Middle'},
                 {value: 'right', name: 'Right'},
                 {value: 'right-outer', name: 'Outer Right'}
+            ]},
+            {property: 'stereotype', name: 'Event Type', type: 'enum', values:[
+                {value: 'user', name: 'User Event'},
+                {value: 'system', name: 'System Event'}
             ]}
         ];
     },
@@ -90,8 +96,10 @@ exports.Event = joint.shapes.basic.Generic.extend({
         joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
         this._parentPositionChanged();
         this._nameChanged();
+        this._stereotypeChanged();
         this.on('change:parent', this._parentChanged, this);
         this.on('change:name', this._nameChanged, this);
+        this.on('change:stereotype', this._stereotypeChanged, this);
         this.on('change:accent', this._accentChanged, this);
 
         this._accentChanged();
@@ -140,6 +148,22 @@ exports.Event = joint.shapes.basic.Generic.extend({
             verticalToRef(this.get('name').vertical),
             horizontalToRef(this.get('name').horizontal)
         )});
+    },
+
+    _stereotypeChanged: function () {
+        this.stereotype = this.get('stereotype');
+        if(this.get('stereotype') == 'user'){
+          this.attr({
+              '.ifml-event-system': {
+                  visibility: 'hidden'
+          }});
+        } else{
+          this.attr({
+              '.ifml-event-system': {
+                  visibility: 'visible'
+          }});
+        }
+
     },
 
     linkConnectionPoint: function (linkView, view, magnet, reference, targetBBox, targetAngle, defaultConnectionPoint) {
