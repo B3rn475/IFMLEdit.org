@@ -18,7 +18,7 @@ exports.ViewContainer = joint.shapes.basic.Generic.extend({
         type: 'ifml.ViewContainer',
         size: {width: 200, height: 160},
         name: 'View Container',
-        default: false,
+        'default': false,
         landmark: false,
         xor: false,
         attrs: {
