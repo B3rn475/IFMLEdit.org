@@ -31,5 +31,8 @@ var transformer = almost.createTransformer(
 );
 
 exports.transform = function (model) {
-    return transformer(extender.extend(model));
+    var result = transformer(extender.extend(model));
+    result.elements = result.elements || [];
+    result.relations = result.relations || [];
+    return result;
 };

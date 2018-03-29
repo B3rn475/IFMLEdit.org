@@ -4,19 +4,20 @@
 /*jslint node: true, nomen: true */
 "use strict";
 
-var modelRules = require('./modelrules'),
-    elementRules = require('./elementrules'),
+var elementRules = require('./elementrules'),
     extender = require('./extender'),
     createTransformer = require('almost').createTransformer;
 
 var transformer = createTransformer({
-        model: modelRules,
         element: elementRules
     }, 'm2a');
 
 exports.toJSON = function (graph) {
-    return transformer(extender.extend({
+    var json = transformer(extender.extend({
         elements: graph.getCells(),
         relations: []
     }));
+    json.elements = json.elements || [];
+    json.relations = json.relations || [];
+    return json;
 };
