@@ -7,32 +7,32 @@
 var elementRules = require('./elementrules'),
     relationRules = require('./relationrules'),
     extender = require('../extender'),
-    almost = require('almost');
+    almost = require('almost'),
+    core = almost.core,
+    createTransformer = almost.createTransformer;
 
-var transformer = almost.createTransformer(
+var transformer = createTransformer(
     {
         element: elementRules,
         relation: relationRules
     },
-    almost.core.merge(
-        almost.core.none(),
+    core.merge(
+        core.none(),
         {
-            elements: almost.core.flatten(
-                almost.core.reduceBy('id', almost.core.merge(
-                    almost.core.mergeOrSingle(),
+            elements: core.flatten(
+                core.reduceBy('id', core.merge(
+                    core.mergeOrSingle(),
                     {
-                        id: almost.core.first(),
-                        embeds: almost.core.flatten()
+                        id: core.first(),
+                        embeds: core.lazy(core.flatten())
                     }
                 ))
-            )
+            ),
+            relations: core.flatten()
         }
     )
 );
 
 exports.transform = function (model) {
-    var result = transformer(extender.extend(model));
-    result.elements = result.elements || [];
-    result.relations = result.relations || [];
-    return result;
+    return transformer(extender.extend(model));
 };
