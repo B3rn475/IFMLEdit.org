@@ -65,7 +65,8 @@ exports.Event = joint.shapes.basic.Generic.extend({
     containers: ['ifml.ViewContainer', 'ifml.ViewComponent', 'ifml.Action'],
 
     editable: function () {
-        return [
+        var self = this;
+        return _([
             {property: 'name/text', name: 'Name', type: 'string'},
             {property: 'name/vertical', name: 'Position Vertical', type: 'enum', values: [
                 {value: 'top', name: 'Top'},
@@ -78,12 +79,20 @@ exports.Event = joint.shapes.basic.Generic.extend({
                 {value: 'middle', name: 'Middle'},
                 {value: 'right', name: 'Right'},
                 {value: 'right-outer', name: 'Outer Right'}
-            ]},
-            {property: 'stereotype', name: 'Event Type', type: 'enum', values:[
-                {value: 'user', name: 'User Event'},
-                {value: 'system', name: 'System Event'}
-            ]}
-        ];
+            ]}])
+            .concat((function () {
+              switch (self.getAncestors()[0].attributes.type) {
+                case 'ifml.Action':
+                  return [];
+                default :
+                  return [
+                      {property: 'stereotype', name: 'Event Type', type: 'enum', values:[
+                        {value: 'user', name: 'User Event'},
+                        {value: 'system', name: 'System Event'}
+                      ]}];
+              }
+            }()))
+            .value();
     },
 
     statistics: function () {
@@ -139,6 +148,7 @@ exports.Event = joint.shapes.basic.Generic.extend({
                 this._parentPositionChanged();
                 this.graph.getCell(this.get('parent')).on('change:size', this._parentPositionChanged, this);
             }
+
         }
     },
 
