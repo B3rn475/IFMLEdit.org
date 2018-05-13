@@ -45,9 +45,6 @@ var config = {
         isTargetOfDataFlow: function (element) {
             return _.any(this.getInbounds(element), _.bind(this.isDataFlow, this));
         },
-        isSystem: function (element){
-            return this.isEvent(element) && element.attributes.stereotype === 'system';
-        },
         getTopLevels: function () {
             var self = this;
             function isViewContainer(e) { return self.isViewContainer(e); }

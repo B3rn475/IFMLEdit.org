@@ -1,7 +1,7 @@
 /*jslint node: true, nomen: true */
 "use strict";
 
-exports.createEvent = function () { // add "options" parameter if needed
+exports.createNavigation = function () { // add "options" parameter if needed
 <% if (bindings) { -%>
     return function (context, data) {
         data = data || {};
@@ -20,8 +20,8 @@ exports.createEvent = function () { // add "options" parameter if needed
             context.runningActionsByContainer['<%= containerId %>'].splice(
                 context.runningActionsByContainer['<%= containerId %>'].indexOf(promise), 1
             );
-            if (result.event) {
-                context.events[result.event](context, result.data);
+            if (result.navigation) {
+                context.navigations[result.navigation](context, result.data);
             }
         });
     };

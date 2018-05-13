@@ -21,7 +21,7 @@ function ViewModel(params) {
         self.context.vms[id].init();
     };
     self.trigger = function (id) {
-        self.context.events[id](self.context);
+        self.context.navigations[id](self.context);
     };
 }
 

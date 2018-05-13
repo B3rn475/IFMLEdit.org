@@ -6,28 +6,28 @@ var ko = require('knockout');
 function ViewModel(params) {
     var self = this;
 
-    // TODO: Execution
+    // TODO: Setup everything needed to start listening for the event
     /*
       example:
         //to trigger the event: params.fire;
-        document.addEventListener('keydown', params.fire);
+        var timer = setInterval(function(){
+          params.fire();
+        }, 1000);
     */
 
     self.context = params.context;
 
-    // THIS CAN BE REMOVED (BEGIN)
-    self.stop = function () {
-      // TODO: Execution
-      /*
-        example [continue]:
-          document.removeEventListener('keydown', params.fire);
-      */
+    self.trigger = function () {
+        params.fire();
     };
-    // THIS CAN BE REMOVED (END)
+}
 
-    self.trigger = function (id) {
-        self.context.events[id](self.context);
-    };
+ViewModel.prototype.dispose = function() {
+  // TODO: Teardown everything you setup to listen for the event
+  /*
+    example [continue]:
+      clearInterval(timer);
+  */
 }
 
 ViewModel.prototype.id = '<%= id %>';
@@ -38,9 +38,7 @@ exports.register = function () {
             createViewModel: function (params, componentInfo) {
                 var vm = new ViewModel(params);
                 ko.utils.domNodeDisposal.addDisposeCallback(componentInfo.element, function () {
-                    // THIS CAN BE REMOVED (BEGIN)
-                    vm.stop();
-                    // THIS CAN BE REMOVED (END)
+                    vm.dispose();
                 });
                 return vm;
             }
