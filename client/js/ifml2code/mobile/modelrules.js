@@ -58,7 +58,7 @@ exports.rules = [
                 'js': {isFolder: true, name: 'js', children: ['js-index', 'controls', 'navigations', 'actions', 'repositories']},
                 'js-index': {name: 'index.js', content: require('./templates/index.js.ejs')()},
                 'controls': {isFolder: true, name: 'controls', children: ['controls-index', 'main-application']},
-                'controls-index': {name: 'index.js', content: require('./templates/controls-index.js.ejs')({controls: controls})},
+                'controls-index': {name: 'index.js', content: require('./templates/controls-index.js.ejs')({controls: controls, events: events})},
                 'main-application': {isFolder: true, name: 'main-application', children: ['main-application-VM', 'main-application-V']},
                 'main-application-VM': {name: 'index.js', content: require('./templates/main-application-vm.js.ejs')({defaultChild: defaultChild})},
                 'main-application-V': {name: 'index.html', content: require('./templates/main-application-v.html.ejs')({children: children, landmarks: landmarks})},

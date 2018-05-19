@@ -10,7 +10,7 @@ function ViewModel(params) {
     /*
       example:
         //to trigger the event: params.fire;
-        var timer = setInterval(function(){
+        self.timer = setInterval(function(){
           params.fire();
         }, 1000);
     */
@@ -26,7 +26,7 @@ ViewModel.prototype.dispose = function() {
   // TODO: Teardown everything you setup to listen for the event
   /*
     example [continue]:
-      clearInterval(timer);
+      clearInterval(this.timer);
   */
 }
 
