@@ -4,7 +4,7 @@
 var ko = require('knockout'),
     repositories = require('./repositories'),
     controls = require('./controls'),
-    events = require('./events'),
+    navigations = require('./navigations'),
     actions = require('./actions'),
     Promise = require('bluebird');
 
@@ -18,7 +18,7 @@ function ApplicationViewModel() {
     var repos = repositories.createRepositories({});
     this.context = {
         repositories: repos,
-        events: events.createEvents({}),
+        navigations: navigations.createNavigations({}),
         actions: actions.createActions({repositories: repos}),
         vms: {},
         runningActionsByContainer: {}

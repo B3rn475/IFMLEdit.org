@@ -12,7 +12,7 @@ function ViewModel(params) {
     self.errors = ko.observable({});
 
     self.trigger = function (id) {
-        self.context.events[id](self.context, self.output);
+        self.context.navigations[id](self.context, self.output);
     };
 }
 

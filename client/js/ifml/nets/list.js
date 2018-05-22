@@ -9,7 +9,7 @@ var elements = require('../elements').elements,
 
 function createList() {
     var component = new elements.ViewComponent({position: {x: 0, y: 0}, stereotype: 'list'}),
-        selected = new elements.Event({position: {x: 140, y: 50}, parentLifecicle: true, name: {text: 'selected', vertical: 'bottom', horizontal: 'right'}});
+        selected = new elements.Event({position: {x: 140, y: 50}, name: {text: 'selected', stereotype: 'selection', vertical: 'bottom', horizontal: 'right'}});
     component.embed(selected);
     return [component, selected];
 }

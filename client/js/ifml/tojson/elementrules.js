@@ -73,7 +73,8 @@ module.exports = [
                 elements: {
                     id: element.id,
                     attributes: {
-                        name: element.prop('name/text')
+                        name: element.prop('name/text'),
+                        stereotype: element.prop('stereotype')
                     },
                     metadata: {
                         graphics: {

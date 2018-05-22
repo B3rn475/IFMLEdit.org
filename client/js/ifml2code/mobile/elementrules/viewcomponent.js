@@ -38,20 +38,20 @@ exports.rules = [
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (event) { return model.getOutbounds(event).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name, stereotype: event.attributes.stereotype}; })
                     .value(),
                 events = _.chain(unfilteredevents)
-                    .reject({name: 'selected'})
+                    .reject({stereotype: 'selection'})
                     .value(),
-                selected = _.chain(unfilteredevents)
-                    .filter({name: 'selected'})
+                selection = _.chain(unfilteredevents)
+                    .filter({stereotype: 'selection'})
                     .first()
                     .value(),
                 obj = {
                     controls: {children: 'C-' + id}
                 };
             obj['C-' + id] = {isFolder: true, name: 'c-' + id, children: ['C-' + id + '-VM', 'C-' + id + '-V']};
-            obj['C-' + id + '-VM'] = {name: 'index.js', content: require('./templates/list-vm.js.ejs')({id: id, selected: selected, collection: collection, filters: filters, fields: fields, incomings: incomings})};
+            obj['C-' + id + '-VM'] = {name: 'index.js', content: require('./templates/list-vm.js.ejs')({id: id, selection: selection, collection: collection, filters: filters, fields: fields, incomings: incomings})};
             obj['C-' + id + '-V'] = {name: 'index.html', content: require('./templates/list-v.html.ejs')({name: name, events: events, fields: fields, showSelection: showSelection})};
             return obj;
         }

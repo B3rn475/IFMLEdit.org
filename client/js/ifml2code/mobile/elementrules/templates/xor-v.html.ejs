@@ -11,5 +11,9 @@
 <!-- /ko -->
 <% } -%>
 <% for (var i = 0; i < events.length; i += 1) { -%>
+  <% if (events[i].stereotype == 'system') { -%>
+    <c-<%= events[i].id %> params="fire: trigger.bind($data,'<%= events[i].id %>')"></c-<%= events[i].id %>>
+  <% } else { -%>
     <a class="waves-effect waves-light btn cyan col s12" data-bind="click: trigger.bind($data, '<%= events[i].id %>')"><%= events[i].name %></a>
+  <% } -%>
 <% } -%>

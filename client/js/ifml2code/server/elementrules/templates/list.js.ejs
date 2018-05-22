@@ -1,7 +1,13 @@
 /*jslint node: true */
 "use strict";
 
+<% if (selection) { -%>
 var Promise = require('bluebird');
+<% } else { -%>
+var Promise = require('bluebird'),
+    url = require('url'),
+    merge = require('merge');
+<% } -%>
 
 exports.createInitializer = function (options) {
     var repository = options.repositories['<%= collection %>'];
@@ -108,13 +114,28 @@ exports.createInitializer = function (options) {
 
     ViewModel.prototype.toObject = function () {
         if (!this.computed) { return; }
-        return {items: this.items, selected: this.selected};
+<% if (!selection) { -%>
+        var basequery = this.context.elements['<%= toplevel %>'].toQuery(),
+            pathname = './<%= path %>';
+<% } -%>
+        return {
+            items: this.items,
+<% if (selection) { -%>
+            selected: this.selected
+<% } else { -%>
+            selected: this.selected,
+            href: this.items.map(function (item) {
+                var query = merge(basequery, {'<%= id %>': item.id});
+                return url.format({pathname: pathname, query: query});
+            })
+<% } -%>
+        };
     };
 
     ViewModel.prototype.toQuery = function (event) {
         var self = this,
             query = {};
-        if (!event.broken[this.id]) {
+        if (!event || !event.broken[this.id]) {
             Object.keys(this.filters).forEach(function (filter) {
                 if (self.filters[filter]) {
                     query[self.id + '$f$' + filter] = self.filters[filter];

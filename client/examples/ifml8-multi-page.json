@@ -48,7 +48,8 @@
 		"id": "maillist-selected",
 		"type": "ifml.Event",
 		"attributes": {
-			"name": "selected"
+			"name": "selected",
+			"stereotype": "selection"
 		},
 		"metadata": {
 			"graphics": {
@@ -154,7 +155,8 @@
 		"id": "attachlist-selected",
 		"type": "ifml.Event",
 		"attributes": {
-			"name": "selected"
+			"name": "selected",
+			"stereotype": "selection"
 		},
 		"metadata": {
 			"graphics": {
@@ -176,7 +178,7 @@
 			"bindings": []
 		},
 		"metadata": {
-			
+
 		}
 	},
 	{
@@ -189,7 +191,7 @@
 			}]
 		},
 		"metadata": {
-			
+
 		}
 	},
 	{
@@ -202,7 +204,7 @@
 			}]
 		},
 		"metadata": {
-			
+
 		}
 	}],
 	"relations": [{

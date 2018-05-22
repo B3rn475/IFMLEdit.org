@@ -8,4 +8,9 @@ exports.register = function () {
 <% for(var i = 0; i < controls.length; i += 1) { -%>
     require('./c-<%= controls[i].id %>').register();
 <% } -%>
+<% for(var i = 0; i < events.length; i += 1) { -%>
+  <% if(events[i].attributes.stereotype == 'system'){ -%>
+    require('./c-<%= events[i].id %>').register();
+  <% } -%>
+<% } -%>
 };

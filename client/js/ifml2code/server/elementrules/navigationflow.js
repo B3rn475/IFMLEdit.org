@@ -69,6 +69,7 @@ exports.rules = [
                 path = targetsAction ? target.id
                                      : model.isDefault(targetTop) ? '' : targetTopLevel,
                 isSameTopLevel = currentTopLevel === targetTopLevel,
+                isSelection = event.attributes.stereotype === 'selection',
                 outcoming = _.chain(model.getOutbounds(id))
                     .filter(function (id) { return model.isNavigationFlow(id); })
                     .map(function (id) { return model.toElement(id); })
@@ -100,6 +101,7 @@ exports.rules = [
                 path: path,
                 currentTopLevel: currentTopLevel,
                 isSameTopLevel: isSameTopLevel,
+                isSelection: isSelection,
                 targetActives: targetActives,
                 targetsAction: targetsAction,
                 broken: broken,

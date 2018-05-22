@@ -45,11 +45,14 @@ exports.rules = [
             var collections = _.chain(model.elements)
                     .filter(function (e) { return model.isViewComponent(e); })
                     .reject({attributes: {stereotype: 'form'}})
-                    .map(function (component) {
-                        return {
-                            name: component.attributes.collection,
-                            fields: _.chain(component.attributes.fields).concat(component.attributes.filters).compact().value()
-                        };
+                    .map(function (c) {
+                        if (c.attributes.collection) {
+                            return {
+                                name: component.attributes.collection,
+                                fields: _.chain(component.attributes.fields).concat(component.attributes.filters).compact().value()
+                            };
+                        }
+                        throw new AException('Collection cannot be empty\n(ViewComponent id:' + c.id + ')');
                     })
                     .groupBy('name')
                     .values()

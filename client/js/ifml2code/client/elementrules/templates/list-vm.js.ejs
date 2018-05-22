@@ -15,13 +15,13 @@ function ViewModel(params) {
     self.select = function() {
         self.selected(this.id);
         self.output = this;
-<% if (selected) { -%>
-        self.trigger.call(this, '<%= selected.id %>');
+<% if (selection) { -%>
+        self.trigger.call(this, '<%= selection.id %>');
 <% } -%>
     };
 
     self.trigger = function (id) {
-        self.context.events[id](self.context, this);
+        self.context.navigations[id](self.context, this);
     };
 }
 

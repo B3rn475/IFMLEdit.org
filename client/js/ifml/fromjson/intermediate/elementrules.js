@@ -74,7 +74,8 @@ module.exports = [
                         text: element.attributes.name,
                         horizontal: element.metadata.graphics.name.horizontal,
                         vertical: element.metadata.graphics.name.vertical
-                    }
+                    },
+                    stereotype: element.attributes.stereotype
                 }
             };
         }

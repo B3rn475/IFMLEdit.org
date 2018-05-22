@@ -12,7 +12,7 @@ function ViewModel(params) {
     self.item = ko.observable(undefined);
 
     self.trigger = function (id) {
-        self.context.events[id](self.context, self.item());
+        self.context.navigations[id](self.context, self.item());
     };
 }
 

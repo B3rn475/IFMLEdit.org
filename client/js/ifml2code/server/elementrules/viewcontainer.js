@@ -17,9 +17,10 @@ exports.rules = [
                 descendants = _.chain(model.getDescendants(element, true))
                     .map(function (id) { return model.toElement(id); })
                     .filter(function (e) {
-                        if (!model.isEvent(e) || model.getOutbounds(e).length) { return true; }
-                        var parent = model.getParent(e);
-                        return model.isViewComponent(parent) && parent.attributes.stereotype === 'list' && e.attributes.name === 'selected';
+                        if (model.isEvent(e)) {
+                            return model.getOutbounds(e).length;
+                        }
+                        return true;
                     })
                     .map('id')
                     .value(),

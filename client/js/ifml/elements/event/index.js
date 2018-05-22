@@ -50,6 +50,7 @@ exports.Event = joint.shapes.basic.Generic.extend({
         attrs: {
             '.': {magnet: 'passive'},
             '.ifml-event-magnet-rect': {magnet: true, visibility: 'hidden'},
+            '.ifml-event-system-symbol': {visibility: 'hidden'},
             'text': {
                 'ref-x': 0.5,
                 'ref-y': -11,
@@ -63,7 +64,8 @@ exports.Event = joint.shapes.basic.Generic.extend({
     containers: ['ifml.ViewContainer', 'ifml.ViewComponent', 'ifml.Action'],
 
     editable: function () {
-        return [
+        var self = this;
+        return _([
             {property: 'name/text', name: 'Name', type: 'string'},
             {property: 'name/vertical', name: 'Position Vertical', type: 'enum', values: [
                 {value: 'top', name: 'Top'},
@@ -76,8 +78,44 @@ exports.Event = joint.shapes.basic.Generic.extend({
                 {value: 'middle', name: 'Middle'},
                 {value: 'right', name: 'Right'},
                 {value: 'right-outer', name: 'Outer Right'}
-            ]}
-        ];
+            ]}])
+            .concat((function () {
+                var parent = self.graph.getCell(self.get('parent')),
+                    values;
+                switch (parent.get('type')) {
+                case 'ifml.ViewContainer':
+                    values = [
+                        {value: undefined, name: 'User Event'},
+                        {value: 'system', name: 'System Event'}
+                    ];
+                    break;
+                case 'ifml.ViewComponent':
+                    switch (parent.get('stereotype')) {
+                    case 'list':
+                        values = [
+                            {value: undefined, name: 'User Event'},
+                            {value: 'selection', name: 'Selection Event'},
+                            {value: 'system', name: 'System Event'}
+                        ];
+                        break;
+                    default:
+                        values = [
+                            {value: undefined, name: 'User Event'},
+                            {value: 'system', name: 'System Event'}
+                        ];
+                    }
+                    break;
+                default:
+                    return [];
+                }
+                return [{
+                    property: 'stereotype',
+                    name: 'Event Type',
+                    type: 'enum',
+                    values: values
+                }];
+            }()))
+            .value();
     },
 
     statistics: function () {
@@ -90,8 +128,10 @@ exports.Event = joint.shapes.basic.Generic.extend({
         joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
         this._parentPositionChanged();
         this._nameChanged();
+        this._stereotypeChanged();
         this.on('change:parent', this._parentChanged, this);
         this.on('change:name', this._nameChanged, this);
+        this.on('change:stereotype', this._stereotypeChanged, this);
         this.on('change:accent', this._accentChanged, this);
 
         this._accentChanged();
@@ -131,6 +171,7 @@ exports.Event = joint.shapes.basic.Generic.extend({
                 this._parentPositionChanged();
                 this.graph.getCell(this.get('parent')).on('change:size', this._parentPositionChanged, this);
             }
+
         }
     },
 
@@ -140,6 +181,20 @@ exports.Event = joint.shapes.basic.Generic.extend({
             verticalToRef(this.get('name').vertical),
             horizontalToRef(this.get('name').horizontal)
         )});
+    },
+
+    _stereotypeChanged: function () {
+        var systemSymbolVisibility = 'hidden';
+        switch (this.get('stereotype')) {
+        case 'system':
+            systemSymbolVisibility = 'visible';
+            break;
+        }
+        this.attr({
+            '.ifml-event-system-symbol': {
+                visibility: systemSymbolVisibility
+            }
+        });
     },
 
     linkConnectionPoint: function (linkView, view, magnet, reference, targetBBox, targetAngle, defaultConnectionPoint) {
