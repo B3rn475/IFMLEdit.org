@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../commands.dart';
 import '../repositories/<%=collection %>.dart';
-<% if (selected) { -%>
-import '../events/<%=selected.id %>.dart' as Selected;
+<% if (selection) { -%>
+import '../events/<%=selection.id %>.dart' as Selected;
 <% }
    for (var i = 0; i < events.length; i++) { -%>
 import '../events/<%=events[i].id %>.dart' as E<%=i %>;

@@ -37,9 +37,13 @@ exports.createInitializer = function (options) {
             items = source.items.map(function (item) {
                 return {
                     query: {
-<% if(isSameTopLevel && broken.indexOf(component) === -1) { -%>
+<% if(isSameTopLevel && broken.indexOf(component) === -1) {
+        if (isSelection) { -%>
                         '<%= component %>' : item.id
-<% } else { -%>
+<%      } else { -%>
+                        '<%= component %>' : source.selected && source.selected.id
+<%      }
+   } else { -%>
                         '<%= component %>': undefined
 <% } -%>
                     },

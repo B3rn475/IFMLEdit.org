@@ -95,7 +95,7 @@ exports.createInitializer = function (options) {
 
     ViewModel.prototype.toQuery = function (event) {
         var obj = {}
-        if (!event.broken[this.id]) {
+        if (!event || !event.broken[this.id]) {
             obj[this.id] = this.item ? this.item.id : '';
         }
         return obj;

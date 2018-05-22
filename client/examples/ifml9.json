@@ -90,7 +90,8 @@
 		"id": "genrelist-selected",
 		"type": "ifml.Event",
 		"attributes": {
-			"name": "selected"
+			"name": "selected",
+			"stereotype": "selection"
 		},
 		"metadata": {
 			"graphics": {
@@ -135,7 +136,8 @@
 		"id": "songlist-selected",
 		"type": "ifml.Event",
 		"attributes": {
-			"name": "selected"
+			"name": "selected",
+			"stereotype": "selection"
 		},
 		"metadata": {
 			"graphics": {
@@ -154,7 +156,8 @@
 		"id": "artistlist-selected",
 		"type": "ifml.Event",
 		"attributes": {
-			"name": "selected"
+			"name": "selected",
+			"stereotype": "selection"
 		},
 		"metadata": {
 			"graphics": {
@@ -179,7 +182,7 @@
 			}]
 		},
 		"metadata": {
-			
+
 		}
 	},
 	{
@@ -189,7 +192,7 @@
 			"bindings": []
 		},
 		"metadata": {
-			
+
 		}
 	},
 	{
@@ -202,7 +205,7 @@
 			}]
 		},
 		"metadata": {
-			
+
 		}
 	}],
 	"relations": [{

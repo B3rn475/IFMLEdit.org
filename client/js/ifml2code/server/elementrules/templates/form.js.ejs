@@ -85,7 +85,7 @@ exports.createInitializer = function (options) {
     ViewModel.prototype.toQuery = function (event) {
         var self = this,
             query = {};
-        if (!event.broken[this.id]) {
+        if (!event || !event.broken[this.id]) {
             Object.keys(this.fields).forEach(function (field) {
                 if (self.fields[field]) {
                     query[self.id + '$f$' + field] = self.fields[field];

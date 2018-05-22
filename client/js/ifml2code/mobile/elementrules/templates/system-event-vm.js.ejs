@@ -8,25 +8,23 @@ function ViewModel(params) {
 
     // TODO: Setup everything needed to start listening for the event
     /*
-      example:
-        //to trigger the event: params.fire;
-        self.timer = setInterval(function(){
-          params.fire();
-        }, 1000);
+    example:
+    // let's trigger after 1 second
+    self.timer = setInterval(function(){
+        params.trigger();
+    }, 1000);
     */
 
     self.context = params.context;
 
-    self.trigger = function () {
-        params.fire();
-    };
+    self.trigger = params.trigger;
 }
 
 ViewModel.prototype.dispose = function() {
   // TODO: Teardown everything you setup to listen for the event
   /*
-    example [continue]:
-      clearInterval(this.timer);
+  example [continue]:
+  clearInterval(this.timer);
   */
 }
 
