@@ -48,7 +48,7 @@
                 $('#<%= id %> input').each(function () {
                     var name = $(this).data('name');
                     if (action.searchParams.has(name)) {
-                        action.searchParams.set(name, input.value);
+                        action.searchParams.set(name, this.value);
                     }
                     this.name = mapping[name] || '';
                 });
