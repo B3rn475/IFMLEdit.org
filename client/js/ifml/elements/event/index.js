@@ -51,6 +51,7 @@ exports.Event = joint.shapes.basic.Generic.extend({
             '.': {magnet: 'passive'},
             '.ifml-event-magnet-rect': {magnet: true, visibility: 'hidden'},
             '.ifml-event-system-symbol': {visibility: 'hidden'},
+            '.ifml-event-selection-symbol': {visibility: 'hidden'},
             'text': {
                 'ref-x': 0.5,
                 'ref-y': -11,
@@ -185,14 +186,21 @@ exports.Event = joint.shapes.basic.Generic.extend({
 
     _stereotypeChanged: function () {
         var systemSymbolVisibility = 'hidden';
+        var selectionSymbolVisibility = 'hidden';
         switch (this.get('stereotype')) {
         case 'system':
             systemSymbolVisibility = 'visible';
+            break;
+        case 'selection':
+            selectionSymbolVisibility = 'visible';
             break;
         }
         this.attr({
             '.ifml-event-system-symbol': {
                 visibility: systemSymbolVisibility
+            },
+            '.ifml-event-selection-symbol': {
+                visibility: selectionSymbolVisibility
             }
         });
     },
