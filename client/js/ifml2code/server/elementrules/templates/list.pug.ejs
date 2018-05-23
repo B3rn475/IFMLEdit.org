@@ -14,14 +14,18 @@
             - var sid = vm['<%= id %>'].selected ? vm['<%= id %>'].selected.id : '';
             each item, itemindex in vm['<%= id %>'].items
                 tr(class=item.id === sid ? 'info' : '')
-<% if (selected.targetsAction) { -%>
-                    - var action = vm['<%= selected.id %>'][itemindex].action
-                    - var hiddens = vm['<%= selected.id %>'][itemindex].hiddens
-<% } else { -%>
-                    - var href = vm['<%= selected.id %>'][itemindex].href
+<% if (selection) {
+        if (selection.targetsAction) { -%>
+                    - var action = vm['<%= selection.id %>'][itemindex].action
+                    - var hiddens = vm['<%= selection.id %>'][itemindex].hiddens
+<%      } else { -%>
+                    - var href = vm['<%= selection.id %>'][itemindex].href
+<%      }
+   } else { %>
+                    - var href = vm['<%= id %>'].href[itemindex]
 <% } -%>
                     th(scope='row')
-<% if (selected.targetsAction) { -%>
+<% if (selection && selection.targetsAction) { -%>
                         form(action=action, method="POST")
                             each value, name in hiddens
                                 input(type='hidden', name=name, value=value)
@@ -32,7 +36,7 @@
    for (var i = 0; i < fields.length; ++i) { -%>
                     td
 
-<%     if (selected.targetsAction) { -%>
+<%     if (selection && selection.targetsAction) { -%>
                         form(action=action, method="POST")
                             each value, name in hiddens
                                 input(type='hidden', name=name, value=value)

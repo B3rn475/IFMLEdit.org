@@ -13,15 +13,19 @@ var templates = {
 };
 
 exports.rules = [
-    createRule( // map selected event without outbound navigation flow
+    createRule( // map lists without an active selection event
         function (element, model) {
-            if (!model.isEvent(element) || model.getOutbounds(element).length) {return false; }
-            var parent = model.getParent(element);
-            return model.isViewComponent(parent) && parent.attributes.stereotype === 'list' && element.attributes.name === 'selected';
+            if (!(model.isViewComponent(element) && element.attributes.stereotype === 'list')) {
+                return false;
+            }
+            var selection = _.chain(model.getChildren(element))
+                .filter(function (id) { return model.isEvent(id); })
+                .map(function (id) { return model.toElement(id); })
+                .filter(function (event) { return model.getOutbounds(event).length && event.attributes.stereotype === 'selection'; });
+            return selection.length === 0;
         },
-        function (element, model) {
-            var id = model.toId(element),
-                list = model.getParent(element),
+        function (list, model) {
+            var id = model.toId(list),
                 top = model.getTopLevelAncestor(list),
                 currentTopLevel = top.id,
                 path = model.isDefault(top) ? '' : currentTopLevel,
@@ -29,7 +33,7 @@ exports.rules = [
             obj[currentTopLevel + '-viewmodel'] = {children: id + '-view-js'};
             obj[id + '-view-js'] = {name: id + '.js', content: templates.list({
                 id: id,
-                component: list.id,
+                component: id,
                 path: path,
                 currentTopLevel: currentTopLevel,
                 isSameTopLevel: true,

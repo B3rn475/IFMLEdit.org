@@ -48,7 +48,8 @@
 		"id": "maillist-selected",
 		"type": "ifml.Event",
 		"attributes": {
-			"name": "selected"
+			"name": "selected",
+			"stereotype": "selection"
 		},
 		"metadata": {
 			"graphics": {

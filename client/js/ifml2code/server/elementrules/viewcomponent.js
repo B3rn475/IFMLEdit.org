@@ -18,6 +18,7 @@ exports.rules = [
                 filters = element.attributes.filters,
                 top = model.getTopLevelAncestor(element),
                 tid = top.id,
+                path = model.isDefault(top) ? '' : tid,
                 incomings = _.chain(model.getInbounds(id))
                     .filter(function (id) { return model.isDataFlow(id); })
                     .map(function (id) { return model.toElement(id); })
@@ -29,26 +30,26 @@ exports.rules = [
                 unfilteredevents = _.chain(model.getChildren(id))
                     .filter(function (id) { return model.isEvent(id); })
                     .map(function (id) { return model.toElement(id); })
-                    .filter(function (event) { return model.getOutbounds(event).length || event.attributes.name === 'selected'; })
+                    .filter(function (event) { return model.getOutbounds(event).length; })
                     .map(function (event) {
                         var flow = model.getOutbounds(event)[0],
                             target = flow && model.getTarget(flow);
-                        return { id: model.toId(event), name: event.attributes.name, targetsAction: model.isAction(target, false)};
+                        return { id: model.toId(event), name: event.attributes.name, stereotype: event.attributes.stereotype, targetsAction: model.isAction(target, false)};
                     })
                     .value(),
                 events = _.chain(unfilteredevents)
-                    .reject({name: 'selected'})
+                    .reject({stereotype: 'selection'})
                     .value(),
-                selected = _.chain(unfilteredevents)
-                    .filter({name: 'selected'})
+                selection = _.chain(unfilteredevents)
+                    .filter({stereotype: 'selection'})
                     .first()
                     .value(),
                 fields = element.attributes.fields,
                 obj = {};
             obj[tid + '-view'] = {children: id + '-pug'};
-            obj[id + '-pug'] = {name: id + '.pug', content: require('./templates/list.pug.ejs')({id: id, name: name, fields: fields, events: events, selected: selected})};
+            obj[id + '-pug'] = {name: id + '.pug', content: require('./templates/list.pug.ejs')({id: id, name: name, fields: fields, events: events, selection: selection})};
             obj[tid + '-viewmodel'] = {children: id + '-view-js'};
-            obj[id + '-view-js'] = {name: id + '.js', content: require('./templates/list.js.ejs')({id: id, incomings: incomings, collection: collection, fields: fields, filters: filters, events: unfilteredevents})};
+            obj[id + '-view-js'] = {name: id + '.js', content: require('./templates/list.js.ejs')({id: id, incomings: incomings, collection: collection, fields: fields, filters: filters, events: unfilteredevents, selection: selection, path: path, toplevel: tid})};
             return obj;
         }
     ),

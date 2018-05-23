@@ -77,12 +77,12 @@ exports.createInitializer = function (options) {
     ViewModel.prototype.toQuery = function (event) {
         var query = {};
         if (this.active) {
-            if (event.targetChain[this.id]) {
+            if (event && event.targetChain[this.id]) {
                 if (this.active === event.targetChain[this.id]) {
                     query = this.context.elements[this.active].toQuery(event);
                 }
             } else {
-                if (!event.broken[this.id]) {
+                if (!event || !event.broken[this.id]) {
                     query[this.id] = this.active;
                     query = merge(query, this.context.elements[this.active].toQuery(event));
                 }

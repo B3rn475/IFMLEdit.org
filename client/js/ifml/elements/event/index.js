@@ -46,7 +46,6 @@ exports.Event = joint.shapes.basic.Generic.extend({
         type: 'ifml.Event',
         size: {width: 20, height: 20},
         name: {text: 'event', vertical: 'top', horizontal: 'left-outer'},
-        stereotype: 'user',
         fixedParent: true,
         attrs: {
             '.': {magnet: 'passive'},
@@ -81,16 +80,40 @@ exports.Event = joint.shapes.basic.Generic.extend({
                 {value: 'right-outer', name: 'Outer Right'}
             ]}])
             .concat((function () {
-              switch (self.getAncestors()[0].attributes.type) {
-                case 'ifml.Action':
-                  return [];
-                default :
-                  return [
-                      {property: 'stereotype', name: 'Event Type', type: 'enum', values:[
-                        {value: 'user', name: 'User Event'},
+                var parent = self.graph.getCell(self.get('parent')),
+                    values;
+                switch (parent.get('type')) {
+                case 'ifml.ViewContainer':
+                    values = [
+                        {value: undefined, name: 'User Event'},
                         {value: 'system', name: 'System Event'}
-                      ]}];
-              }
+                    ];
+                    break;
+                case 'ifml.ViewComponent':
+                    switch (parent.get('stereotype')) {
+                    case 'list':
+                        values = [
+                            {value: undefined, name: 'User Event'},
+                            {value: 'selection', name: 'Selection Event'},
+                            {value: 'system', name: 'System Event'}
+                        ];
+                        break;
+                    default:
+                        values = [
+                            {value: undefined, name: 'User Event'},
+                            {value: 'system', name: 'System Event'}
+                        ];
+                    }
+                    break;
+                default:
+                    return [];
+                }
+                return [{
+                    property: 'stereotype',
+                    name: 'Event Type',
+                    type: 'enum',
+                    values: values
+                }];
             }()))
             .value();
     },
@@ -161,18 +184,17 @@ exports.Event = joint.shapes.basic.Generic.extend({
     },
 
     _stereotypeChanged: function () {
-        this.stereotype = this.get('stereotype');
-        if(this.get('stereotype') == 'user'){
-          this.attr({
-              '.ifml-event-system-symbol': {
-                  visibility: 'hidden'
-          }});
-        } else{
-          this.attr({
-              '.ifml-event-system-symbol': {
-                  visibility: 'visible'
-          }});
+        var systemSymbolVisibility = 'hidden';
+        switch (this.get('stereotype')) {
+        case 'system':
+            systemSymbolVisibility = 'visible';
+            break;
         }
+        this.attr({
+            '.ifml-event-system-symbol': {
+                visibility: systemSymbolVisibility
+            }
+        });
     },
 
     linkConnectionPoint: function (linkView, view, magnet, reference, targetBBox, targetAngle, defaultConnectionPoint) {

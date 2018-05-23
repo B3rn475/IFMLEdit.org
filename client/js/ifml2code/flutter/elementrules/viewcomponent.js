@@ -38,19 +38,19 @@ exports.rules = [
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (event) { return model.getOutbounds(event).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name, bindings: model.toElement(model.getOutbounds(event)[0]).attributes.bindings}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name, stereotype: event.attributes.stereotype, bindings: model.toElement(model.getOutbounds(event)[0]).attributes.bindings}; })
                     .value(),
                 events = _.chain(unfilteredevents)
-                    .reject({name: 'selected'})
+                    .reject({stereotype: 'selection'})
                     .value(),
-                selected = _.chain(unfilteredevents)
-                    .filter({name: 'selected'})
+                selection = _.chain(unfilteredevents)
+                    .filter({stereotype: 'selection'})
                     .first()
                     .value(),
                 obj = {
                     widgets: {children: 'c-' + id}
                 };
-            obj['c-' + id] = {name: id + '.dart', content: require('./templates/list.dart.ejs')({id: id, name: name, selected: selected, showSelection: showSelection, collection: collection, filters: filters, fields: fields, incomings: incomings, events: events})};
+            obj['c-' + id] = {name: id + '.dart', content: require('./templates/list.dart.ejs')({id: id, name: name, selection: selection, showSelection: showSelection, collection: collection, filters: filters, fields: fields, incomings: incomings, events: events})};
             return obj;
         }
     ),
