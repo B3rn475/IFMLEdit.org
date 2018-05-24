@@ -21,7 +21,7 @@ exports.createNavigation = function () { // add "options" parameter if needed
                 context.runningActionsByContainer['<%= containerId %>'].indexOf(promise), 1
             );
             if (result.event) {
-                context.events[result.event](context, result.data);
+                context.navigations[result.event](context, result.data);
             }
         });
     };
