@@ -75,7 +75,7 @@ exports.rules = [
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (id) { return model.getOutbounds(id).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name, stereotype: event.attributes.stereotype}; })
                     .value(),
                 obj = {
                     controls: {children: 'C-' + id}
@@ -104,7 +104,7 @@ exports.rules = [
                     .filter(function (id) { return model.isEvent(id); })
                     .filter(function (id) { return model.getOutbounds(id).length; })
                     .map(function (id) { return model.toElement(id); })
-                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name}; })
+                    .map(function (event) { return { id: model.toId(event), name: event.attributes.name, stereotype: event.attributes.stereotype}; })
                     .value(),
                 obj = {
                     controls: {children: 'C-' + id}
