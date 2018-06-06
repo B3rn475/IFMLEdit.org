@@ -46,7 +46,6 @@ exports.Event = joint.shapes.basic.Generic.extend({
         type: 'ifml.Event',
         size: {width: 20, height: 20},
         name: {text: 'event', vertical: 'top', horizontal: 'left-outer'},
-        fixedParent: true,
         attrs: {
             '.': {magnet: 'passive'},
             '.ifml-event-magnet-rect': {magnet: true, visibility: 'hidden'},
@@ -61,6 +60,7 @@ exports.Event = joint.shapes.basic.Generic.extend({
         }
     }, joint.shapes.basic.Generic.prototype.defaults),
 
+    fixedParent: true,
     requireEmbedding: true,
     containers: ['ifml.ViewContainer', 'ifml.ViewComponent', 'ifml.Action'],
 
