@@ -18,9 +18,8 @@ var _ = require('lodash'),
     pcn = require('./pcn').pcn,
     ifml2pcn = require('./ifml2pcn').ifml2pcn,
     defaultLink = require('./defaultlink').defaultLink,
-    createElementsMenu = require('almost-joint').createElementsMenu,
     createStatisticsMenu = require('./statistics').StatisticsMenu,
-    createModalEdit = require('almost-joint').createModalEdit,
+    createModalEdit = require('./modaledit').ModalEdit,
     createModalStatistics = require('./modalstatistics').ModalStatistics,
     createModalDB = require('./modaldb').ModalDB,
     createModalExamples = require('./modalexamples').ModalExamples,
@@ -115,15 +114,15 @@ statisticsBoard.zoomE();
 pcnBoard.zoomE();
 
 function editIfmlElement(cellView) {
-    ifmlBoard.createModalEdit({cell: cellView.model});
+    createModalEdit({cell: cellView.model, board: ifmlBoard});
 }
 
 function editPcnElement(cellView) {
-    pcnBoard.createModalEdit({cell: cellView.model});
+    createModalEdit({cell: cellView.model, board: pcnBoard});
 }
 
 function showElementStatistics(cellView) {
-    statisticsBoard.createModalStatistics({cell: cellView.model});
+    createModalStatistics({cell: cellView.model});
 }
 
 ifmlBoard.on('cell:edit cell:pointerdblclick link:options', editIfmlElement);
