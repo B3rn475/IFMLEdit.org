@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "aliasify": "^2.1.0",
-    "almost": "^1.0.0",
+    "almost": "^1.0.1",
     "almost-joint": "^1.0.0-alpha",
     "backbone": "^1.3.3",
     "bluebird": "^3.5.1",
