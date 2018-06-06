@@ -18,6 +18,7 @@ var _ = require('lodash'),
     pcn = require('./pcn').pcn,
     ifml2pcn = require('./ifml2pcn').ifml2pcn,
     defaultLink = require('./defaultlink').defaultLink,
+    isValidParent = require('./isvalidparent').isValidParent,
     createStatisticsMenu = require('./statistics').StatisticsMenu,
     createModalEdit = require('./modaledit').ModalEdit,
     createModalStatistics = require('./modalstatistics').ModalStatistics,
@@ -36,7 +37,8 @@ var ifmlModel = new joint.dia.Graph(),
     ifmlBoard = createBoard({
         el: '#ifml > .board',
         model: ifmlModel,
-        defaultLink: defaultLink
+        defaultLink: defaultLink,
+        isValidParent: isValidParent
     }),
     ifmlMenu = ifmlBoard.createElementsMenu({
         container: '#ifml > .sidebar > ul',
@@ -49,6 +51,7 @@ var ifmlModel = new joint.dia.Graph(),
         el: '#statistics > .board',
         model: statisticsModel,
         defaultLink: defaultLink,
+        isValidParent: isValidParent,
         readonly: true,
         magnetize: false,
         resize: false,
@@ -89,6 +92,7 @@ var ifmlModel = new joint.dia.Graph(),
         el: '#pcn > .board',
         model: pcnModel,
         defaultLink: defaultLink,
+        isValidParent: isValidParent
     }),
     pcnMenu = pcnBoard.createElementsMenu({
         container: '#pcn > .sidebar > ul',
