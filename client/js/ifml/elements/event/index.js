@@ -127,14 +127,14 @@ exports.Event = joint.shapes.basic.Generic.extend({
 
     initialize: function () {
         joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
-        this._parentPositionChanged();
-        this._nameChanged();
-        this._stereotypeChanged();
         this.on('change:parent', this._parentChanged, this);
         this.on('change:name', this._nameChanged, this);
         this.on('change:stereotype', this._stereotypeChanged, this);
         this.on('change:accent', this._accentChanged, this);
 
+        this._parentPositionChanged();
+        this._nameChanged();
+        this._stereotypeChanged();
         this._accentChanged();
     },
 
@@ -185,8 +185,8 @@ exports.Event = joint.shapes.basic.Generic.extend({
     },
 
     _stereotypeChanged: function () {
-        var systemSymbolVisibility = 'hidden';
-        var selectionSymbolVisibility = 'hidden';
+        var systemSymbolVisibility = 'hidden',
+            selectionSymbolVisibility = 'hidden';
         switch (this.get('stereotype')) {
         case 'system':
             systemSymbolVisibility = 'visible';
