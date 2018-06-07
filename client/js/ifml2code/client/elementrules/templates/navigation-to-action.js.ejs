@@ -20,8 +20,8 @@ exports.createNavigation = function () { // add "options" parameter if needed
             context.runningActionsByContainer['<%= containerId %>'].splice(
                 context.runningActionsByContainer['<%= containerId %>'].indexOf(promise), 1
             );
-            if (result.navigation) {
-                context.navigations[result.navigation](context, result.data);
+            if (result.event) {
+                context.navigations[result.event](context, result.data);
             }
         });
     };
