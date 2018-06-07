@@ -18,7 +18,7 @@ exports.rules = [
             var event = model.getSource(flow),
                 id = model.toId(event),
                 target = model.getTargetId(flow),
-                targetTop = model.getTopLevelAncestor(target).id,
+                targetTop = model.getTopLevelAncestorId(target),
                 targetActives = _.chain(model.getAncestors(target, true))
                     .filter(function (id) { return model.isViewContainer(id); })
                     .filter(function (id) { return model.isXOR(model.getParent(id)); })

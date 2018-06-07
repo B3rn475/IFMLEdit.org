@@ -9,7 +9,7 @@ var _ = require('lodash'),
     createRule = require('almost').createRule;
 
 exports.rules = [
-    createRule( // map list
+    createRule( // map action
         function (element, model) { return model.isAction(element); },
         function (action, model) {
             var id = model.toId(action),
