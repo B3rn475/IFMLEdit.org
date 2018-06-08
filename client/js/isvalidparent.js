@@ -11,7 +11,7 @@ function isValidParent(element, parent) {
         return !element.requireEmbedding;
     }
     if (element.fixedParent && element.get('parent')) {
-        return false;
+        return element.get('parent') === parent.id;
     }
     var containers = element.containers || [];
     if (-1 === containers.indexOf(parent.get('type'))) {
