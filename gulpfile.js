@@ -130,7 +130,7 @@ gulp.task('index', function () {
                 removeComments: false
             }
         })
-        .transform('ejsify')
+        .transform('./build/ejsprecompile', {compileDebug: !production})
         .bundle()
         .pipe(source('index.js'))
         .pipe(buffer())
