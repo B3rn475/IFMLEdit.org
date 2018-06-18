@@ -6,14 +6,17 @@
 
 var utils = require('almost-joint').utils;
 
-function isValidParent(element, parent) {
+function isValidParent(cellView, parentCellView) {
+    var element = cellView && cellView.model,
+        parent = parentCellView && parentCellView.model,
+        containers;
     if (!parent) {
         return !element.requireEmbedding;
     }
     if (element.fixedParent && element.get('parent')) {
         return element.get('parent') === parent.id;
     }
-    var containers = element.containers || [];
+    containers = element.containers || [];
     if (-1 === containers.indexOf(parent.get('type'))) {
         return false;
     }
