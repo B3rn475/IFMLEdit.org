@@ -28,7 +28,7 @@
            if (events[i].stereotype == 'system') { -%>
                 <c-<%= events[i].id %> params="trigger: $parent.trigger.bind($data, '<%= events[i].id %>')"></c-<%= events[i].id %>>
 <%         } else { -%>
-                <a class="col-xs-2 btn btn-primary" data-bind="click: $parent.trigger.bind($data, '<%= events[i].id %>'), clickBubble: false"><%= events[i].name %></a>
+                <a class="btn btn-primary" data-bind="click: $parent.trigger.bind($data, '<%= events[i].id %>'), clickBubble: false"><%= events[i].name %></a>
 <%         }
        } -%>
             </td>
