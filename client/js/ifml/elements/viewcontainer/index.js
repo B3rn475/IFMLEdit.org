@@ -117,7 +117,9 @@ exports.ViewContainer = joint.shapes.basic.Generic.extend({
         return this.get('statistics');
     },
 
-    _sizeChanged: function () {
+    _sizeChanged: function (element, value, data) {
+        data = data ||  {};
+        if (data.undo) { return; }
         var size = this.get('size'),
             minsize = this.minsize;
         if (size.width < minsize.width || size.height < minsize.height) {
@@ -125,7 +127,9 @@ exports.ViewContainer = joint.shapes.basic.Generic.extend({
         }
     },
 
-    _defaultChanged: function () {
+    _defaultChanged: function (element, value, data) {
+        data = data ||  {};
+        if (data.undo) { return; }
         if (this.get('default') === true && this.graph) {
             var parent = this.graph.getCell(this.get('parent')),
                 thisId = this.id,
@@ -154,7 +158,10 @@ exports.ViewContainer = joint.shapes.basic.Generic.extend({
         }
     },
 
-    _xorChanged: function () {
+    _xorChanged: function (element, value, data) {
+        ignore(element, value);
+        data = data ||  {};
+        if (data.undo) { return; }
         if (this.get('xor') === true && this.graph) {
             var parent = this.getAncestors()[0];
             if (!parent || parent.get('xor')) {
@@ -163,7 +170,10 @@ exports.ViewContainer = joint.shapes.basic.Generic.extend({
         }
     },
 
-    _landmarkChanged: function () {
+    _landmarkChanged: function (element, value, data) {
+        ignore(element, value);
+        data = data ||  {};
+        if (data.undo) { return; }
         if (this.get('landmark') === true && this.graph) {
             var parent = this.getAncestors()[0];
             if (parent && !parent.get('xor')) {
@@ -189,6 +199,7 @@ exports.ViewContainer = joint.shapes.basic.Generic.extend({
                 parent.on('change:xor', this._landmarkChanged, this);
                 parent.on('change:xor', this._defaultChanged, this);
             }
+            if (data.undo) { return; }
             this._xorChanged();
             this._landmarkChanged();
             this._defaultChanged();
