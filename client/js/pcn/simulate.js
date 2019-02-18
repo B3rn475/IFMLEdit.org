@@ -95,11 +95,11 @@ function Simulator(options) {
             priorities = _.chain(transitions)
                 .groupBy(function (t) { return t.get('priority'); })
                 .pairs()
-                .sortBy(function (p1, p2) { return parseInt(p1[0], 10) - parseInt(p2[0], 10); })
+                .sortBy(function (p) { return -parseInt(p[0], 10); })
                 .map(function (p) { return p[1]; })
                 .value();
         if (transitions.length) {
-            while (priorities.length > 1 && !_.random(0, 10)) {
+            while (priorities.length > 1 && !_.random(0, 1000)) {
                 priorities = _.rest(priorities);
             }
             activateTransition(_.sample(_.first(priorities)), doStep);
