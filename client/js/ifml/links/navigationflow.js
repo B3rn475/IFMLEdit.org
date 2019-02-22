@@ -19,19 +19,30 @@ exports.NavigationFlow = Base.extend({
     validateConnection: function (cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
         _.noop(magnetS, magnetT);
         if (cellViewS === cellViewT) { return false; }
-        var valid,
-            source = cellViewS.model,
+        var event = cellViewS.model,
             target = cellViewT.model,
-            parent;
+            link = linkView.model,
+            source,
+            inbounds;
         if (end === 'source') {
-            valid = -1 !== linkView.model.validSources.indexOf(source.get('type'));
+            if (!_.includes(link.validSources, event.get('type'))) {
+                return false;
+            }
         } else {
-            valid = -1 !== linkView.model.validTargets.indexOf(target.get('type'));
+            if (!_.includes(link.validTargets, target.get('type'))) {
+                return false;
+            }
         }
-        if (valid) {
-            parent = source.graph.getCell(source.get('parent'));
-            valid = !(parent.get('type') === 'ifml.Action' && target.get('type') === 'ifml.Action');
+        if (target.get('type') === 'ifml.Action') {
+            source = event.graph.getCell(event.get('parent'));
+            if (source.get('type') === 'ifml.Action') {
+                return false;
+            }
+            inbounds = target.graph.getConnectedLinks(target, {inbound: true});
+            return _.every(inbounds, function (inbound) {
+                return (inbound.get('type') !== 'ifml.NavigationFlow') || inbound === link;
+            });
         }
-        return valid;
+        return true;
     }
 });
