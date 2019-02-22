@@ -9,6 +9,8 @@ var _ = require('lodash'),
     joint = require('joint'),
     Color = require('color');
 
+function ignore() { return; }
+
 function upperFirst(string) {
     if (!string || !string.length) { return string; }
     return string[0].toUpperCase() + string.substring(1).toLowerCase();
@@ -76,34 +78,39 @@ exports.ViewComponent = joint.shapes.basic.Generic.extend({
     initialize: function () {
         this.on('change:size', this._sizeChanged, this);
         this.on('change:name change:stereotype', this._headlineChanged, this);
-        this.on('change:stereotype', this._stereotypeChanged, this);
         this.on('change:collection', this._collectionChanged, this);
         this.on('change:accent', this._accentChanged, this);
         joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
+        this._alignGraphicsWithStereotype();
         this._sizeChanged();
         this._headlineChanged();
-        this._stereotypeChanged();
         this._collectionChanged();
         this._accentChanged();
+        switch (this.get('stereotype')) {
+        case 'details':
+            this.on('change:fields', this._outputChanged, this);
+            this._outputChanged();
+            break;
+        case 'list':
+            this.on('change:filters', this._inputChanged, this);
+            this.on('change:fields', this._outputChanged, this);
+            this._inputChanged();
+            this._outputChanged();
+            break;
+        default:
+            this.on('change:fields', this._inputChanged, this);
+            this.on('change:fields', this._outputChanged, this);
+            this._inputChanged();
+            this._outputChanged();
+            break;
+        }
     },
 
     statistics: function () {
         return this.get('statistics');
     },
 
-    _sizeChanged: function () {
-        var size = this.get('size'),
-            minsize = this.minsize;
-        if (size.width < minsize.width || size.height < minsize.height) {
-            this.resize(Math.max(size.width, minsize.width), Math.max(size.height, minsize.height));
-        }
-    },
-
-    _headlineChanged: function () {
-        this.attr({'.ifml-component-headline': {text: '«' + upperFirst(this.get('stereotype')) + '»\n' + this.get('name') }});
-    },
-
-    _stereotypeChanged: function () {
+    _alignGraphicsWithStereotype: function () {
         switch (this.get('stereotype')) {
         case 'details':
         case 'list':
@@ -118,6 +125,18 @@ exports.ViewComponent = joint.shapes.basic.Generic.extend({
         }
     },
 
+    _sizeChanged: function () {
+        var size = this.get('size'),
+            minsize = this.minsize;
+        if (size.width < minsize.width || size.height < minsize.height) {
+            this.resize(Math.max(size.width, minsize.width), Math.max(size.height, minsize.height));
+        }
+    },
+
+    _headlineChanged: function () {
+        this.attr({'.ifml-component-headline': {text: '«' + upperFirst(this.get('stereotype')) + '»\n' + this.get('name') }});
+    },
+
     _collectionChanged: function () {
         var collection = this.get('collection');
         if (collection) {
@@ -125,6 +144,38 @@ exports.ViewComponent = joint.shapes.basic.Generic.extend({
             this.attr({'.ifml-component-binding': {text: '«DataBinding» ' + collection }});
         } else {
             this.attr({'.ifml-component-binding': {fill: 'grey', text: '«DataBinding» none' }});
+        }
+    },
+
+    _inputChanged: function (element, value, data) {
+        ignore(element, value);
+        data = data || {};
+        if (data.undo) { return; }
+        if (this.graph) {
+            _.forEach(this.graph.getConnectedLinks(this, {inbound: true}), function (link) {
+                link.validateBindings();
+            });
+        }
+    },
+
+    _outputChanged: function (element, value, data) {
+        ignore(element, value);
+        data = data || {};
+        if (data.undo) { return; }
+        var self = this;
+        if (self.graph) {
+            _.forEach(self.graph.getConnectedLinks(self, {outbound: true}), function (link) {
+                link.validateBindings();
+            });
+            _(self.get('embeds') || []).map(function (child) {
+                return self.graph.getCell(child);
+            }).flatten().filter(function (child) {
+                return child.get('type') === 'ifml.Event';
+            }).map(function (child) {
+                return self.graph.getConnectedLinks(child, {outbound: true});
+            }).flatten().forEach(function (link) {
+                link.validateBindings();
+            }).value();
         }
     },
 

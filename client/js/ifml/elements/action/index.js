@@ -9,6 +9,8 @@ var _ = require('lodash'),
     joint = require('joint'),
     Color = require('color');
 
+function ignore() { return; }
+
 exports.Action = joint.shapes.basic.Generic.extend({
     markup: require('./markup.svg'),
 
@@ -90,10 +92,14 @@ exports.Action = joint.shapes.basic.Generic.extend({
         this.on('change:size', this._sizeChanged, this);
         this.on('change:name', this._nameChanged, this);
         this.on('change:accent', this._accentChanged, this);
+        this.on('change:parameters', this._inputChanged, this);
+        this.on('change:results', this._outputChanged, this);
         joint.shapes.basic.Generic.prototype.initialize.apply(this, arguments);
         this._sizeChanged();
         this._nameChanged();
         this._accentChanged();
+        this._inputChanged();
+        this._outputChanged();
     },
 
     _sizeChanged: function () {
@@ -106,6 +112,35 @@ exports.Action = joint.shapes.basic.Generic.extend({
 
     _nameChanged: function () {
         this.attr({'.name': {text: this.get('name')}});
+    },
+
+    _inputChanged: function (element, value, data) {
+        ignore(element, value);
+        data = data || {};
+        if (data.undo) { return; }
+        if (this.graph) {
+            _.forEach(this.graph.getConnectedLinks(this, {inbound: true}), function (link) {
+                link.validateBindings();
+            });
+        }
+    },
+
+    _outputChanged: function (element, value, data) {
+        ignore(element, value);
+        data = data || {};
+        if (data.undo) { return; }
+        var self = this;
+        if (self.graph) {
+            _(self.get('embeds') || []).map(function (child) {
+                return self.graph.getCell(child);
+            }).flatten().filter(function (child) {
+                return child.get('type') === 'ifml.Event';
+            }).map(function (child) {
+                return self.graph.getConnectedLinks(child, {outbound: true});
+            }).flatten().forEach(function (link) {
+                link.validateBindings();
+            }).value();
+        }
     },
 
     inputs: function () {

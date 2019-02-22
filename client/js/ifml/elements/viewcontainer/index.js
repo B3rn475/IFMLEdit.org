@@ -118,6 +118,7 @@ exports.ViewContainer = joint.shapes.basic.Generic.extend({
     },
 
     _sizeChanged: function (element, value, data) {
+        ignore(element, value);
         data = data ||  {};
         if (data.undo) { return; }
         var size = this.get('size'),
@@ -128,6 +129,7 @@ exports.ViewContainer = joint.shapes.basic.Generic.extend({
     },
 
     _defaultChanged: function (element, value, data) {
+        ignore(element, value);
         data = data ||  {};
         if (data.undo) { return; }
         if (this.get('default') === true && this.graph) {

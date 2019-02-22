@@ -8,6 +8,8 @@ var joint = require('joint'),
     _ = require('lodash'),
     Color = require('color');
 
+function ignore() { return undefined; }
+
 function format(s) {
     switch (s.type) {
     case "string":
@@ -30,7 +32,7 @@ exports.Base = joint.dia.Link.extend({
 
     initialize: function () {
         this.on('change:bindings change:accent-in change:accent-out', this._labelChanged, this);
-        this.on('change:source change:target', function () { this.reparent(); }, this);
+        this.on('change:source change:target', function () { this.reparent(); this.validateBindings(); }, this);
         this.on('change:accent', this._accentChanged, this);
         joint.dia.Link.prototype.initialize.apply(this, arguments);
         this._labelChanged();
@@ -53,6 +55,44 @@ exports.Base = joint.dia.Link.extend({
 
     statistics: function () {
         return this.get('statistics');
+    },
+
+    validateBindings: function () {
+        if (this.graph) {
+            var source = this.getSourceElement(),
+                target = this.getTargetElement(),
+                bindings = this.get('bindings') || [],
+                outputs,
+                inputs,
+                newBindings;
+            if (source && source.get('type') === 'ifml.Event') {
+                source = this.graph.getCell(source.get('parent'));
+            }
+            if (!source || !target) {
+                if (bindings.length) {
+                    this.set('bindings', []);
+                }
+                return;
+            }
+            if (typeof source.outputs !== 'function' || typeof target.inputs !== 'function') {
+                if (bindings.length) {
+                    this.set('bindings', []);
+                }
+                return;
+            }
+            outputs = _(source.outputs()).map(function (output) {
+                return [output, true];
+            }).zipObject().value();
+            inputs = _(target.inputs()).map(function (input) {
+                return [input, true];
+            }).zipObject().value();
+            newBindings = _.filter(bindings, function (binding) {
+                return outputs[binding.output] && inputs[binding.input];
+            });
+            if (bindings.length !== newBindings.length) {
+                this.set('bindings', newBindings);
+            }
+        }
     },
 
     _labelChanged: function () {
