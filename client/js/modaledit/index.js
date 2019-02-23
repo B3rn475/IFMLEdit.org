@@ -67,7 +67,7 @@ function mapStringSet(e, f) {
         },
     };
     field.strings.subscribe(function (strings) {
-        e.prop(f.property, strings);
+        e.prop(f.property, strings.slice());
     });
     return field;
 }
@@ -130,7 +130,7 @@ function mapBindings(l, f) {
         }
     );
     field.bindings.subscribe(function (bindings) {
-        l.set(f.property, bindings.slice());
+        l.prop(f.property, bindings.slice());
     });
     return field;
 }
@@ -173,7 +173,7 @@ function mapElementsList(l, f) {
         }
     };
     field.children.subscribe(function (sorted) {
-        l.set(f.property, _.chain(sorted).map('id').concat(ignored).value());
+        l.prop(f.property, _.chain(sorted).map('id').concat(ignored).value());
     });
     return field;
 }
