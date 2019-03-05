@@ -76,21 +76,25 @@ var element = [almost.createRule(
             parent = model.getParent(element),
             // For each ViewContainer \ifml{\namechild_i} child of \ifml{\namexorvc}
             // different from \ifml{\namechild}
-            siblings = _.without(model.getChildren(parent), id);
-        return _.map(siblings, function (sid) {
-            var vid = sid + '-View-p',
-                lid = tid + '->' + vid;
-            return {
-                elements: [
-                    // the \pcnlandmark{\namechild} transition adds a token to \pcnnotview{\namechild_i}.
-                    {id: lid, type: 'pcn.Link', attributes: {tokens: 1}}
-                ],
-                relations: [
-                    {type: 'pcn.Source', link: lid, source: tid},
-                    {type: 'pcn.Target', link: lid, target: vid}
-                ]
-            };
-        });
+            siblings = _.without(model.getChildren(parent), id),
+            partials = _.map(siblings, function (sid) {
+                var vid = sid + '-View-p',
+                    lid = tid + '->' + vid;
+                return {
+                    elements: [
+                        // the \pcnlandmark{\namechild} transition adds a token to \pcnnotview{\namechild_i}.
+                        {id: lid, type: 'pcn.Link', attributes: {tokens: 1}}
+                    ],
+                    relations: [
+                        {type: 'pcn.Source', link: lid, source: tid},
+                        {type: 'pcn.Target', link: lid, target: vid}
+                    ]
+                };
+            });
+        return {
+            elements: _.flatten(_.map(partials, 'elements')),
+            relations: _.flatten(_.map(partials, 'relations')),
+        };
     }
 )];
 
