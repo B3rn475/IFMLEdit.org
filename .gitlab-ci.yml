@@ -1,4 +1,4 @@
-image: node:current
+image: node:lts
 
 pages:
   stage: deploy
