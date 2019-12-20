@@ -308,16 +308,14 @@ gulp.task('demo-mobile-index', function () {
         .pipe(gulp.dest('./public/mobile/js'));
 });
 
-gulp.task('demo-web-server', ['demo-web-server-index', 'demo-web-server-css', 'demo-web-server-js']);
-gulp.task('demo-web-client', ['demo-web-client-index', 'demo-web-client-html', 'demo-web-client-css', 'demo-web-client-js']);
-gulp.task('demo-mobile', ['demo-mobile-index', 'demo-mobile-html', 'demo-mobile-css', 'demo-mobile-images', 'demo-mobile-js']);
+gulp.task('demo-web-server', gulp.parallel('demo-web-server-index', 'demo-web-server-css', 'demo-web-server-js'));
+gulp.task('demo-web-client', gulp.parallel('demo-web-client-index', 'demo-web-client-html', 'demo-web-client-css', 'demo-web-client-js'));
+gulp.task('demo-mobile', gulp.parallel('demo-mobile-index', 'demo-mobile-html', 'demo-mobile-css', 'demo-mobile-images', 'demo-mobile-js'));
 
 if (production) {
-    gulp.task('build', ['html', 'index', 'demo-web-server', 'demo-web-client', 'demo-mobile', 'vendor', 'sass', 'images', 'favicon', 'examples']);
+    gulp.task('build', gulp.parallel('html', 'index', 'demo-web-server', 'demo-web-client', 'demo-mobile', 'vendor', 'sass', 'images', 'favicon', 'examples'));
 } else {
-    gulp.task('build', ['html', 'index', 'demo-web-server', 'demo-web-client', 'demo-mobile', 'vendor', 'sass', 'images', 'examples']);
+    gulp.task('build', gulp.parallel('html', 'index', 'demo-web-server', 'demo-web-client', 'demo-mobile', 'vendor', 'sass', 'images', 'examples'));
 }
 
-gulp.task('default', ['clean'], function () {
-    return gulp.start('build');
-});
+gulp.task('default', gulp.series('clean', 'build'));

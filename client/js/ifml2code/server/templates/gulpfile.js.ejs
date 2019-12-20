@@ -19,8 +19,6 @@ gulp.task('js', function () {
     ]).pipe(gulp.dest('./public/js'));
 });
 
-gulp.task('build', ['css', 'js']);
+gulp.task('build', gulp.parallel('css', 'js'));
 
-gulp.task('default', ['clean'], function () {
-    return gulp.start('build');
-});
+gulp.task('default', gulp.series('clean', 'build'));

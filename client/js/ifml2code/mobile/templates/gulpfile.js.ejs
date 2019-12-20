@@ -72,8 +72,6 @@ gulp.task('css', function () {
     );
 });
 
-gulp.task('build', ['html', 'css', 'js', 'vendor']);
+gulp.task('build', gulp.parallel('html', 'css', 'js', 'vendor'));
 
-gulp.task('default', ['clean'], function () {
-    return gulp.start('build');
-});
+gulp.task('default', gulp.series('clean', 'build'));
