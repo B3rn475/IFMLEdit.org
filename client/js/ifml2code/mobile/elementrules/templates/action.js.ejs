@@ -23,7 +23,7 @@ Action.prototype.run = function (parameters, solve) { // add "onCancel" paramete
         .then(solve);
     */
     // THIS CAN BE REMOVED (BEGIN)
-    Materialize.toast('<%= name%>', 2000)
+    M.toast({html: '<%= name%>'}, 2000)
     solve({
 <% if (events.length) { -%>
         event: '<%= events[0].id%>', // <%= events[0].name%>

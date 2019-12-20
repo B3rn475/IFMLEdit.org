@@ -19,7 +19,7 @@ exports.register = function () {
             self.landmark = function (id) {
                 self.active(id);
                 self.context.vms[id].init();
-                $(".button-collapse").sideNav('hide');
+                $(".button-collapse").sidenav('hide');
             };
             self.init = function () {
                 self.active(defaultChild);
@@ -30,7 +30,7 @@ exports.register = function () {
 
             self.context.top = self;
 
-            $(".button-collapse").sideNav();
+            $(".button-collapse").sidenav();
         },
         template: require('./index.html'),
         synchronous: true

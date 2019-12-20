@@ -1,4 +1,4 @@
-<ul class="side-nav" id="landmarks">
+<ul class="sidenav" id="landmarks">
 <% for (var i = 0; i < landmarks.length; i += 1) { -%>
     <li data-bind="click: landmark.bind($data,'<%= landmarks[i].id %>'), css: {active: active() === '<%= landmarks[i].id %>'}"><a><%= landmarks[i].name %></a></li>
 <% } -%>
