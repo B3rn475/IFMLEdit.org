@@ -51,7 +51,7 @@
     "gulp-rimraf": "^1.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.5",
-    "gulp-uglify": "^3.0.2",
+    "gulp-uglify-es": "^2.0.0",
     "icon-gen": "^2.0.0",
     "jointjs": "^2.0.0",
     "jquery": "3.4.1",

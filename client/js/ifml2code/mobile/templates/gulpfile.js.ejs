@@ -8,7 +8,7 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
-    minifyjs = require('gulp-uglify'),
+    minifyjs = require('gulp-uglify-es').default,
     merge = require('merge-stream');
 
 gulp.task('clean', function () {
