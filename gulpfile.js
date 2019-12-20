@@ -312,10 +312,11 @@ gulp.task('demo-web-server', gulp.parallel('demo-web-server-index', 'demo-web-se
 gulp.task('demo-web-client', gulp.parallel('demo-web-client-index', 'demo-web-client-html', 'demo-web-client-css', 'demo-web-client-js'));
 gulp.task('demo-mobile', gulp.parallel('demo-mobile-index', 'demo-mobile-html', 'demo-mobile-css', 'demo-mobile-images', 'demo-mobile-js'));
 
-if (production) {
-    gulp.task('build', gulp.parallel('html', 'index', 'demo-web-server', 'demo-web-client', 'demo-mobile', 'vendor', 'sass', 'images', 'favicon', 'examples'));
-} else {
-    gulp.task('build', gulp.parallel('html', 'index', 'demo-web-server', 'demo-web-client', 'demo-mobile', 'vendor', 'sass', 'images', 'examples'));
-}
 
-gulp.task('default', gulp.series('clean', 'build'));
+gulp.task('build', gulp.parallel('html', 'index', 'demo-web-server', 'demo-web-client', 'demo-mobile', 'vendor', 'sass', 'images', 'examples'));
+
+if (production) {
+  gulp.task('default', gulp.series('clean', 'build'));
+} else {
+  gulp.task('default', gulp.series('clean', 'build', 'favicon'));
+}
