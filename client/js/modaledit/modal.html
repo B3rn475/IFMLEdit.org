@@ -120,18 +120,10 @@
                                         <th scopre="row" data-bind="text: $index"></th>
                                         <td data-bind="text: display"></td>
                                         <td class="btn-group">
-                                            <button class="btn btn-secondary" data-bind="click: $parent.top, disable: $index() === 0">
-                                                <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-                                            </button>
-                                            <button class="btn btn-secondary" data-bind="click: $parent.up, disable: $index() === 0">
-                                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
-                                            </button>
-                                            <button class="btn btn-secondary" data-bind="click: $parent.down, disable: $index() + 1 === $parent.children().length">
-                                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                                            </button>
-                                            <button class="btn btn-secondary" data-bind="click: $parent.bottom, disable: $index() + 1 === $parent.children().length">
-                                                <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-                                            </button>
+                                            <button class="btn btn-secondary" data-bind="click: $parent.top, disable: $index() === 0">⭰</button>
+                                            <button class="btn btn-secondary" data-bind="click: $parent.up, disable: $index() === 0">←</button>
+                                            <button class="btn btn-secondary" data-bind="click: $parent.down, disable: $index() + 1 === $parent.children().length">→</button>
+                                            <button class="btn btn-secondary" data-bind="click: $parent.bottom, disable: $index() + 1 === $parent.children().length">⭲</button>
                                         </td>
                                     </tr>
                                 </tbody>
