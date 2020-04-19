@@ -1,8 +1,8 @@
 doctype html
-html
+html(lang='en')
     head
         meta(charset='UTF-8')
-        meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
         base(href=base_path)
         script(type='text/javascript').
             var BASE_PATH = !{JSON.stringify(base_path)};
@@ -33,90 +33,89 @@ html
         link(rel='apple-touch-icon-precomposed', href='favicon-57.png')
     body
         div
-            .navbar.navbar-inverse.top
-                .container-fluid
-                    .navbar-header
-                        button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#main-menu', aria-expanded='false')
-                            span.sr-only Toggle navigation
-                            span.icon-bar
-                            span.icon-bar
-                            span.icon-bar
-                        a.navbar-brand(href='#')
-                            include favicon.svg
-                    #main-menu.collapse.navbar-collapse
-                        ul.nav.navbar-nav(role='tablist')
-                            li.active(role='presentation')
-                                a(role='tab', data-toggle='tab', aria-controls='ifml', href='#ifml') IFML
-                            li(role='presentation')
-                                a(role='tab', data-toggle='tab', aria-controls='pcn', href='#pcn') PCN
-                            li(role='presentation')
-                                a(role='tab', data-toggle='tab', aria-controls='web-server', href='#web-server') Web Server
-                            li(role='presentation')
-                                a(role='tab', data-toggle='tab', aria-controls='web-client', href='#web-client') Web Client
-                            li(role='presentation')
-                                a(role='tab', data-toggle='tab', aria-controls='mobile', href='#mobile') Mobile
-                            li(role='presentation')
-                                a(role='tab', data-toggle='tab', aria-controls='statistics', href='#statistics') Statistics
-                            li(role='presentation')
-                                a(role='tab', data-toggle='tab', aria-controls='about', href='#about') About
+            nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+                a.navbar-brand(href='#')
+                    include favicon.svg
+                button.navbar-toggler(type='button', data-toggle='collapse', data-target='#main-menu' aria-controls='main-menu' aria-expanded='false' aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #main-menu.collapse.navbar-collapse
+                    ul.navbar-nav.nav.mr-auto(role='tablist')
+                        li.nav-item
+                            a#ifml-tab.nav-link.active(data-toggle='tab', role='tab', aria-selected='true', data-target='#ifml') IFML
+                        li.nav-item
+                            a#pcn-tab.nav-link(data-toggle='tab', role='tab', aria-selected='false', data-target='#pcn') PCN
+                        li.nav-item
+                            a#web-server-tab.nav-link(data-toggle='tab', role='tab', aria-selected='false', data-target='#web-server') Web Server
+                        li.nav-item
+                            a#web-client-tab.nav-link(data-toggle='tab', role='tab', aria-selected='false', data-target='#web-client') Web Client
+                        li.nav-item
+                            a#mobile-tab.nav-link(data-toggle='tab', role='tab', aria-selected='false', data-target='#mobile') Mobile
+                        li.nav-item
+                            a#statistics-tab.nav-link(data-toggle='tab', role='tab', aria-selected='false', data-target='#statistics') Statistics
+                        li.nav-item
+                            a#about-tab.nav-link(data-toggle='tab', role='tab', aria-selected='false', data-target='#about') About
             .tab-content
-                #ifml.tab-pane.editor.active(role='tabpanel')
+                #ifml.tab-pane.editor.active(role='tabpanel', aria-labelledby='ifml-tab')
                     .sidebar
-                        ul.list-group
-                            a.list-group-item.model-load(href='#!') Load Model
-                            a.list-group-item.modal-example(href='#!') Load Example
-                            a.list-group-item.model-download(href='#!') Download Model
-                            a.list-group-item.png-download(href='#!') Download as PNG
+                        .list-group
+                            button.list-group-item.list-group-item-action.model-load(type='button') Load Model
+                            button.list-group-item.list-group-item-action.modal-example(type='button') Load Example
+                            button.list-group-item.list-group-item-action.model-download(type='button') Download Model
+                            button.list-group-item.list-group-item-action.png-download(type='button') Download as PNG
                     .board
                     input(type='file', style='width:0; height: 0')
-                #pcn.tab-pane.editor(role='tabpanel')
+                #pcn.tab-pane.editor(role='tabpanel', aria-labelledby='pcn-tab')
                     .sidebar
-                        ul.list-group
-                            a.list-group-item.model-generate(href='#!') Generate
-                            a.list-group-item.png-download(href='#!') Download as PNG
-                            label.list-group-item
-                                input#pcn-simulate(type='checkbox')
-                                span Simulate
+                        .list-group
+                            button.list-group-item.list-group-item-action.model-generate(type='button') Generate
+                            button.list-group-item.list-group-item-action.png-download(type='button') Download as PNG
+                            .list-group-item
+                                label
+                                    input#pcn-simulate(type='checkbox')
+                                    span Simulate
                     .board
-                #statistics.tab-pane.editor(role='tabpanel')
+                #statistics.tab-pane.editor(role='tabpanel', aria-labelledby='statistics-tab')
                     .sidebar
-                        ul.list-group
-                            a.list-group-item.model-load(href='#!') Load Statistics
-                        div Element Statistics
-                        ul.list-group.statistics-color
-                        div Source Statistics
-                        ul.list-group.statistics-in
-                        div Target Statistics
-                        ul.list-group.statistics-out
+                        .list-group
+                            button.list-group-item.list-group-item-action.model-load(type='button') Load Statistics
+                        .list-group
+                            .list-group-item Element Statistics
+                        .list-group.statistics-color
+                        .list-group
+                            .list-group-item Source Statistics
+                        .list-group.statistics-in
+                        .list-group
+                            .list-group-item Target Statistics
+                        .list-group.statistics-out
                     .board.not-interactive
                     input(type='file', style='width:0; height: 0')
-                #web-server.tab-pane(role='tabpanel')
+                #web-server.tab-pane(role='tabpanel', aria-labelledby='web-server-tab')
                     .container
                         .row
-                            .col-xs-12
+                            .col-12
                                 h3
-                                    a.btn.btn-primary.zip-try(href='#!') Try in the Browser
-                                    a.btn.btn-default.edit-db(href='#!')
-                                        span.glyphicon.glyphicon-th-list
-                                .panel.panel-default.panel-primary
-                                    .panel-heading
+                                    button.btn.btn-primary.zip-try(type='button') Try in the Browser
+                                    button.btn.btn-secondary.edit-db(type='button') ☰
+                                .card
+                                    .card-header.bg-dark
                                         form
                                             .input-group
-                                                a.ifbrowser-back.input-group-addon(href='#!')
-                                                    li.glyphicon.glyphicon-chevron-left
-                                                a.ifbrowser-forward.input-group-addon(href='#!')
-                                                    li.glyphicon.glyphicon-chevron-right
-                                                a.ifbrowser-repeat.input-group-addon(href='#!')
-                                                    li.glyphicon.glyphicon-repeat
-                                                span.ifbrowser-baseaddress.input-group-addon http://.../web/
-                                                input.ifbrowser-address.form-control(type='text')
-                                                a.ifbrowser-go.input-group-addon(href='#!')
-                                                    li.glyphicon.glyphicon-play
-                                    .panel-body.ifbrowser
+                                                span.input-group-prepend
+                                                    button.input-group-text.ifbrowser-back(type='button') ❮
+                                                span.input-group-prepend
+                                                    button.input-group-text.ifbrowser-forward(type='button') ❯
+                                                span.input-group-prepend
+                                                    button.input-group-text.ifbrowser-repeat(type='button') ⟲
+                                                span.input-group-prepend
+                                                    span.input-group-text.ifbrowser-baseaddress http://.../web/
+                                                input.form-control.ifbrowser-address(type='text')
+                                                span.input-group-append
+                                                    button.input-group-text.ifbrowser-go(type='button') ▶
+                                    .card-body.ifbrowser
                         .row
-                            .col-xs-12
+                            .col-12
                                 h3 Or...
-                                    a.btn.btn-primary.zip-download(href='#!') Download the Source Files
+                                    button.btn.btn-primary.zip-download(type='button') Download the Source Files
                                 h3 Once downloaded...
                                 ol
                                     li
@@ -156,21 +155,20 @@ html
                                 br
                                 br
                                 br
-                #web-client.tab-pane(role='tabpanel')
+                #web-client.tab-pane(role='tabpanel', aria-labelledby='web-client-tab')
                     .container
                         .row
-                            .col-xs-12
+                            .col-12
                                 h3
-                                    a.btn.btn-primary.zip-try(href='#!') Try in the Browser
-                                    a.btn.btn-default.edit-db(href='#!')
-                                        span.glyphicon.glyphicon-th-list
-                                .panel.panel-default.panel-primary
-                                    .panel-heading &nbsp;
-                                    .panel-body.ifclient
+                                    button.btn.btn-primary.zip-try(type='button') Try in the Browser
+                                    button.btn.btn-secondary.edit-db(type='button') ☰
+                                .card
+                                    .card-header.bg-dark &nbsp;
+                                    .card-body.ifclient
                         .row
-                            .col-xs-12
+                            .col-12
                                 h3 Or...
-                                    a.btn.btn-primary.zip-download(href='#!') Download the Source Files
+                                    button.btn.btn-primary.zip-download(type="button") Download the Source Files
                                 h3 Once downloaded...
                                 ol
                                     li
@@ -205,37 +203,33 @@ html
                                 br
                                 br
                                 br
-                #mobile.tab-pane(role='tabpanel')
+                #mobile.tab-pane(role='tabpanel', aria-labelledby='mobile-tab')
                     .container
                         .row
-                            .col-xs-12.col-md-5
+                            .col-12.col-md-5
                                 h3
-                                    a.btn.btn-primary.zip-try(href='#!') Try in the Browser
-                                    a.btn.btn-default.edit-db(href='#!')
-                                        span.glyphicon.glyphicon-th-list
-                                .col-xs-10.col-xs-offset-1.col-sm-8.col-sm-offset-2.col-md-12.col-md-offset-0
-                                    .panel.panel-default.panel-primary.ifmobile
-                                        .panel-heading
-                                            .col-xs-4.col-xs-offset-4.ifmobile-speaker
-                                        .panel-body.bg-primary
+                                    button.btn.btn-primary.zip-try(type='button') Try in the Browser
+                                    button.btn.btn-secondary.edit-db(type='button') ☰
+                                .col-10.offset-1.col-sm-8.offset-sm-2.col-md-12.offset-md-0
+                                    .card.ifmobile
+                                        .card-header.bg-dark
+                                            .col-4.offset-4.ifmobile-speaker
+                                        .card-body.bg-dark
                                             .ifmobile-wrapper
-                                            .btn-group.btn-group-justified(role="group")
-                                                a.btn.btn-default(href='#!')
-                                                    li.glyphicon.glyphicon-chevron-left
-                                                a.btn.btn-default
-                                                    li.glyphicon.glyphicon-home
-                                                a.btn.btn-default
-                                                    li.glyphicon.glyphicon-th-large
-                            .col-xs-12.col-md-7
+                                            .btn-group.d-flex(role="group")
+                                                button.btn.btn-dark(type='button') ❮
+                                                button.btn.btn-dark(type='button') ⌂
+                                                button.btn.btn-dark(type='button') ⧉
+                            .col-12.col-md-7
                                 ul.nav.nav-tabs(role='tablist')
                                     li.active(role='presentation')
                                         a(role='tab', data-toggle='tab', aria-controls='cordova', href='#cordova') Cordova
-                                    li(role="presentation")
+                                    li(role='presentation')
                                         a(role='tab', data-toggle='tab', aria-controls='flutter', href='#flutter') Flutter
                                 .tab-content
                                     #cordova.tab-pane.active(role='tabpanel')
                                         h3 Or...
-                                        a.btn.btn-primary.zip-download(href='#!') Download the Source Files
+                                        button.btn.btn-primary.zip-download(type='button') Download the Source Files
                                         h3 Once downloaded...
                                         ol
                                             li
@@ -306,9 +300,9 @@ html
                                                     span.text-primary cordova&nbsp;
                                                     span.text-success run ...
                                     #flutter.tab-pane(role='tabpanel')
-                                        .alert.alert-warning(role="alert") Experimental
+                                        .alert.alert-warning(role='alert') Experimental
                                         h3 Or...
-                                        a.btn.btn-primary.zip-download(href='#!') Download the Source Files
+                                        button.btn.btn-primary.zip-download(type='button') Download the Source Files
                                         h3 Once downloaded...
                                         ol
                                             li
@@ -339,55 +333,53 @@ html
                                 br
                                 br
                                 br
-                #about.tab-pane(role='tabpanel')
+                #about.tab-pane(role='tabpanel', aria-labelledby='about-tab')
                     .container
                         .row
-                            .col-xs-12
-                                h2 IFMLEdit.org
-                                    br
-                                    small is an open source on-line tool offered to the software engineering community, usable for model driven engineering education and for rapid prototyping of web and mobile applications based on&nbsp;
-                                    small
-                                        a(href="http://ifml.org") IFML
-                                    small &nbsp;.
+                            .col-12
+                                div.col-12.col-md-8.offset-md-2.text-center
+                                    include logo.svg
+                                h1.text-center IFMLEdit.org
+                                | is an open source on-line tool offered to the software engineering community, usable for model driven engineering education and for rapid prototyping of web and mobile applications based on&nbsp;
+                                a(href='http://ifml.org') IFML
+                                | .
                                 div.row
-                                    div.col-xs-12.col-md-8.col-md-offset-2
+                                    div.col-12.col-md-8.offset-md-2
                                         div.embed-responsive.embed-responsive-16by9
-                                            iframe.embed-responsive-item(width="560", height="315", src="https://www.youtube-nocookie.com/embed/y_hDVeUbi7g?rel=0&amp;showinfo=0", frameborder="0", allow="autoplay; encrypted-media", allowfullscreen)
-                                h3 Do you want to help?
-                                h4
-                                    a(href="https://github.com/B3rn475/IFMLEdit.org") Fork on github
-                                    br
-                                    small Help us grow an make the tool better
-                                h4
-                                    a(href="https://github.com/B3rn475/IFMLEdit.org/issues") Open an issue
-                                    br
-                                    small Send us suggestions or bug reports
-                                h3 The tool is built with:
-                                h4
-                                    a(href="https://github.com/B3rn475/ALMOsTjs") ALMOsT
-                                    br
-                                    small ALMOsT is an AgiLe MOdel Transformations framework for JavaScript
-                                h4
-                                    a(href="https://github.com/B3rn475/ALMOsTjs") ALMOsT-Joint
-                                    br
-                                    small ALMOsT-Joint is a plugin for ALMOsT which focuses on Graphical Notations
-                                h3 Related Research:
-                                h4
-                                    a(href="https://doi.org/10.1016/j.jss.2017.11.067") Formal Semantics of OMGs Interaction Flow Modeling Language (IFML) for Mobile and Rich-Client Application Model Driven Development
-                                    br
-                                    small Carlo Bernaschina, Sara Comai, Piero Fraternali
-                                h4
-                                    a(href="https://dl.acm.org/citation.cfm?id=3104129") IFMLEdit.org: model driven rapid prototyping of mobile apps
-                                    br
-                                    small Carlo Bernaschina, Sara Comai, Piero Fraternali
-                                h4
-                                    a(href="https://dl.acm.org/citation.cfm?id=3104079") Online model editing, simulation and code generation for web and mobile applications
-                                    br
-                                    small Carlo Bernaschina, Sara Comai, Piero Fraternali
-                                H4
-                                    a(href="https://link.springer.com/chapter/10.1007/978-3-319-60131-1_5") ALMOsT.js: An Agile Model to Model and Model to Text Transformation Framework
-                                    br
-                                    small Carlo Bernaschina
+                                            iframe.embed-responsive-item(width='560', height='315', src='https://www.youtube-nocookie.com/embed/y_hDVeUbi7g?rel=0&amp;showinfo=0', frameborder='0', allow='autoplay; encrypted-media', allowfullscreen)
+                                h2 Do you want to help?
+                                h3
+                                    a(href='https://github.com/B3rn475/IFMLEdit.org') Fork on github
+                                | Help us grow an make the tool better
+                                h3
+                                    a(href='https://github.com/B3rn475/IFMLEdit.org/issues') Open an issue
+                                | Send us suggestions or bug reports
+                                h2 The tool is built with:
+                                blockquote.blockquote
+                                    p.mb-0
+                                        a(href='https://github.com/B3rn475/ALMOsTjs') ALMOsT
+                                    footer.blockquote-footer ALMOsT is an AgiLe MOdel Transformations framework for JavaScript
+                                blockquote.blockquote
+                                    p.mb-0
+                                        a(href='https://github.com/B3rn475/ALMOsTjs') ALMOsT-Joint
+                                    footer.blockquote-footer ALMOsT-Joint is a plugin for ALMOsT which focuses on Graphical Notations
+                                h2 Related Research:
+                                blockquote.blockquote
+                                    p.mb-0
+                                        a(href='https://doi.org/10.1016/j.jss.2017.11.067') Formal Semantics of OMGs Interaction Flow Modeling Language (IFML) for Mobile and Rich-Client Application Model Driven Development
+                                    footer.blockquote-footer Carlo Bernaschina, Sara Comai, Piero Fraternali
+                                blockquote.blockquote
+                                    p.mb-0
+                                        a(href='https://dl.acm.org/citation.cfm?id=3104129') IFMLEdit.org: model driven rapid prototyping of mobile apps
+                                    footer.blockquote-footer Bernaschina, Sara Comai, Piero Fraternali
+                                blockquote.blockquote
+                                    p.mb-0
+                                        a(href='https://dl.acm.org/citation.cfm?id=3104079') Online model editing, simulation and code generation for web and mobile applications
+                                    footer.blockquote-footer Carlo Bernaschina, Sara Comai, Piero Fraternali
+                                blockquote.blockquote
+                                    p.mb-0
+                                        a(href='https://link.springer.com/chapter/10.1007/978-3-319-60131-1_5') ALMOsT.js: An Agile Model to Model and Model to Text Transformation Framework
+                                    footer.blockquote-footer Carlo Bernaschina
         script(type='text/javascript', src='./js/lodash.min.js')
         script(type='text/javascript', src='./js/jquery.min.js')
         script(type='text/javascript', src='./js/backbone.min.js')

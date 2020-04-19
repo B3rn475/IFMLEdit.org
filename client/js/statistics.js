@@ -56,7 +56,7 @@ function StatisticsMenu(options) {
 
         _.chain(statistics.percentage || []).map('name').uniq().sort()
             .forEach(function (name) {
-                var a = $('<a class="list-group-item"></a>');
+                var a = $('<div class="list-group-item"></div>');
                 a.text(name + ' (%)');
                 ul.append(a);
                 a.click(function () {
@@ -77,7 +77,7 @@ function StatisticsMenu(options) {
                 };
             })
             .forEach(function (limits, name) {
-                var a = $('<a class="list-group-item"></a>');
+                var a = $('<div class="list-group-item"></div>');
                 a.text(name + ' [' + limits.min + ', ' + limits.max + ']');
                 ul.append(a);
                 a.click(function () {
@@ -91,7 +91,7 @@ function StatisticsMenu(options) {
             }).value();
 
         (function () {
-            var a = $('<a class="list-group-item active"></a>');
+            var a = $('<div class="list-group-item active"></div>');
             a.text('Nothing');
             ul.prepend(a);
             a.click(function () {

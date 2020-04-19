@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
     <% for (var i = 0; i < landmarks.length; i += 1) { -%>
-        <a class="col-xs-2 btn btn-default" data-bind="click: landmark.bind($data, '<%= landmarks[i].id %>'), css: {active: active() === '<%= landmarks[i].id %>'}"><%= landmarks[i].name %></a>
+        <a class="col-2 btn btn-secondary" data-bind="click: landmark.bind($data, '<%= landmarks[i].id %>'), css: {active: active() === '<%= landmarks[i].id %>'}"><%= landmarks[i].name %></a>
     <% } -%>
     </div>
 </div>

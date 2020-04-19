@@ -41,8 +41,8 @@ var ifmlModel = new joint.dia.Graph(),
         isValidParent: isValidParent
     }),
     ifmlMenu = ifmlBoard.createElementsMenu({
-        container: '#ifml > .sidebar > ul',
-        template: '<a class="list-group-item almost-place-holder"></a>',
+        container: '#ifml > .sidebar > .list-group',
+        template: '<div class="list-group-item almost-place-holder"></div>',
         builders: ifmlBuilders,
         width: 170
     }),
@@ -95,8 +95,8 @@ var ifmlModel = new joint.dia.Graph(),
         isValidParent: isValidParent
     }),
     pcnMenu = pcnBoard.createElementsMenu({
-        container: '#pcn > .sidebar > ul',
-        template: '<a class="list-group-item almost-place-holder"></a>',
+        container: '#pcn > .sidebar > .list-group',
+        template: '<div class="list-group-item almost-place-holder"></div>',
         builders: pcnBuilders,
         width: 170
     }),

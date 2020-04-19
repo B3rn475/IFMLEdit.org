@@ -1,9 +1,9 @@
-<div class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade bd-example-modal-lg" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title">Load Examples</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Load Examples</h4>
             </div>
             <div class="modal-body">
                 <div id="examples-carousel" class="carousel slide" data-ride="carousel" data-bind="carousel: examples">
@@ -13,9 +13,9 @@
                     </ol>
 
                     <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox" data-bind="foreach: examples">
-                        <div class="item ifml-image" data-bind="css: {active: $index() === 0}">
-                            <img data-bind="attr: {src: image, alt: title}">
+                    <div class="carousel-inner" data-bind="foreach: examples">
+                        <div class="carousel-item ifml-image" data-bind="css: {active: $index() === 0}">
+                            <img class="d-block w-100" data-bind="attr: {src: image, alt: title}">
                             <div class="carousel-caption">
                                 <button class="btn btn-primary" data-bind="click: $parent.load">Load <span data-bind="text: title"></span></button>
                             </div>
@@ -23,13 +23,13 @@
                     </div>
 
                     <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#examples-carousel" role="button" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
+                    <a class="carousel-control-prev" href="#examples-carousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
                     </a>
-                    <a class="right carousel-control" href="#examples-carousel" role="button" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
+                    <a class="carousel-control-next" href="#examples-carousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
                     </a>
                 </div>
             </div>

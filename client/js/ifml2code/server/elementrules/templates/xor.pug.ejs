@@ -2,7 +2,7 @@
     .container
         .row
 <% for (var i = 0; i < landmarks.length; ++i) { -%>
-            a.col-xs-2.btn.btn-default(href=vm['<%= id %>'].landmarks['<%= landmarks[i].id %>'].href) <%= landmarks[i].name %>
+            a.col-xs-2.btn.btn.btn-secondary(href=vm['<%= id %>'].landmarks['<%= landmarks[i].id %>'].href) <%= landmarks[i].name %>
 <% } -%>
 <% for (var i = 0; i < children.length; ++i) { -%>
     if vm['<%= id %>'].active === '<%= children[i] %>'
@@ -15,8 +15,8 @@
             form(action=vm['<%= events[i].id %>'].action, method='POST')
                 each value, name in vm['<%= events[i].id %>'].hiddens
                     input(type='hidden', name=name, value=value)
-                button.col-xs-2.btn.btn-default <%= events[i].name %>
+                button.col-xs-2.btn.btn.btn-secondary(type="button") <%= events[i].name %>
 <%    } else { -%>
-            a.col-xs-2.btn.btn-default(href=vm['<%= events[i].id %>'].href) <%= events[i].name %>
+            a.col-xs-2.btn.btn.btn-secondary(href=vm['<%= events[i].id %>'].href) <%= events[i].name %>
 <%    }
    } -%>

@@ -1,6 +1,6 @@
 #<%= id %>.container
     h3 <%= name %>
-    table.table.table-hover.table-condensed
+    table.table.table-hover.table-sm
         thead
             tr
                 th #
@@ -29,7 +29,7 @@
                         form(action=action, method="POST")
                             each value, name in hiddens
                                 input(type='hidden', name=name, value=value)
-                            button.btn-link= item.id
+                            button.btn.btn-link= item.id
 <% } else { -%>
                         a(href=href)= item.id
 <% }
@@ -40,7 +40,7 @@
                         form(action=action, method="POST")
                             each value, name in hiddens
                                 input(type='hidden', name=name, value=value)
-                            button.btn-link= item['<%= fields[i] %>']
+                            button.btn.btn-link= item['<%= fields[i] %>']
 <%     } else { -%>
                         a(href=href)= item['<%= fields[i] %>']
 <%     }
@@ -48,20 +48,16 @@
    if (events.length) { -%>
                     td
                         .dropdown
-                            button.btn.btn-default.dropdown-toggle(data-toggle='dropdown')
-                                span Actions
-                                span.caret
+                            button.btn.btn-secondary.dropdown-toggle(type='button', data-toggle='dropdown') Actions
                             ul.dropdown-menu
 <%    for (var i = 0; i < events.length; ++i) {
           if (events[i].targetsAction) { -%>
-                                li
                                     form(action=vm['<%= events[i].id %>'][itemindex].action, method="POST")
                                         each value, name in vm['<%= events[i].id %>'][itemindex].hiddens
                                             input(type='hidden', name=name, value=value)
-                                        button.col-xs-2.btn.btn-default <%= events[i].name %>
+                                        button.dropdown-item(type="button") <%= events[i].name %>
 <%        } else { -%>
-                                li
-                                    a(href=vm['<%= events[i].id %>'][itemindex].href) <%= events[i].name %>
+                                a.dropdown-item(href=vm['<%= events[i].id %>'][itemindex].href) <%= events[i].name %>
 <%        }
        }
    } -%>

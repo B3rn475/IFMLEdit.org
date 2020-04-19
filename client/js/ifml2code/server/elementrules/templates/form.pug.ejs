@@ -9,7 +9,7 @@
 <% } -%>
         .row
 <% for (var i = 0; i < events.length; ++i) { -%>
-        button#<%= events[i].id %>.col-xs-2.btn.btn-default(data-action=vm['<%= events[i].id %>'].href, data-method= '<%= events[i].targetsAction ? 'POST' : 'GET' %>') <%= events[i].name %>
+        button#<%= events[i].id %>.col-2.btn.btn-secondary(data-action=vm['<%= events[i].id %>'].href, data-method= '<%= events[i].targetsAction ? 'POST' : 'GET' %>') <%= events[i].name %>
 <% } -%>
     script.
         (function () {

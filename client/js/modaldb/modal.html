@@ -1,13 +1,13 @@
-<div class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade bd-example-modal-xl" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title">Edit DB</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Edit DB</h4>
             </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs" data-bind="foreach: collections">
-                    <li data-bind="css: { active: $data === $parent.current() }">
+                    <li class="nav-item" data-bind="css: { active: $data === $parent.current() }">
                         <a href="#" data-bind="click: $parent.setCurrent">
                             <span data-bind="text: name" />
                         </a>

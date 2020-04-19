@@ -1,28 +1,26 @@
-<div class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade bd-example-modal-xl" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title">Edit Element <small>(id: <span class="selectable" data-bind="text: id"></span>)</small></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Edit Element <small>(id: <span class="selectable" data-bind="text: id"></span>)</small></h4>
             </div>
             <div class="modal-body">
-                <div class="form-horizontal">
-                    <div class="form-group" data-bind="css: {'has-error': id_duplicated}">
-                        <label class="col-sm-2 control-label" for="input-id">Id</label>
-                        <div class="col-sm-10">
-                            <input class="form-control" type="text" id='input-id' data-bind="value: id_tentative, executeOnEnter: $root.close">
-                        </div>
+                <div class="form-group row" data-bind="css: {'has-error': id_duplicated}">
+                    <label class="col-sm-2 col-form-label text-right" for="input-id">Id</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id='input-id' data-bind="value: id_tentative, executeOnEnter: $root.close">
                     </div>
                 </div>
-                <div class="form-horizontal" data-bind="foreach: fields">
-                    <div class="form-group" data-bind="if: type === 'string', visible: type === 'string'">
-                        <label class="col-sm-2 control-label" data-bind="text: name, attr: {for: 'input-field' + property}"></label>
+                <div data-bind="foreach: fields">
+                    <div class="form-group row" data-bind="if: type === 'string', visible: type === 'string'">
+                        <label class="col-sm-2 col-form-label text-right" data-bind="text: name, attr: {for: 'input-field' + property}"></label>
                         <div class="col-sm-10">
                             <input class="form-control" type="text" data-bind="textInput: value, executeOnEnter: $root.close, attr: {id: 'input-field' + property}">
                         </div>
                     </div>
-                    <div class="form-group" data-bind="if: type === 'number', visible: type === 'number'">
-                        <label class="col-sm-2 control-label" data-bind="text: name, attr: {for: 'input-field' + property}"></label>
+                    <div class="form-group row" data-bind="if: type === 'number', visible: type === 'number'">
+                        <label class="col-sm-2 col-form-label text-right" data-bind="text: name, attr: {for: 'input-field' + property}"></label>
                         <div class="col-sm-10">
                             <input class="form-control" type="number" data-bind="textInput: text, executeOnEnter: $root.close, attr: {id: 'input-field' + property, min: min, max: max}">
                         </div>
@@ -33,14 +31,14 @@
                             <span data-bind="text: name"></span>
                         </label>
                     </div>
-                    <div class="form-group" data-bind="if: type === 'enum', visible: type === 'enum'">
-                        <label class="col-sm-2 control-label" data-bind="text: name, attr: {for: 'input-field' + property}"></label>
+                    <div class="form-group row" data-bind="if: type === 'enum', visible: type === 'enum'">
+                        <label class="col-sm-2 col-form-label text-right" data-bind="text: name, attr: {for: 'input-field' + property}"></label>
                         <div class="col-sm-10">
                             <select class="form-control" data-bind="options: values, optionsText: 'name', optionsValue: 'value', value: value, attr: {id: 'input-field' + property}"></select>
                         </div>
                     </div>
-                    <div class="form-group" data-bind="if: type === 'booleanset', visible: type === 'booleanset'">
-                        <label class="col-sm-2 control-label" data-bind="text: name"></label>
+                    <div class="form-group row" data-bind="if: type === 'booleanset', visible: type === 'booleanset'">
+                        <label class="col-sm-2 col-form-label text-right" data-bind="text: name"></label>
                         <div class="col-sm-10" data-bind="foreach: items">
                             <label class="checkbox-inline">
                                 <input type="checkbox" data-bind="checked: value, attr: {id: 'input-field' + property}">
@@ -48,8 +46,8 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group" data-bind="if: type === 'stringset', visible: type === 'stringset'">
-                        <label class="col-sm-2 control-label" data-bind="text: name"></label>
+                    <div class="form-group row" data-bind="if: type === 'stringset', visible: type === 'stringset'">
+                        <label class="col-sm-2 col-form-label text-right" data-bind="text: name"></label>
                         <div class="col-sm-10">
                             <table class="table table-condensed table-stripped">
                                 <thead>
@@ -62,7 +60,7 @@
                                         <th scopre="row" data-bind="text: $index"></th>
                                         <td data-bind="text: $data"></td>
                                         <td>
-                                            <button class="btn" data-bind="click: $parent.remove">remove</button>
+                                            <button class="btn btn-secondary" data-bind="click: $parent.remove">remove</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -72,14 +70,14 @@
                                         <input class="form-control" type="text" data-bind="textInput: value, executeOnEnter: add">
                                     </th>
                                     <th>
-                                        <button class="btn" data-bind="click: add">add</button>
+                                        <button class="btn btn-secondary" data-bind="click: add">add</button>
                                     </th>
                                 </tfoot>
                             </table>
                         </div>
                     </div>
-                    <div class="form-group" data-bind="if: type === 'bindings', visible: type === 'bindings'">
-                        <label class="col-sm-2 control-label" data-bind="text: name"></label>
+                    <div class="form-group row" data-bind="if: type === 'bindings', visible: type === 'bindings'">
+                        <label class="col-sm-2 col-form-label text-right" data-bind="text: name"></label>
                         <div class="cols-sm-10 col-sm-10">
                             <table class="table table-condensed table-stripped">
                                 <thead>
@@ -94,11 +92,11 @@
                                         <td data-bind="text: output"></td>
                                         <td data-bind="text: input"></td>
                                         <td>
-                                            <button class="btn" data-bind="click: $parent.removeBinding">remove</button>
+                                            <button class="btn btn-secondary" data-bind="click: $parent.removeBinding">remove</button>
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tfoor>
+                                <tfoot>
                                     <th></th>
                                     <th class="form-group">
                                         <select class="form-control" data-bind="options: outputs, value: output"></select>
@@ -107,14 +105,14 @@
                                         <select class="form-control" data-bind="options: inputs, value: input"></select>
                                     </th>
                                     <th>
-                                        <button class="btn" data-bind="click: addBinding">add</button>
+                                        <button class="btn btn-secondary" data-bind="click: addBinding">add</button>
                                     </th>
                                 </tfoot>
                             </table>
                         </div>
                     </div>
-                    <div class="form-group" data-bind="if: type === 'elementslist', visible: type === 'elementslist'">
-                        <label class="col-sm-2 control-label" data-bind="text: name"></label>
+                    <div class="form-group row" data-bind="if: type === 'elementslist', visible: type === 'elementslist'">
+                        <label class="col-sm-2 col-form-label text-right" data-bind="text: name"></label>
                         <div class="cols-sm-10 col-sm-10">
                             <table class="table table-condensed table-stripped">
                                 <tbody data-bind="foreach: children">
@@ -122,16 +120,16 @@
                                         <th scopre="row" data-bind="text: $index"></th>
                                         <td data-bind="text: display"></td>
                                         <td class="btn-group">
-                                            <button class="btn" data-bind="click: $parent.top, disable: $index() === 0">
+                                            <button class="btn btn-secondary" data-bind="click: $parent.top, disable: $index() === 0">
                                                 <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
                                             </button>
-                                            <button class="btn" data-bind="click: $parent.up, disable: $index() === 0">
+                                            <button class="btn btn-secondary" data-bind="click: $parent.up, disable: $index() === 0">
                                                 <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
                                             </button>
-                                            <button class="btn" data-bind="click: $parent.down, disable: $index() + 1 === $parent.children().length">
+                                            <button class="btn btn-secondary" data-bind="click: $parent.down, disable: $index() + 1 === $parent.children().length">
                                                 <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                                             </button>
-                                            <button class="btn" data-bind="click: $parent.bottom, disable: $index() + 1 === $parent.children().length">
+                                            <button class="btn btn-secondary" data-bind="click: $parent.bottom, disable: $index() + 1 === $parent.children().length">
                                                 <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
                                             </button>
                                         </td>

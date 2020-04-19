@@ -1,8 +1,8 @@
 <h3><%=name %></h3>
-<dl class="dl-horizontal" data-bind="if: item">
+<dl class="row" data-bind="if: item">
 <% for (var i = 0; i < fields.length; i += 1) { -%>
-        <dt><%= fields[i]%></dt>
-        <dd data-bind="text: item()['<%= fields[i] %>']"></dd>
+        <dt class="col-2"><%= fields[i]%></dt>
+        <dd class="col-10" data-bind="text: item()['<%= fields[i] %>']"></dd>
 <% } -%>
 </dl>
 <% if (events.length) { -%>

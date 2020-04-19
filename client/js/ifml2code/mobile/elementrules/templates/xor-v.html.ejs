@@ -1,8 +1,7 @@
-<ul class="tabs" style="overflow: hidden">
+<ul class="tabs tabs-transparent">
     <% for (var i = 0; i < landmarks.length; i += 1) { -%>
     <li class="tab col s6"><a class="cyan-text" data-bind="click: landmark.bind($data, '<%= landmarks[i].id %>'), css: {active: active() === '<%= landmarks[i].id %>'}"><%= landmarks[i].name %></a></li>
     <% } -%>
-    <div class="indicator cyan" style="z-index:1"></div>
 </ul>
 <% for (var i = 0; i < children.length; i+=1) { -%>
 <!-- ko if: active() === '<%= children[i].id %>' -->
