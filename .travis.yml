@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+- lts/*
+branches:
+  only:
+  - master
+
+install: npm install --prod
+
+before_script:
+-
+
+script:
+- SSH_FILE="$(mktemp -u $HOME/.ssh/XXXXX)"
+- echo "editor.ifmledit.org" > ./public/CNAME
+- openssl aes-256-cbc -md sha256 -in .travis/github_deploy_key.enc -out $SSH_FILE -d -k "$__SECRET__"
+- chmod 600 "$SSH_FILE"
+- eval "$(ssh-agent -s)"
+- ssh-add "$SSH_FILE"
+- |
+  echo "Host github.com" \
+       "  IdentityFile $SSH_FILE" \
+       "  LogLevel ERROR" >> ~/.ssh/config
+- npm run deploy
