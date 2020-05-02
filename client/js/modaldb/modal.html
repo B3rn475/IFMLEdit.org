@@ -7,10 +7,8 @@
             </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs" data-bind="foreach: collections">
-                    <li class="nav-item" data-bind="css: { active: $data === $parent.current() }">
-                        <a href="#" data-bind="click: $parent.setCurrent">
-                            <span data-bind="text: name" />
-                        </a>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-bind="click: $parent.setCurrent, css: { active: $data === $parent.current() }, text: name"></a>
                     </li>
                 </ul>
                 <div class="db-table" data-bind="with: current">
