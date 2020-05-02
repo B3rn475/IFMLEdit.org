@@ -104,6 +104,10 @@ html, body {
     }
 }
 
+.tab-content > .tab-pane.content {
+  padding-top: 60px;
+}
+
 .tab-content > .tab-pane.editor {
     display: block;
     margin-bottom: 200%;
