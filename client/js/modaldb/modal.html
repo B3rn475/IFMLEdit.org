@@ -37,7 +37,7 @@
                                         <div class="input-group">
                                           <input type="text" class="form-control" data-bind="value: value">
                                           <span class="input-group-btn">
-                                              <button class="btn btn-default" data-bind="click: expand">Expand</button>
+                                              <button class="btn btn-light" data-bind="click: expand">Expand</button>
                                           </span>
                                         </div>
                                     </span>
@@ -56,13 +56,13 @@
                                     <button class="btn btn-success" data-bind="click: add">
                                         Add
                                     </button>
-                                    <button class="btn btn-default" data-bind="click: download">
+                                    <button class="btn btn-primary" data-bind="click: download">
                                         Download
                                     </button>
-                                    <label class="btn btn-default btn-file">
+                                    <button class="btn btn-primary btn-file" data-bind="click: function () { $('#db-collection-upload').click(); } ">
                                         Upload
-                                        <input type="file" data-bind="event: {change: function() { upload($element.files[0]); $element.value = ''; }}" style="display: none;">
-                                    </label>
+                                    </button>
+                                    <input type="file" id="db-collection-upload" data-bind="event: {change: function() { upload($element.files[0]); $element.value = ''; }}" style="display: none;">
                                 </td>
                             </tr>
                         </tbody>
