@@ -31,9 +31,7 @@
                             <!-- ko foreach: {data: documents, as: 'document'} -->
                             <tr>
                                 <td data-bind="if: $parent.documents().length > 1">
-                                    <button class="btn btn-danger" data-bind="click: $parent.remove">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button>
+                                    <button class="btn btn-danger" data-bind="click: $parent.remove">Remove</button>
                                 </td>
                                 <!-- ko foreach: {data: $parent.fields, as: 'field'} -->
                                 <td data-bind="with: document[field]">
@@ -41,9 +39,7 @@
                                         <div class="input-group">
                                           <input type="text" class="form-control" data-bind="value: value">
                                           <span class="input-group-btn">
-                                              <button class="btn btn-default" data-bind="click: expand">
-                                                  <span class="glyphicon glyphicon-resize-vertical"></span>
-                                              </button>
+                                              <button class="btn btn-default" data-bind="click: expand">Expand</button>
                                           </span>
                                         </div>
                                     </span>
@@ -60,13 +56,13 @@
                             <tr data-bind="if: loaded">
                                 <td data-bind="attr: {colspan: fields().length + 1}">
                                     <button class="btn btn-success" data-bind="click: add">
-                                        <span class="glyphicon glyphicon-plus"></span>
+                                        Add
                                     </button>
                                     <button class="btn btn-default" data-bind="click: download">
-                                        <span class="glyphicon glyphicon-save"></span>
+                                        Download
                                     </button>
                                     <label class="btn btn-default btn-file">
-                                        <span class="glyphicon glyphicon-open"></span>
+                                        Upload
                                         <input type="file" data-bind="event: {change: function() { upload($element.files[0]); $element.value = ''; }}" style="display: none;">
                                     </label>
                                 </td>
