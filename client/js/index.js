@@ -165,6 +165,7 @@ $('#ifml > input[type=file]').change(function () {
             $.notify({message: 'File loaded in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
             loaded_at = new Date();
         } catch (exception) {
+            console.error(exception);
             ifmlBoard.clearHistory();
             $.notify({message: 'Invalid input file!'}, {allow_dismiss: true, type: 'danger'});
             return;
@@ -198,6 +199,7 @@ $('#ifml > .sidebar .modal-example').click(function () {
                 $.notify({message: 'File loaded in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
                 loaded_at = new Date();
             } catch (exception) {
+                console.error(exception);
                 ifmlModel.clear();
                 ifmlBoard.clearHistory();
                 $.notify({message: 'Invalid input file!'}, {allow_dismiss: true, type: 'danger'});
@@ -234,6 +236,7 @@ $('#statistics > input[type=file]').change(function () {
             $.notify({message: 'File loaded in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
             loaded_at = new Date();
         } catch (exception) {
+            console.error(exception);
             statisticsModel.clear();
             statisticsMenuColor.clear();
             statisticsMenuIn.clear();
@@ -290,9 +293,10 @@ $('#web-server .zip-download').click(function () {
         var start = new Date();
         saveAs(ifml2code.server(ifml.toJSON(ifmlModel)).generate({type: 'blob'}), 'webexample.zip');
         $.notify({message: 'Convertion completed in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
-    } catch (e) {
-        if (e instanceof AException) {
-            $.notify({title: "<strong>Convertion Failed</strong><br>", message: e.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
+    } catch (exception) {
+        console.error(exception);
+        if (exception instanceof AException) {
+            $.notify({title: "<strong>Convertion Failed</strong><br>", message: exception.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
         } else {
             $.notify({title: 'Convertion Failed.'}, {allow_dismiss: true, type: 'danger'});
         }
@@ -306,9 +310,10 @@ $('#web-server .zip-try').click(function () {
         ifbrowser.start(ifml2code.server(ifml.toJSON(ifmlModel)).generate({type: 'string'}));
         ifbrowser.reload();
         $.notify({message: 'Convertion completed in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
-    } catch (e) {
-        if (e instanceof AException) {
-            $.notify({title: "<strong>Convertion Failed</strong><br>", message: e.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
+    } catch (exception) {
+        console.error(exception);
+        if (exception instanceof AException) {
+            $.notify({title: "<strong>Convertion Failed</strong><br>", message: exception.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
         } else {
             $.notify({title: 'Convertion Failed.'}, {allow_dismiss: true, type: 'danger'});
         }
@@ -321,9 +326,10 @@ $('#web-client .zip-download').click(function () {
         var start = new Date();
         saveAs(ifml2code.client(ifml.toJSON(ifmlModel)).generate({type: 'blob'}), 'clientexample.zip');
         $.notify({message: 'Convertion completed in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
-    } catch (e) {
-        if (e instanceof AException) {
-            $.notify({title: "<strong>Convertion Failed</strong><br>", message: e.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
+    } catch (exception) {
+        console.error(exception);
+        if (exception instanceof AException) {
+            $.notify({title: "<strong>Convertion Failed</strong><br>", message: exception.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
         } else {
             $.notify({title: 'Convertion Failed.'}, {allow_dismiss: true, type: 'danger'});
         }
@@ -336,9 +342,10 @@ $('#web-client .zip-try').click(function () {
         var start = new Date();
         ifclient.start(ifml2code.client(ifml.toJSON(ifmlModel)).generate({type: 'string'}));
         $.notify({message: 'Convertion completed in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
-    } catch (e) {
-        if (e instanceof AException) {
-            $.notify({title: "<strong>Convertion Failed</strong><br>", message: e.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
+    } catch (exception) {
+        console.error(exception);
+        if (exception instanceof AException) {
+            $.notify({title: "<strong>Convertion Failed</strong><br>", message: exception.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
         } else {
             $.notify({title: 'Convertion Failed.'}, {allow_dismiss: true, type: 'danger'});
         }
@@ -351,9 +358,10 @@ $('#mobile #cordova .zip-download').click(function () {
         var start = new Date();
         saveAs(ifml2code.mobile(ifml.toJSON(ifmlModel)).generate({type: 'blob'}), 'mobileexample.zip');
         $.notify({message: 'Convertion completed in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
-    } catch (e) {
-        if (e instanceof AException) {
-            $.notify({title: "<strong>Convertion Failed</strong><br>", message: e.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
+    } catch (exception) {
+        console.error(exception);
+        if (exception instanceof AException) {
+            $.notify({title: "<strong>Convertion Failed</strong><br>", message: exception.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
         } else {
             $.notify({title: 'Convertion Failed.'}, {allow_dismiss: true, type: 'danger'});
         }
@@ -366,9 +374,10 @@ $('#mobile #flutter .zip-download').click(function () {
         var start = new Date();
         saveAs(ifml2code.flutter(ifml.toJSON(ifmlModel)).generate({type: 'blob'}), 'flutterexample.zip');
         $.notify({message: 'Convertion completed in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
-    } catch (e) {
-        if (e instanceof AException) {
-            $.notify({title: "<strong>Convertion Failed</strong><br>", message: e.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
+    } catch (exception) {
+        console.error(exception);
+        if (exception instanceof AException) {
+            $.notify({title: "<strong>Convertion Failed</strong><br>", message: exception.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
         } else {
             $.notify({title: 'Convertion Failed.'}, {allow_dismiss: true, type: 'danger'});
         }
@@ -381,9 +390,10 @@ $('#mobile .zip-try').click(function () {
         var start = new Date();
         ifmobile.start(ifml2code.mobile(ifml.toJSON(ifmlModel)).generate({type: 'string'}));
         $.notify({message: 'Convertion completed in ' + (Math.floor((new Date() - start) / 10) / 100) + ' seconds!'}, {allow_dismiss: true, type: 'success'});
-    } catch (e) {
-        if (e instanceof AException) {
-            $.notify({title: "<strong>Convertion Failed</strong><br>", message: e.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
+    } catch (exception) {
+        console.error(exception);
+        if (exception instanceof AException) {
+            $.notify({title: "<strong>Convertion Failed</strong><br>", message: exception.message.replace(/\n/g, '<br>')}, {allow_dismiss: true, type: 'danger'});
         } else {
             $.notify({title: 'Convertion Failed.'}, {allow_dismiss: true, type: 'danger'});
         }
