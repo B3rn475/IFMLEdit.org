@@ -222,10 +222,10 @@ html(lang='en')
                                                 button.btn.btn-dark(type='button') ⧉
                             .col-12.col-md-7
                                 ul.nav.nav-tabs(role='tablist')
-                                    li.active(role='presentation')
-                                        a(role='tab', data-toggle='tab', aria-controls='cordova', href='#cordova') Cordova
-                                    li(role='presentation')
-                                        a(role='tab', data-toggle='tab', aria-controls='flutter', href='#flutter') Flutter
+                                    li.nav-item(role='presentation')
+                                        a.nav-link.active(role='tab', data-toggle='tab', aria-controls='cordova', href='#cordova') Cordova
+                                    li.nav-item(role='presentation')
+                                        a.nav-link(role='tab', data-toggle='tab', aria-controls='flutter', href='#flutter') Flutter
                                 .tab-content
                                     #cordova.tab-pane.active(role='tabpanel')
                                         h3 Or...
@@ -300,7 +300,7 @@ html(lang='en')
                                                     span.text-primary cordova&nbsp;
                                                     span.text-success run ...
                                     #flutter.tab-pane(role='tabpanel')
-                                        .alert.alert-warning(role='alert') Experimental
+                                        .alert.alert-warning(role='alert') Warning: This feature is experimental.
                                         h3 Or...
                                         button.btn.btn-primary.zip-download(type='button') Download the Source Files
                                         h3 Once downloaded...
