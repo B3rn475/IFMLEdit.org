@@ -163,7 +163,8 @@ gulp.task('demo-web-server-index', function () {
         .transform('aliasify', {
             aliases: {
                 'fs': './client/demo-web-server/shims/fs.js',
-                'http': './client/demo-web-server/shims/http.js'
+                'http': './client/demo-web-server/shims/http.js',
+                'is-core-module': './client/demo-web-server/shims/is-core-module.js',
             },
             global: true
         })
