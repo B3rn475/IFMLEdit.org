@@ -130,7 +130,7 @@ var element = [almost.createRule(
             });
         // if \ifml{\nametarget} is child of an element in the XOR targets set
         // of \ifml{\namenavflow} inside \ifmlinteractioncontext[]
-        if (intersection.length == 0) {
+        if (_.includes(xorTargetsSetChildren, targetId)) {
             var vpid = targetId + '-View-p',
                 rvpid = vpid + id;
             // an arc from \pcnview{\nametarget} to \pcn{\nameevent}
