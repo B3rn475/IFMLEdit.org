@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "gulp",
-    "deploy": "git-directory-deploy --directory \"public/\" --repo \"git@github.com:B3rn475/IFMLEdit.org.git\"",
+    "deploy": "gh-pages -d public --cname editor.ifmledit.org",
     "postinstall": "npm run build",
     "start": "pm2 start --name=IFMLEdit.org index.js",
     "poststart": "node -e \"require('open')('http://localhost:3000')\"",
@@ -42,7 +42,7 @@
     "exposify": "^0.5.0",
     "express": "4.17.1",
     "file-saver": "^1.3.8",
-    "git-directory-deploy": "^1.5.1",
+    "gh-pages": "^6.3.0",
     "gulp": "^4.0.2",
     "gulp-cssnano": "^2.1.3",
     "gulp-extract-sourcemap": "^0.1.6",
