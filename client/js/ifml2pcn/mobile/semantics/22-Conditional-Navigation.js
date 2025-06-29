@@ -18,6 +18,9 @@ var _ = require('lodash'),
 //        XOR targets set of \ifml{\namenavflow} inside
 //        \ifmlinteractioncontext[], an arc from \pcnview{\nameancestor_i} to
 //        \pcn{\nameevent}; and an arc from \pcn{\nameevent} to \pcnview{\nameancestor_i};
+//        if \ifml{\nametarget} is child of an element in the XOR targets set
+//        of \ifml{\namenavflow} inside \ifmlinteractioncontext[], an arc from
+//        \pcnview{\nametarget} to \pcn{\nameevent};
 //  \item For each ViewContainer \ifml{\namexorvc_i} in the XOR targets set of
 //        \ifml{\namenavflow} inside \ifmlinteractioncontext:
 //        \begin{enumerate}
@@ -92,6 +95,7 @@ var element = [almost.createRule(
             id = model.toId(event),
             context = model.getInteractionContext(flow),
             target = model.getTarget(flow),
+            targetId = model.toId(target),
             ancestors = model.getAncestors(target),
             xorTargetsSet = model.getXORTargetSet(flow, context),
             xorTargetsSetChildren = _.flatten(_.map(xorTargetsSet, function (xid) {
@@ -124,6 +128,22 @@ var element = [almost.createRule(
                     ]
                 };
             });
+        // if \ifml{\nametarget} is child of an element in the XOR targets set
+        // of \ifml{\namenavflow} inside \ifmlinteractioncontext[]
+        if (intersection.length == 0) {
+            var vpid = targetId + '-View-p',
+                rvpid = vpid + id;
+            // an arc from \pcnview{\nametarget} to \pcn{\nameevent}
+            partials.push({
+                elements: [
+                    {id: rvpid, type: 'pcn.Link', attributes: {tokens: 1}},
+                ],
+                relations: [
+                    {type: 'pcn.Source', link: rvpid, source: vpid},
+                    {type: 'pcn.Target', link: rvpid, target: id},
+                ]
+            });
+        }
         return {
             elements: _.flatten(_.map(partials, 'elements')),
             relations: _.flatten(_.map(partials, 'relations')),
